@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Entities;
-using Entities.Categories;
+using Entities.Factories;
+using UnityEditorInternal;
 
 namespace Core.Entities {
     /// <summary>
     /// 管理所有場上的 Entity（玩家與敵人）。
     /// </summary>
     public class EntityManager: MonoBehaviour {
+        public GameObject dummy;
+        public Transform entities;
         public static EntityManager Instance { get; private set; }
-
         private readonly Dictionary<int, Entity> entityDict = new();
         private int nextEntityId = 1;
 
@@ -22,14 +24,43 @@ namespace Core.Entities {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        public Entity CreateEntity(EntityData entityData, Vector3 position) {
-            int id = nextEntityId++;
-            Entity entity = entityData.type switch {
-                EntityTypes.PLAYER => new Player(id, entityData),
-                EntityTypes.ENEMY => new Enemy(id, entityData),
-                _ => null
-            };
 
+        void Start() {
+            EntityData data1 = new EntityData(
+                80,
+                "Player1",
+                EntityTypes.PLAYER
+            );
+
+            EntityData data2 = new EntityData(
+                90,
+                "Player2",
+                EntityTypes.PLAYER
+            );
+
+            EntityData data3 = new EntityData(
+                100,
+                "Enemy1",
+                EntityTypes.ENEMY
+            );
+
+            CreateEntity(data1, new Vector3(-5, 0, 0));
+            CreateEntity(data2, new Vector3(0, 0, 0));
+            CreateEntity(data3, new Vector3(5, 0, 0));
+        }
+
+        public Entity CreateEntity(EntityData entityData, Vector3 position) {
+            GameObject newEntity = Instantiate(dummy, entities);
+            Transform rectTransform = newEntity.GetComponent<Transform>();
+            if (rectTransform != null) {
+                rectTransform.position = position;
+            }
+
+            EntityBehaviour eb = newEntity.GetComponent<EntityBehaviour>();
+            int id = nextEntityId++;
+            Entity entity = EntityFactory.MakeEntity(id, entityData);
+
+            eb.Init(entity);
             RegisterEntity(entity);
             return entity;
         }

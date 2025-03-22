@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Entities
 {
@@ -21,12 +23,15 @@ namespace Entities
             this.entityId = id;
             this.entityName = entityData.entityName;
             this.type = entityData.type;
+            this.health = entityData.maxHealth;
+            this.maxHealth = entityData.maxHealth;
             this.entityData = entityData;
         }
 
         public void TakeDamage(int amount)
         {
             health = Mathf.Max(health - amount, 0);
+            Debug.Log(String.Format("{0}.{1} : {2}/{3}", entityId, entityName, health, maxHealth));
         }
 
         public void Heal(int amount)
