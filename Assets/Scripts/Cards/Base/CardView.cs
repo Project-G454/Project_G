@@ -1,0 +1,43 @@
+using Cards.Helpers;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Cards {
+    public class CardView: MonoBehaviour {
+        public int bgId = 0;
+        // public int frameId;
+        // public SpriteRenderer layoutRenderer;
+        public TMP_Text title;
+        public TMP_Text cost;
+        public Image background;
+        public Image frame;
+        public Image costBackground;
+        public Image titleBackground;
+        public Image typeBackground;
+
+        public void SetCardView(Card card) {
+            title.text = card.cardName;
+            cost.text = card.cost.ToString();
+            
+            background.sprite = CardLayoutHelper.getBackgroundSprite(card.id);
+            frame.sprite = CardLayoutHelper.getFrameSprite((int)card.rarity);
+            costBackground.sprite = CardLayoutHelper.getCostSprite((int)card.rarity);
+            titleBackground.sprite = CardLayoutHelper.getTitleSprite((int)card.rarity);
+            typeBackground.sprite = CardLayoutHelper.getTypeSprite(card.type.ToString());
+        }
+
+        // // Start is called once before the first execution of Update after the MonoBehaviour is created
+        // public void Start() {
+        //     layoutRenderer = GetComponentInChildren<SpriteRenderer>();
+        // }
+
+        // public void Update() {
+        //     UpdateCardSprite();
+        // }
+
+        // private void UpdateCardSprite() {
+        //     layoutRenderer.sprite = CardLayoutHelper.getCardSprite(bgId, frameId);
+        // }
+    }
+}
