@@ -7,15 +7,18 @@ namespace Entities {
         public int maxHealth = 0;
         public string entityName = "Unknown";
         public EntityTypes type = EntityTypes.UNSET;
+        public EntityClasses entityClass = EntityClasses.UNSET;
 
         public EntityData(
             int maxHealth,
             string entityName,
-            EntityTypes type
+            EntityTypes type,
+            EntityClasses entityClass
         ) {
             this.maxHealth = maxHealth;
             this.entityName = entityName;
             this.type = type;
+            this.entityClass = entityClass;
         }
     }
 }

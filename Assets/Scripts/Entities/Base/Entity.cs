@@ -13,6 +13,7 @@ namespace Entities
         public int maxHealth;
         public string entityName;
         public EntityTypes type;
+        public EntityClasses entityClass;
         public EntityData entityData;
 
         public Entity(
@@ -24,6 +25,7 @@ namespace Entities
             this.type = entityData.type;
             this.health = entityData.maxHealth;
             this.maxHealth = entityData.maxHealth;
+            this.entityClass = entityData.entityClass;
             this.entityData = entityData;
         }
 

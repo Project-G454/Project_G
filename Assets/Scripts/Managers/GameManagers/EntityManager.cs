@@ -30,19 +30,22 @@ namespace Core.Entities {
             EntityData data1 = new EntityData(
                 80,
                 "Player1",
-                EntityTypes.PLAYER
+                EntityTypes.PLAYER,
+                EntityClasses.WARRIOR
             );
 
             EntityData data2 = new EntityData(
                 90,
                 "Player2",
-                EntityTypes.PLAYER
+                EntityTypes.PLAYER,
+                EntityClasses.RANGER
             );
 
             EntityData data3 = new EntityData(
                 100,
-                "Enemy1",
-                EntityTypes.ENEMY
+                "Player3",
+                EntityTypes.PLAYER,
+                EntityClasses.WIZARD
             );
 
             CreateEntity(data1, new Vector3(-5, 0, 0));

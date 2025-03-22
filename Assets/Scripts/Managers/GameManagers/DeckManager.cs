@@ -7,20 +7,18 @@ namespace Core.Managers.Deck {
     /// 管理玩家卡組邏輯：抽牌堆、手牌、棄牌堆皆為 Pile 類別。
     /// </summary>
     public class DeckManager: MonoBehaviour {
-        public Pile draw = new Pile();
-        public Pile hand = new Pile();
-        public Pile discard = new Pile();
+        public Pile playerDeck = new();
+        public Pile draw = new();
+        public Pile hand = new();
+        public Pile discard = new();
 
         public int handSize = 5;
-
-        public DeckManager() { }
-
-        public DeckManager(List<int> initialDeck) {
-            InitializeDeck(initialDeck);
-        }
-
-        public void InitializeDeck(List<int> startingCardIds) {
-            draw.Add(startingCardIds);
+        
+        public void InitializeDeck() {
+            draw.Clear();
+            hand.Clear();
+            discard.Clear();
+            draw.Add(this.playerDeck.GetAllCards());
             draw.Shuffle();
         }
 
@@ -51,18 +49,25 @@ namespace Core.Managers.Deck {
                 destination.Add(cardId);
         }
 
-        public void MoveCard(Pile source, Pile destination, IEnumerable<int> cardIds) {
-            foreach (var cardId in cardIds) {
-                if (source.Remove(cardId))
-                    destination.Add(cardId);
-            }
-        }
-
         /// <summary>
         /// 玩家使用一張卡牌。
         /// </summary>
         public void Use(int cardId) {
+            MoveCard(hand, discard, cardId);
+        }
 
+        /// <summary>
+        /// 新增卡牌到玩家卡組。
+        /// </summary>
+        public void AddCardToPlayerDeck(int cardId) {
+            playerDeck.Add(cardId);
+        }
+
+        /// <summary>
+        /// 移除玩家卡組中的特定卡牌。
+        /// </summary>
+        public bool RemoveCardFromPlayerDeck(int cardId) {
+            return playerDeck.Remove(cardId);
         }
     }
 }
