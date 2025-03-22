@@ -10,15 +10,15 @@ namespace Cards.Categories {
         public int piercing { get; set; }
 
         public AttackCard(
-            CardData data,
-            int damage = 0
+            AttackCardData data
         ): base(data) {
             this.type = CardTypes.ATTACK;
-            this.damage = damage;
+            this.damage = data.damage;
         }
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
+            Debug.Log("Player_" + sourceId.ToString() + " deal " + this.damage.ToString() + " damage to Player_" + targetId.ToString());
             CardPlayerInteraction.ApplyDamage(targetId, this.damage);
         }
     }

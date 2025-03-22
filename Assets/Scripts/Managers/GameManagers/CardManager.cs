@@ -1,5 +1,6 @@
 using Cards;
 using Cards.Factories;
+using Entities;
 using UnityEngine;
 
 namespace Core.Managers.Cards {
@@ -7,6 +8,8 @@ namespace Core.Managers.Cards {
         public static CardManager Instance { get; private set; }
         public GameObject cardPrefab;
         public Transform cardParent;
+        private BattleManager _battleManager;
+        private bool _isCardState = false;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -19,36 +22,10 @@ namespace Core.Managers.Cards {
         }
 
         void Start() {
-            CardData data1 = new CardData(
-                1,
-                0,
-                "Card 1",
-                "Some Description",
-                CardTypes.ATTACK,
-                new string[] { "All" },
-                CardRarity.COMMON
-            );
-            CardData data2 = new CardData(
-                2,
-                1,
-                "Card 2",
-                "Some Description",
-                CardTypes.MAGIC,
-                new string[] { "All" },
-                CardRarity.UNCOMMON
-            );
-            CardData data3 = new CardData(
-                7,
-                2,
-                "Card 3",
-                "Some Description",
-                CardTypes.DEFENCE,
-                new string[] { "All" },
-                CardRarity.RARE
-            );
-            CreateCard(data1, new Vector2(50, 64));
-            CreateCard(data2, new Vector2(200, 64));
-            CreateCard(data3, new Vector2(350, 64));
+            _battleManager = BattleManager.Instance;
+            for (int i=0; i<15; i++) {
+                CreateCard(CardFactory.GetFakeCardData(i), new Vector2(50 + 50*i, 64));
+            }
         }
 
         public void CreateCard(CardData cardData, Vector2 position) {
@@ -66,6 +43,21 @@ namespace Core.Managers.Cards {
                 Card card = CardFactory.MakeCard(cardData);
                 cb.Init(card);
             }
+        }
+
+        public void StartTurn() {
+            this._isCardState = true;
+        }
+
+        public void EndTurn() {
+            this._isCardState = false;
+            _battleManager.OnCardPlayed();
+        }
+
+        public bool UseCard(Card card, int targetId) {
+            Entity currentEntity = _battleManager.currentEntity;
+            card.Use(currentEntity.entityId, targetId);
+            return this._isCardState;
         }
 
         // private static readonly List<Card> cardList = new();

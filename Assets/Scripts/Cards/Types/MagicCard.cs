@@ -6,15 +6,15 @@ namespace Cards.Categories {
         public int effectId;
 
         public MagicCard(
-            CardData data,
-            int effectId
+            MagicCardData data
         ) : base(data) {
             this.type = CardTypes.MAGIC;
-            this.effectId = effectId;
+            this.effectId = data.effectId;
         }
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
+            Debug.Log("Player_" + sourceId.ToString() + " used Magic_" + this.effectId.ToString() + ".");
             CardPlayerInteraction.ApplyEffect(targetId, this.effectId);
         }
     }

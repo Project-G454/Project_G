@@ -13,23 +13,5 @@ namespace Cards {
         public CardTypes type = CardTypes.UNSET;            // The type of the card (e.g. ATTACK, MAGIC).
         public string[] classes = new string[] { "All" };   // The character classes that can use this card.
         public CardRarity rarity = CardRarity.UNSET;        // The Rarity of the card (e.g. COMMON, EPIC).
-
-        public CardData(
-            int id,
-            int cost,
-            string cardName,
-            string description,
-            CardTypes type,
-            string[] classes,
-            CardRarity rarity
-        ) {
-            this.id = id;
-            this.cost = cost;
-            this.cardName = cardName;
-            this.description = description;
-            this.type = type;
-            this.classes = classes;
-            this.rarity = rarity;
-        }
     }
 }

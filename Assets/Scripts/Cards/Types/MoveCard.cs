@@ -1,19 +1,20 @@
 using Cards.Interactions;
+using UnityEngine;
 
 namespace Cards.Categories {
     public class MoveCard: Card {
         public int step = 0;
 
         public MoveCard(
-            CardData data,
-            int step
+            MoveCardData data
         ) : base(data) {
             this.type = CardTypes.MOVE;
-            this.step = step;
+            this.step = data.step;
         }
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
+            Debug.Log("Player " + sourceId.ToString() + " moved " + this.step.ToString() + " steps.");
             CardPlayerInteraction.ApplyMove(targetId, this.step);
         }
     }
