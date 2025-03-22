@@ -27,30 +27,7 @@ namespace Core.Entities {
         }
 
         void Start() {
-            EntityData data1 = new EntityData(
-                80,
-                "Player1",
-                EntityTypes.PLAYER,
-                EntityClasses.WARRIOR
-            );
-
-            EntityData data2 = new EntityData(
-                90,
-                "Player2",
-                EntityTypes.PLAYER,
-                EntityClasses.RANGER
-            );
-
-            EntityData data3 = new EntityData(
-                100,
-                "Player3",
-                EntityTypes.PLAYER,
-                EntityClasses.WIZARD
-            );
-
-            CreateEntity(data1, new Vector3(-5, 0, 0));
-            CreateEntity(data2, new Vector3(0, 0, 0));
-            CreateEntity(data3, new Vector3(5, 0, 0));
+            
         }
 
         public Entity CreateEntity(EntityData entityData, Vector3 position) {

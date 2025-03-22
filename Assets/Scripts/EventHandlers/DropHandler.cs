@@ -9,7 +9,7 @@ public class DropHandler: MonoBehaviour, IDropHandler {
             GameObject card = eventData.pointerDrag;
             CardBehaviour cb = card.GetComponent<CardBehaviour>();
             CardManager cm = CardManager.Instance;
-            if (cm.UseCard(cb.card, 999)) Destroy(card);
+            cm.UseCard(cb, 999);
         }
     }
 }

@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using Cards;
 using Cards.Factories;
+using Core.Managers.Deck;
 using Entities;
+using Entities.Categories;
 using UnityEngine;
 
 namespace Core.Managers.Cards {
@@ -9,7 +12,10 @@ namespace Core.Managers.Cards {
         public GameObject cardPrefab;
         public Transform cardParent;
         private BattleManager _battleManager;
+        private DeckManager _deckManager;
         private bool _isCardState = false;
+
+        private static readonly List<GameObject> cardList = new();
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -22,10 +28,7 @@ namespace Core.Managers.Cards {
         }
 
         void Start() {
-            _battleManager = BattleManager.Instance;
-            for (int i=0; i<15; i++) {
-                CreateCard(CardFactory.GetFakeCardData(i), new Vector2(50 + 50*i, 64));
-            }
+            
         }
 
         public void CreateCard(CardData cardData, Vector2 position) {
@@ -41,31 +44,53 @@ namespace Core.Managers.Cards {
             CardBehaviour cb = newCard.GetComponent<CardBehaviour>();
             if (cardView != null) {
                 Card card = CardFactory.MakeCard(cardData);
-                cb.Init(card);
+                cb.Init(newCard, card);
+                cardList.Add(newCard);
             }
         }
 
         public void StartTurn() {
             this._isCardState = true;
+            if (_battleManager == null) this._battleManager = BattleManager.Instance;
+
+            if (_battleManager.currentEntity is Player player) {
+                this._deckManager = player.deckManager;
+                this._deckManager.DrawCards(5);
+                int i = 0;
+                foreach (int id in this._deckManager.hand.GetAllCards()) {
+                    CreateCard(CardFactory.GetFakeCardData(id), new Vector2(50 + 150*i++, 64));
+                }
+            }
         }
 
         public void EndTurn() {
             this._isCardState = false;
+            
+            this._deckManager.DiscardHand();
+            ResetCardObjects();
+
             _battleManager.OnCardPlayed();
         }
 
-        public bool UseCard(Card card, int targetId) {
+        public bool UseCard(CardBehaviour cb, int targetId) {
+            if (!this._isCardState) return false;
+
             Entity currentEntity = _battleManager.currentEntity;
-            card.Use(currentEntity.entityId, targetId);
+
+            cb.card.Use(currentEntity.entityId, targetId);  // Apply card effect
+            this._deckManager.Use(cb.card.id);              // Remove card from deck
+            Destroy(cb.cardObject);                         // Destroy card GameObject
+            cardList.Remove(cb.cardObject);                 // Remove card from GameObject list
+            
             return this._isCardState;
         }
 
-        // private static readonly List<Card> cardList = new();
-
-        // public void Add(Card card)
-        // {
-        //     cardList.Add(card);
-        // }
+        public void ResetCardObjects() {
+            foreach (GameObject cardObject in cardList) {
+                Destroy(cardObject);
+            }
+            cardList.Clear();
+        }
 
         // public void Remove(int cardId)
         // {
