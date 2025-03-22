@@ -4,4 +4,12 @@ namespace Entities {
         PLAYER,
         ENEMY
     }
+
+    public enum EntityClasses {
+        UNSET,
+        WARRIOR,
+        RANGER,
+        ROGUE,
+        WIZARD
+    }
 }
