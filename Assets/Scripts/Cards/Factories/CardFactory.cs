@@ -23,7 +23,7 @@ namespace Cards.Factories {
         public static CardData GetFakeCardData(int id) {
             CardTypes type = (CardTypes)(id % 3 + 1);
 
-            CardData cardData = (type) switch {
+            CardData cardData = type switch {
                 CardTypes.ATTACK => new AttackCardData(),
                 CardTypes.MAGIC => new MagicCardData(),
                 CardTypes.MOVE => new MoveCardData(),

@@ -1,3 +1,4 @@
+using Core.Managers.Cards;
 using UnityEngine;
 
 namespace Cards {
@@ -11,6 +12,11 @@ namespace Cards {
             this.cardView = this.GetComponent<CardView>();
             this.cardView.SetCardView(card);
             this.cardObject = cardObject;
+        }
+
+        public void DestroySelf() {
+            CardManager.Instance.RemoveCard(this.cardObject);
+            Destroy(this.cardObject);
         }
     }
 }

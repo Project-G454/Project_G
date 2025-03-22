@@ -12,8 +12,8 @@ namespace Core.Managers {
         public EntityManager entityManager;
         public CardManager cardManager;
         public Entity currentEntity;
-        private int id;
-        private int entityCount;
+        private int _id;
+        private int _entityCount;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -29,9 +29,9 @@ namespace Core.Managers {
             InitEntities();
             InitDecks();
 
-            this.id = 1;
-            this.entityCount = entityManager.GetEntityList().Count;
-            currentEntity = entityManager.GetEntity(id);
+            this._id = 1;
+            this._entityCount = entityManager.GetEntityList().Count;
+            currentEntity = entityManager.GetEntity(_id);
             
             StartTurn();
         }
@@ -83,8 +83,8 @@ namespace Core.Managers {
         }
 
         public void NextPlayer() {
-            id = (id % entityCount) + 1;
-            currentEntity = entityManager.GetEntity(id);
+            _id = (_id % _entityCount) + 1;
+            currentEntity = entityManager.GetEntity(_id);
             Debug.Log(currentEntity.entityId);
         }
     }

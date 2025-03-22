@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace Cards.Helpers {
     public static class CardLayoutHelper {
-        private static Sprite[] cardSprites = CardSpriteManager.Instance.cardSprites;
-        private static int BG_COUNT = 7;
-        private static int FRAME_COUNT = 3;
-
+        private static CardSpriteManager _cardSpriteManager;
+        private static CardSpriteManager CardSpriteManager => _cardSpriteManager ??= CardSpriteManager.Instance;
+        private static Sprite[] cardSprites  => CardSpriteManager.cardSprites;
+        private const int BG_COUNT = 7;
+        private const int FRAME_COUNT = 3;
         public static Sprite getCardSprite(int bgId, int frameId) {
             Sprite cardBackground = getBackgroundSprite(bgId);
             Sprite cardFrame = getFrameSprite(frameId);
