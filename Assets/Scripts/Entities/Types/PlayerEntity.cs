@@ -1,4 +1,3 @@
-using UnityEngine;
 using Core.Managers.Deck;
 
 namespace Entities.Categories {
