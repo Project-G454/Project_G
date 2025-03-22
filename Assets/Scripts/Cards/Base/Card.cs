@@ -1,5 +1,3 @@
-using Cards.Interactions;
-using Core.Managers.UI;
 using UnityEngine;
 
 namespace Cards {

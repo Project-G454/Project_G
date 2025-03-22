@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cards;
-using Cards.Categories;
+using Cards.Factories;
 using UnityEngine;
 
 namespace Core.Managers.Cards {
@@ -48,35 +46,25 @@ namespace Core.Managers.Cards {
                 new string[] { "All" },
                 CardRarity.RARE
             );
-            CreateCard(data1, new Vector3(-300, 10, 0));
-            CreateCard(data2, new Vector3(0, 10, 0));
-            CreateCard(data3, new Vector3(300, 10, 0));
+            CreateCard(data1, new Vector2(50, 64));
+            CreateCard(data2, new Vector2(200, 64));
+            CreateCard(data3, new Vector2(350, 64));
         }
 
-        public void CreateCard(CardData cardData, Vector3 position) {
+        public void CreateCard(CardData cardData, Vector2 position) {
             GameObject newCard = Instantiate(cardPrefab, cardParent);
 
             RectTransform rectTransform = newCard.GetComponent<RectTransform>();
             if (rectTransform != null) {
                 rectTransform.SetParent(cardParent, false); // 設定為 UI 子物件，保持本地座標
-                rectTransform.localPosition = position;
+                rectTransform.anchoredPosition = position;
             }
 
             CardView cardView = newCard.GetComponent<CardView>();
+            CardBehaviour cb = newCard.GetComponent<CardBehaviour>();
             if (cardView != null) {
-                Card card = new Card(cardData);
-                switch (cardData.type) {
-                    case CardTypes.ATTACK:
-                        card = new AttackCard(cardData, 5);
-                        break;
-                    case CardTypes.MAGIC:
-                        card = new MagicCard(cardData, 5);
-                        break;
-                    case CardTypes.MOVE:
-                        card = new MoveCard(cardData, 5);
-                        break;    
-                }
-                cardView.SetCardView(card);
+                Card card = CardFactory.MakeCard(cardData);
+                cb.Init(card);
             }
         }
 

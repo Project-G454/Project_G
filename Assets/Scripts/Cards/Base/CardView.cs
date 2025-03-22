@@ -15,8 +15,10 @@ namespace Cards {
         public Image costBackground;
         public Image titleBackground;
         public Image typeBackground;
+        public Card card;
 
         public void SetCardView(Card card) {
+            this.card = card;
             title.text = card.cardName;
             cost.text = card.cost.ToString();
             
