@@ -14,7 +14,7 @@ namespace Cards.Categories {
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
-            Debug.Log("Player " + sourceId.ToString() + " moved " + this.step.ToString() + " steps.");
+            Debug.Log("Player_" + targetId.ToString() + " moved " + this.step.ToString() + " steps.");
             CardPlayerInteraction.ApplyMove(targetId, this.step);
         }
     }

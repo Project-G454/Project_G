@@ -28,7 +28,7 @@ namespace Cards {
 
         // Defines how the card is used.
         public virtual void Use(int sourceId, int targetId) {
-            Debug.Log($"Player ID-{sourceId} [Card ID-{this.id}] -> Player ID-{targetId}");
+            Debug.Log($"Player_{sourceId} [Card_{this.id}] -> Player_{targetId}");
         }
 
         // Defines how the card is drop

@@ -1,3 +1,4 @@
+using System.Collections;
 using Cards.Helpers;
 using TMPro;
 using UnityEngine;
@@ -29,17 +30,6 @@ namespace Cards {
             typeBackground.sprite = CardLayoutHelper.getTypeSprite(card.type.ToString());
         }
 
-        // // Start is called once before the first execution of Update after the MonoBehaviour is created
-        // public void Start() {
-        //     layoutRenderer = GetComponentInChildren<SpriteRenderer>();
-        // }
-
-        // public void Update() {
-        //     UpdateCardSprite();
-        // }
-
-        // private void UpdateCardSprite() {
-        //     layoutRenderer.sprite = CardLayoutHelper.getCardSprite(bgId, frameId);
-        // }
+        
     }
 }

@@ -9,8 +9,8 @@ using UnityEngine;
 namespace Core.Managers {
     class BattleManager: MonoBehaviour {
         public static BattleManager Instance { get; private set; }
-        public EntityManager entityManager;
-        public CardManager cardManager;
+        private EntityManager _entityManager;
+        private CardManager _cardManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -26,14 +26,20 @@ namespace Core.Managers {
         }
 
         private void Start() {
+            InitManagers();
             InitEntities();
             InitDecks();
 
             this._id = 1;
-            this._entityCount = entityManager.GetEntityList().Count;
-            currentEntity = entityManager.GetEntity(_id);
+            this._entityCount = _entityManager.GetEntityList().Count;
+            currentEntity = _entityManager.GetEntity(_id);
             
             StartTurn();
+        }
+
+        private void InitManagers() {
+            _entityManager = EntityManager.Instance;
+            _cardManager = CardManager.Instance;
         }
 
         private void InitEntities() {
@@ -58,9 +64,9 @@ namespace Core.Managers {
                 EntityClasses.WIZARD
             );
 
-            entityManager.CreateEntity(data1, new Vector3(-5, 0, 0));
-            entityManager.CreateEntity(data2, new Vector3(0, 0, 0));
-            entityManager.CreateEntity(data3, new Vector3(5, 0, 0));
+            _entityManager.CreateEntity(data1, new Vector3(-150, 0, 0));
+            _entityManager.CreateEntity(data2, new Vector3(0, 0, 0));
+            _entityManager.CreateEntity(data3, new Vector3(150, 0, 0));
         }
 
         private void InitDecks() {
@@ -70,7 +76,7 @@ namespace Core.Managers {
         }
 
         public void StartTurn() {
-            cardManager.StartTurn();
+            _cardManager.StartTurn();
         }
 
         public void OnCardPlayed() {
@@ -84,7 +90,7 @@ namespace Core.Managers {
 
         public void NextPlayer() {
             _id = (_id % _entityCount) + 1;
-            currentEntity = entityManager.GetEntity(_id);
+            currentEntity = _entityManager.GetEntity(_id);
             Debug.Log(currentEntity.entityId);
         }
     }
