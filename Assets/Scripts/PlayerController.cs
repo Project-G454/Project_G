@@ -44,9 +44,8 @@ public class PlayerController : MonoBehaviour {
         if (targetTile == null || !targetTile.Walkable)
             return;
             
-        // 獲取目標位置
-        Vector2 targetPosition = targetTile.transform.position;
-        Vector2 currentPosition = transform.position;
+        Vector2 targetPosition = targetTile.transform.position; //目標座標
+        Vector2 currentPosition = transform.position; //目前座標
         
         // 清空當前路徑
         pathQueue.Clear();
