@@ -1,7 +1,5 @@
-using Cards.Factories;
 using Core.Entities;
 using Core.Managers.Cards;
-using Core.Managers.Deck;
 using Entities;
 using Entities.Categories;
 using UnityEngine;
@@ -14,6 +12,7 @@ namespace Core.Managers {
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
+        private CardPositionManager _cardPositionManager;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -33,13 +32,15 @@ namespace Core.Managers {
             this._id = 1;
             this._entityCount = _entityManager.GetEntityList().Count;
             currentEntity = _entityManager.GetEntity(_id);
-            
+
             StartTurn();
         }
 
         private void InitManagers() {
             _entityManager = EntityManager.Instance;
             _cardManager = CardManager.Instance;
+            _cardPositionManager = CardPositionManager.Instance;
+            _cardPositionManager.Init();
         }
 
         private void InitEntities() {
@@ -64,9 +65,9 @@ namespace Core.Managers {
                 EntityClasses.WIZARD
             );
 
-            _entityManager.CreateEntity(data1, new Vector3(-150, 0, 0));
+            _entityManager.CreateEntity(data1, new Vector3(-100, 0, 0));
             _entityManager.CreateEntity(data2, new Vector3(0, 0, 0));
-            _entityManager.CreateEntity(data3, new Vector3(150, 0, 0));
+            _entityManager.CreateEntity(data3, new Vector3(100, 0, 0));
         }
 
         private void InitDecks() {

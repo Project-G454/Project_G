@@ -354,6 +354,7 @@ MonoBehaviour:
   bgId: 0
   title: {fileID: 2446545817981907695}
   cost: {fileID: 3045234349257965387}
+  description: {fileID: 7843736069809857514}
   background: {fileID: 8746387665275788298}
   frame: {fileID: 5786584279621540781}
   costBackground: {fileID: 3700724737626773196}

@@ -1,4 +1,3 @@
-using System.Collections;
 using Cards.Helpers;
 using TMPro;
 using UnityEngine;
@@ -11,6 +10,7 @@ namespace Cards {
         // public SpriteRenderer layoutRenderer;
         public TMP_Text title;
         public TMP_Text cost;
+        public TMP_Text description;
         public Image background;
         public Image frame;
         public Image costBackground;
@@ -22,14 +22,13 @@ namespace Cards {
             this.card = card;
             title.text = card.cardName;
             cost.text = card.cost.ToString();
-            
+            description.text = card.description;
+
             background.sprite = CardLayoutHelper.getBackgroundSprite(card.id);
             frame.sprite = CardLayoutHelper.getFrameSprite((int)card.rarity);
             costBackground.sprite = CardLayoutHelper.getCostSprite((int)card.rarity);
             titleBackground.sprite = CardLayoutHelper.getTitleSprite((int)card.rarity);
             typeBackground.sprite = CardLayoutHelper.getTypeSprite(card.type.ToString());
         }
-
-        
     }
 }
