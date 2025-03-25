@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000f13d5e79fb176690
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -769,6 +769,8 @@ GameObject:
   - component: {fileID: 1802369974}
   - component: {fileID: 1802369975}
   - component: {fileID: 1802369976}
+  - component: {fileID: 1802369977}
+  - component: {fileID: 1802369978}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -889,6 +891,30 @@ MonoBehaviour:
   _tilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
     type: 3}
   map: {fileID: 270207623}
+--- !u!114 &1802369977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802369968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad523bb684d3b2d42a308d18db393077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1802369978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802369968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75303b1d732c34238b4c98c9e0fabef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1967284128
 GameObject:
   m_ObjectHideFlags: 0
