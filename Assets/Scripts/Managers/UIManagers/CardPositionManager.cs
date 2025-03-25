@@ -7,7 +7,7 @@ class CardPositionManager: MonoBehaviour, IManager {
     public static CardPositionManager Instance { get; private set; }
     public Canvas hand;
     private const float HOVERED_GAP = 10f;
-    private const float DEFAULT_GAP = 120f;
+    private const float DEFAULT_GAP = 240f;
     private float _minX;
 
     void Awake() {
