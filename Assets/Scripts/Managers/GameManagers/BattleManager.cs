@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using Core.Entities;
+using Core.Helpers;
 using Core.Interfaces;
 using Core.Managers.Cards;
 using Entities;
@@ -45,23 +47,13 @@ namespace Core.Managers {
         }
 
         private void InitManagers() {
-            _cardManager = RequireManager(CardManager.Instance);
-            _entityManager = RequireManager(EntityManager.Instance);
-            _cardPositionManager = RequireManager(CardPositionManager.Instance);
-            _effectManager = RequireManager(EffectManager.Instance);
-            _gridManager = RequireManager(GridManager.Instance);
-            _mapManager = RequireManager(MapManager.Instance);
-            _cameraManager = RequireManager(CameraManager.Instance);
-        }
-
-        private T RequireManager<T>(T Instance) where T: class, IManager {
-            if (Instance == null) {
-                Debug.LogError(typeof(T).Name + " 載入失敗");
-            }
-            else {
-                Instance.Init();
-            }
-            return Instance;
+            _cardManager = ManagerHelper.RequireManager(CardManager.Instance);
+            _entityManager = ManagerHelper.RequireManager(EntityManager.Instance);
+            _cardPositionManager = ManagerHelper.RequireManager(CardPositionManager.Instance);
+            _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
+            _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
+            _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
+            _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
         }
 
         private void InitMap() {
