@@ -33,6 +33,7 @@ namespace Core.Managers {
             Entity entity = _entityManager.GetEntity(targetId);
             EffectData effectData = EffectFactory.GetFakeEffect();
             Effect effect = EffectFactory.MakeEffect(effectData);
+            Debug.Log($"Apply Effect_{effect.effectId} -> Entity_{entity.entityId}");
             // entity.AddEffect(effect);
         }
 
