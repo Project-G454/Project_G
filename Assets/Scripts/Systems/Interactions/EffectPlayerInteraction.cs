@@ -3,7 +3,7 @@ using Entities;
 
 namespace Systems.Interactions
 {
-    public class CardPlayerInteraction
+    public class EffectPlayerInteraction
     {
         public static void ApplyEffect(int targetId, int effectId) {}
 

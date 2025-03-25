@@ -1,4 +1,4 @@
-namespace Cards {
+namespace Cards.Data {
     public enum CardTypes {
         UNSET,
         ATTACK,

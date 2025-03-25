@@ -1,23 +1,22 @@
+using Cards.Data;
+using Entities;
 using UnityEngine;
 
 namespace Cards {
     /// <summary>
-    /// Base class for all cards.
+    /// 卡片基礎類別
     /// </summary>
     public class Card {
-        private readonly CardData _cardData;
-        public int id { get => _cardData.id; }                        // ID of the card.
-        public string cardName { get => _cardData.cardName; }         // The card's title or name.
-        public string description { get => _cardData.description; }   // A description of the card's effect or purpose.
-        public string[] classes { get => _cardData.classes; }         // The character classes that can use this card.
-        public CardRarity rarity { get => _cardData.rarity; }         // The Rarity of the card (e.g. COMMON, EPIC).
-        public int cost { get; set; }                                // The cost required to use the card.
-        public CardTypes type { get; set; }                          // The type of the card (e.g. ATTACK, MAGIC).
+        private readonly CardData _cardData;                          // 所有卡片類別的共同資料
+        public int id { get => _cardData.id; }                        // 卡片 ID
+        public string cardName { get => _cardData.cardName; }         // 卡片名稱 (標題)
+        public string description { get => _cardData.description; }   // 卡片敘述
+        public EntityClasses[] classes { get => _cardData.classes; }         // 可使用此卡片的職業
+        public CardRarity rarity { get => _cardData.rarity; }         // 卡片稀有度
+        public int cost { get; set; }                                 // 出牌時需要消耗的點數
+        public CardTypes type { get; set; }                           // 卡片類型 (攻擊牌、魔法牌 ... 等)
 
-        /// <summary>
-        /// Constructor for the base Card class.
-        /// </summary>
-        /// <param name="data"><see cref="CardData"/></param>
+        /// <param name="data">卡片資料 <see cref="CardData"/></param>
         public Card(
             CardData cardData
         ) {
@@ -26,12 +25,12 @@ namespace Cards {
             type = cardData.type;
         }
 
-        // Defines how the card is used.
+        // 出牌動作
         public virtual void Use(int sourceId, int targetId) {
             Debug.Log($"Player_{sourceId} [Card_{this.id}] -> Player_{targetId}");
         }
 
-        // Defines how the card is drop
+        // 棄牌動作
         public virtual void Drop() {
 
         }

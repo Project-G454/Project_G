@@ -57,5 +57,8 @@
         "Temp/": true
     },
     "dotnet.defaultSolution": "Project_G.sln",
-    "editor.formatOnType": false
+    "editor.formatOnType": false,
+    "workbench.colorCustomizations": {
+        "editor.foldBackground":"#0b0b0b40"
+    }
 }

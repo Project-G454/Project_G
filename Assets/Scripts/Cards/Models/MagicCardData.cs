@@ -1,4 +1,4 @@
-namespace Cards {
+namespace Cards.Data {
 
     /// <summary>
     /// Represents the data required to create a card.

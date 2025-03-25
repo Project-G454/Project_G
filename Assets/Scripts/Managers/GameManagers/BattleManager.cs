@@ -1,3 +1,4 @@
+using System.Collections;
 using Core.Entities;
 using Core.Managers.Cards;
 using Entities;
@@ -9,10 +10,11 @@ namespace Core.Managers {
         public static BattleManager Instance { get; private set; }
         private EntityManager _entityManager;
         private CardManager _cardManager;
+        private CardPositionManager _cardPositionManager;
+        private EffectManager _effectManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
-        private CardPositionManager _cardPositionManager;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -33,7 +35,7 @@ namespace Core.Managers {
             this._entityCount = _entityManager.GetEntityList().Count;
             currentEntity = _entityManager.GetEntity(_id);
 
-            StartTurn();
+            StartCoroutine(GameLoop());
         }
 
         private void InitManagers() {
@@ -41,6 +43,7 @@ namespace Core.Managers {
             _cardManager = CardManager.Instance;
             _cardPositionManager = CardPositionManager.Instance;
             _cardPositionManager.Init();
+            _effectManager = EffectManager.Instance;
         }
 
         private void InitEntities() {
@@ -76,17 +79,18 @@ namespace Core.Managers {
             }
         }
 
-        public void StartTurn() {
-            _cardManager.StartTurn();
-        }
+        public IEnumerator GameLoop() {
+            while (true) {
+                Debug.Log("Effect Phase");
+                _effectManager.StartTurn(_id);
+                yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
-        public void OnCardPlayed() {
-            EndTurn();
-        }
+                Debug.Log("Card Phase");
+                _cardManager.StartTurn();
+                yield return new WaitUntil(() => _cardManager.isTurnFinished);
 
-        public void EndTurn() {
-            NextPlayer();
-            StartTurn();
+                NextPlayer();
+            }
         }
 
         public void NextPlayer() {

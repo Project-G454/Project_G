@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using Cards.Data;
 using Cards.Factories;
 using Core.Managers.Deck;
 using Entities;
@@ -14,8 +15,8 @@ namespace Core.Managers.Cards {
         private BattleManager _battleManager;
         private DeckManager _deckManager;
         private CardPositionManager _cardPositionManager;
-        private bool _isCardState = false;
         public static readonly List<GameObject> cardList = new();
+        public bool isTurnFinished = true;
 
         private void Init() {
             _battleManager = BattleManager.Instance;
@@ -55,7 +56,7 @@ namespace Core.Managers.Cards {
         }
 
         public void StartTurn() {
-            this._isCardState = true;
+            this.isTurnFinished = false;
 
             if (_battleManager.currentEntity is Player player) {
                 _deckManager = player.deckManager;
@@ -71,16 +72,14 @@ namespace Core.Managers.Cards {
         }
 
         public void EndTurn() {
-            this._isCardState = false;
+            this.isTurnFinished = true;
 
             _deckManager.DiscardHand();
             ResetCardObjects();
-
-            _battleManager.OnCardPlayed();
         }
 
         public void UseCard(CardBehaviour cb, int targetId) {
-            if (!this._isCardState) return;
+            if (isTurnFinished) return;
 
             Entity currentEntity = _battleManager.currentEntity;
             if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) return;

@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 namespace Cards {
     public class CardView: MonoBehaviour {
-        public int bgId = 0;
-        // public int frameId;
-        // public SpriteRenderer layoutRenderer;
         public TMP_Text title;
         public TMP_Text cost;
         public TMP_Text description;

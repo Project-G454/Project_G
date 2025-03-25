@@ -1,4 +1,5 @@
-using Cards.Interactions;
+using Cards.Data;
+using Systems.Interactions;
 using UnityEngine;
 
 namespace Cards.Categories {

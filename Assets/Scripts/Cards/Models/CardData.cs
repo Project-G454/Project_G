@@ -1,15 +1,19 @@
-namespace Cards {
+using Entities;
+
+namespace Cards.Data {
 
     /// <summary>
-    /// Represents the data required to create a card.
+    /// 所有卡片需要的基本資料
     /// </summary>
     public class CardData {
-        public int id = 0;                                  // ID of the card.
-        public int cost = 0;                                // The cost required to use the card.
-        public string cardName = "Unknown";                // The card's title or name.
-        public string description = "";                     // A description of the card's effect or purpose.
-        public CardTypes type = CardTypes.UNSET;            // The type of the card (e.g. ATTACK, MAGIC).
-        public string[] classes = new string[] { "All" };   // The character classes that can use this card.
-        public CardRarity rarity = CardRarity.UNSET;        // The Rarity of the card (e.g. COMMON, EPIC).
+        public int id = 0;                                      // 卡片 ID
+        public string cardName = "Unknown";                     // 卡片名稱 (標題)
+        public string description = "";                         // 卡片敘述
+        public EntityClasses[] classes = new EntityClasses[] {  // 可使用此卡片的職業
+            EntityClasses.UNSET 
+        };   
+        public CardRarity rarity = CardRarity.UNSET;            // 卡片稀有度
+        public int cost = 0;                                    // 出牌時需要消耗的點數
+        public CardTypes type = CardTypes.UNSET;                // 卡片類型 (攻擊牌、魔法牌 ... 等)
     }
 }

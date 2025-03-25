@@ -1,4 +1,6 @@
-using Cards.Interactions;
+using Cards.Data;
+using Core.Managers;
+using Systems.Interactions;
 using UnityEngine;
 
 namespace Cards.Categories {
@@ -14,6 +16,9 @@ namespace Cards.Categories {
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
+            EffectManager effectManager = EffectManager.Instance;
+            effectManager.Apply(targetId, effectId);
+            
             Debug.Log("Player_" + sourceId.ToString() + " used Magic_" + this.effectId.ToString() + ".");
             CardPlayerInteraction.ApplyEffect(targetId, this.effectId);
         }
