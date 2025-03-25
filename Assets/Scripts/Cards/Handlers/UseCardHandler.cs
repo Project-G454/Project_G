@@ -28,6 +28,7 @@ namespace Cards.Handlers {
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
             _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.alpha = 0.5f;
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData) {
@@ -36,6 +37,7 @@ namespace Cards.Handlers {
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData) {
             _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.alpha = 1f;
 
             // UI to World Raytrace
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

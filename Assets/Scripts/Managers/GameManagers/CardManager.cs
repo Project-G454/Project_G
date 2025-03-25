@@ -18,12 +18,6 @@ namespace Core.Managers.Cards {
         public static readonly List<GameObject> cardList = new();
         public bool isTurnFinished = true;
 
-        private void Init() {
-            _battleManager = BattleManager.Instance;
-            _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
-            _cardPositionManager = CardPositionManager.Instance;
-        }
-
         private void Awake() {
             if (Instance != null && Instance != this) {
                 Destroy(gameObject);
@@ -33,6 +27,13 @@ namespace Core.Managers.Cards {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        
+        private void Init() {
+            _battleManager = BattleManager.Instance;
+            _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
+            _cardPositionManager = CardPositionManager.Instance;
+        }
+
 
         void Start() {
             Init();
@@ -79,6 +80,7 @@ namespace Core.Managers.Cards {
         }
 
         public void UseCard(CardBehaviour cb, int targetId) {
+            Debug.Log(isTurnFinished);
             if (isTurnFinished) return;
 
             Entity currentEntity = _battleManager.currentEntity;

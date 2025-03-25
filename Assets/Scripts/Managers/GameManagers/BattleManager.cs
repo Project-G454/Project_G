@@ -12,6 +12,9 @@ namespace Core.Managers {
         private CardManager _cardManager;
         private CardPositionManager _cardPositionManager;
         private EffectManager _effectManager;
+        private GridManager _gridManager;
+        private MapManager _mapManager;
+        private CameraManager _cameraManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -28,13 +31,15 @@ namespace Core.Managers {
 
         private void Start() {
             InitManagers();
+            InitMap();
             InitEntities();
             InitDecks();
+            
 
-            this._id = 1;
+            this._id = 0;
             this._entityCount = _entityManager.GetEntityList().Count;
-            currentEntity = _entityManager.GetEntity(_id);
 
+            NextPlayer();
             StartCoroutine(GameLoop());
         }
 
@@ -44,7 +49,15 @@ namespace Core.Managers {
             _cardPositionManager = CardPositionManager.Instance;
             _cardPositionManager.Init();
             _effectManager = EffectManager.Instance;
+            _gridManager = GridManager.Instance;
+            _mapManager = MapManager.Instance;
+            _cameraManager = CameraManager.Instance;
         }
+
+        private void InitMap() {
+            _gridManager.GenerateGrid();
+        }
+
 
         private void InitEntities() {
             EntityData data1 = new EntityData(
@@ -68,9 +81,9 @@ namespace Core.Managers {
                 EntityClasses.WIZARD
             );
 
-            _entityManager.CreateEntity(data1, new Vector3(-100, 0, 0));
+            _entityManager.CreateEntity(data1, new Vector3(0, 0, 0));
             _entityManager.CreateEntity(data2, new Vector3(0, 0, 0));
-            _entityManager.CreateEntity(data3, new Vector3(100, 0, 0));
+            _entityManager.CreateEntity(data3, new Vector3(0, 0, 0));
         }
 
         private void InitDecks() {
@@ -96,6 +109,8 @@ namespace Core.Managers {
         public void NextPlayer() {
             _id = (_id % _entityCount) + 1;
             currentEntity = _entityManager.GetEntity(_id);
+            GameObject entityObject = _entityManager.GetEntityObject(_id);
+            _cameraManager.SnapCameraTo(entityObject);
             Debug.Log(currentEntity.entityId);
         }
     }

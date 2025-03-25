@@ -69,6 +69,11 @@ namespace Core.Entities {
             return entity;
         }
 
+        public GameObject GetEntityObject(int entityId) {
+            entityObjectDict.TryGetValue(entityId, out var entity);
+            return entity;
+        }
+
         public List<Entity> GetEntityList() {
             return new List<Entity>(entityDict.Values);
         }

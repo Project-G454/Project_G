@@ -321,7 +321,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5100642895650387270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c749be91341144dbd611f4ea7b3aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgId: 0
   title: {fileID: 2446545817981907695}
   cost: {fileID: 3045234349257965387}
   description: {fileID: 7843736069809857514}
@@ -572,7 +571,8 @@ MonoBehaviour:
   m_text: Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
-  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
+  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -784,7 +784,8 @@ MonoBehaviour:
   m_text: Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
-  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
+  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -917,7 +918,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3366234422677917369, guid: d42c2970954929344bc663e7d1975c5a, type: 3}
+  m_Sprite: {fileID: 3366234422677917369, guid: d42c2970954929344bc663e7d1975c5a,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -995,7 +997,8 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
-  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f, type: 2}
+  m_sharedMaterial: {fileID: -7266346864953302155, guid: 4badac716adf9ca46b88c781e32de65f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
