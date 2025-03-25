@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Cards.Animations;
+using Core.Interfaces;
 using UnityEngine;
 
-class CardPositionManager: MonoBehaviour {
+class CardPositionManager: MonoBehaviour, IManager {
     public static CardPositionManager Instance { get; private set; }
     public Canvas hand;
     private const float HOVERED_GAP = 10f;

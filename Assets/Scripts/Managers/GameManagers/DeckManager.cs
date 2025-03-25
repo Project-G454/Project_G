@@ -1,17 +1,19 @@
 using UnityEngine;
 using Piles;
+using Core.Interfaces;
 
 namespace Core.Managers.Deck {
     /// <summary>
     /// 管理玩家卡組邏輯：抽牌堆、手牌、棄牌堆皆為 Pile 類別。
     /// </summary>
-    public class DeckManager: MonoBehaviour {
+    public class DeckManager: MonoBehaviour, IManager {
         public Pile playerDeck = new();
         public Pile draw = new();
         public Pile hand = new();
         public Pile discard = new();
-
         public int handSize = 5;
+
+        public void Init() {}
         
         public void InitializeDeck() {
             draw.Clear();

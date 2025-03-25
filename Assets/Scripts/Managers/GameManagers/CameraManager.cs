@@ -1,7 +1,8 @@
+using Core.Interfaces;
 using UnityEngine;
 
 namespace Core.Managers {
-    class CameraManager: MonoBehaviour {
+    public class CameraManager: MonoBehaviour, IManager {
         public static CameraManager Instance;
         private Camera _camera;
 
@@ -15,12 +16,8 @@ namespace Core.Managers {
             DontDestroyOnLoad(gameObject);
         }
 
-        void Init() {
+        public void Init() {
             _camera = Camera.main;
-        }
-
-        void Start() {
-            Init();
         }
 
         public void SnapCameraTo(GameObject target) {

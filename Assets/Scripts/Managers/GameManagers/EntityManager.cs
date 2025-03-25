@@ -3,18 +3,21 @@ using System.Linq;
 using UnityEngine;
 using Entities;
 using Entities.Factories;
+using Core.Interfaces;
 
 namespace Core.Entities {
     /// <summary>
     /// 管理所有場上的 Entity（玩家與敵人）。
     /// </summary>
-    public class EntityManager: MonoBehaviour {
+    public class EntityManager: MonoBehaviour, IManager {
         public GameObject dummy;
         public Transform entities;
         public static EntityManager Instance { get; private set; }
         private readonly Dictionary<int, Entity> entityDict = new();
         private readonly Dictionary<int, GameObject> entityObjectDict = new();
         private int nextEntityId = 1;
+
+        public void Init() {}
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -24,10 +27,6 @@ namespace Core.Entities {
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-
-        void Start() {
-            
         }
 
         public Entity CreateEntity(EntityData entityData, Vector3 position) {

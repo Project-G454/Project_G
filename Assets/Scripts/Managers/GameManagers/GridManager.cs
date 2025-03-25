@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Core.Interfaces;
 using UnityEngine;
 
 namespace Core.Managers {
-    public class GridManager : MonoBehaviour {
+    public class GridManager : MonoBehaviour, IManager {
         public static GridManager Instance;
         [SerializeField] private int _width, _height;
         [SerializeField] private Tile _tilePrefab;
@@ -25,12 +26,11 @@ namespace Core.Managers {
             DontDestroyOnLoad(gameObject);
         }
 
-        void Init() {
+        public void Init() {
             this._cam = Camera.main.transform;
         }
 
         void Start() {
-            Init();
             // GenerateGrid();
 
             // SetTileWalkable(new Vector2(1, 1), false); //障礙test
@@ -41,7 +41,6 @@ namespace Core.Managers {
         }
 
         public void GenerateGrid() {
-            Init();
             tiles = new Dictionary<Vector2, Tile>();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {

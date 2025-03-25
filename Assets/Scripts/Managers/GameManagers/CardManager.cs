@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using Cards;
 using Cards.Data;
 using Cards.Factories;
+using Core.Interfaces;
 using Core.Managers.Deck;
 using Entities;
 using Entities.Categories;
 using UnityEngine;
 
 namespace Core.Managers.Cards {
-    public class CardManager: MonoBehaviour {
+    public class CardManager: MonoBehaviour, IManager {
         public static CardManager Instance { get; private set; }
         public GameObject cardPrefab;
         public Transform cardParent;
@@ -28,15 +29,10 @@ namespace Core.Managers.Cards {
             DontDestroyOnLoad(gameObject);
         }
         
-        private void Init() {
+        public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
             _cardPositionManager = CardPositionManager.Instance;
-        }
-
-
-        void Start() {
-            Init();
         }
 
         public void CreateCard(CardData cardData) {

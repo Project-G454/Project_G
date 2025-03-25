@@ -1,12 +1,13 @@
 using System.Collections;
 using Core.Entities;
+using Core.Interfaces;
 using Core.Managers.Cards;
 using Entities;
 using Entities.Categories;
 using UnityEngine;
 
 namespace Core.Managers {
-    class BattleManager: MonoBehaviour {
+    public class BattleManager: MonoBehaviour, IManager {
         public static BattleManager Instance { get; private set; }
         private EntityManager _entityManager;
         private CardManager _cardManager;
@@ -29,35 +30,43 @@ namespace Core.Managers {
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Start() {
+        public void Init() {
             InitManagers();
             InitMap();
             InitEntities();
             InitDecks();
-            
-
             this._id = 0;
             this._entityCount = _entityManager.GetEntityList().Count;
+        }
 
-            NextPlayer();
+        private void Start() {
+            Init();
             StartCoroutine(GameLoop());
         }
 
         private void InitManagers() {
-            _entityManager = EntityManager.Instance;
-            _cardManager = CardManager.Instance;
-            _cardPositionManager = CardPositionManager.Instance;
-            _cardPositionManager.Init();
-            _effectManager = EffectManager.Instance;
-            _gridManager = GridManager.Instance;
-            _mapManager = MapManager.Instance;
-            _cameraManager = CameraManager.Instance;
+            _cardManager = RequireManager(CardManager.Instance);
+            _entityManager = RequireManager(EntityManager.Instance);
+            _cardPositionManager = RequireManager(CardPositionManager.Instance);
+            _effectManager = RequireManager(EffectManager.Instance);
+            _gridManager = RequireManager(GridManager.Instance);
+            _mapManager = RequireManager(MapManager.Instance);
+            _cameraManager = RequireManager(CameraManager.Instance);
+        }
+
+        private T RequireManager<T>(T Instance) where T: class, IManager {
+            if (Instance == null) {
+                Debug.LogError(typeof(T).Name + " 載入失敗");
+            }
+            else {
+                Instance.Init();
+            }
+            return Instance;
         }
 
         private void InitMap() {
             _gridManager.GenerateGrid();
         }
-
 
         private void InitEntities() {
             EntityData data1 = new EntityData(
@@ -94,6 +103,8 @@ namespace Core.Managers {
 
         public IEnumerator GameLoop() {
             while (true) {
+                NextPlayer();
+
                 Debug.Log("Effect Phase");
                 _effectManager.StartTurn(_id);
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
@@ -101,8 +112,6 @@ namespace Core.Managers {
                 Debug.Log("Card Phase");
                 _cardManager.StartTurn();
                 yield return new WaitUntil(() => _cardManager.isTurnFinished);
-
-                NextPlayer();
             }
         }
 

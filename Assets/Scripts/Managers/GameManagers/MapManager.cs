@@ -1,17 +1,18 @@
 using Core.Entities;
+using Core.Interfaces;
 using Entities;
 using Entities.Handlers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Core.Managers {
-    public class MapManager : MonoBehaviour {
+    public class MapManager : MonoBehaviour, IManager {
         public static MapManager Instance;
         private GridManager _gridManager;
         private BattleManager _battleManager;
         private EntityManager _entityManager;
         
-        private Camera mainCamera;
+        private Camera _mainCamera;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -27,17 +28,13 @@ namespace Core.Managers {
             _gridManager = GridManager.Instance;
             _battleManager = BattleManager.Instance;
             _entityManager = EntityManager.Instance;
-        }
-
-        void Start() {
-            Init();
-            mainCamera = Camera.main;
+            _mainCamera = Camera.main;
         }
         
         void Update() {
             if (Input.GetMouseButtonDown(0)) {
                 if (EventSystem.current.IsPointerOverGameObject()) return;
-                Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 clickPosition = new Vector2(Mathf.RoundToInt(mouseWorldPos.x), Mathf.RoundToInt(mouseWorldPos.y));
                 
                 Tile selectedTile = _gridManager.GetTileAtPosition(clickPosition);

@@ -1,4 +1,5 @@
 using Core.Entities;
+using Core.Interfaces;
 using Effects;
 using Effects.Data;
 using Effects.Factories;
@@ -6,7 +7,7 @@ using Entities;
 using UnityEngine;
 
 namespace Core.Managers {
-    class EffectManager: MonoBehaviour {
+    public class EffectManager: MonoBehaviour, IManager {
         public static EffectManager Instance;
         public bool isTurnFinished = true;
         private EntityManager _entityManager;
@@ -23,10 +24,6 @@ namespace Core.Managers {
 
         public void Init() {
             _entityManager = EntityManager.Instance;
-        }
-
-        public void Start() {
-            Init();
         }
 
         public void Apply(int targetId, int effectId) {
