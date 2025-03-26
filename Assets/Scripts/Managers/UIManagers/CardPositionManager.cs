@@ -27,7 +27,7 @@ class CardPositionManager: MonoBehaviour, IManager {
     public void ResetCardPos(List<GameObject> cards) {
         for (int i = 0; i < cards.Count; i++) {
             GameObject card = cards[i];
-            Vector2 position = new Vector2(_minX + DEFAULT_GAP * i, 64f);
+            Vector2 position = new Vector2(_minX + DEFAULT_GAP * i, 128f);
             CardHoverEffect hoverEffect = cards[i].GetComponent<CardHoverEffect>();
             cards[i].GetComponent<CardAnimator>()?.MoveTo(position, () => hoverEffect.Init());
         }

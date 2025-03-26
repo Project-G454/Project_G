@@ -410,7 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleUp: 1.2
-  offset: {x: 0, y: 50, z: 0}
+  offset: {x: 0, y: 150, z: 0}
   duration: 0.1
   originalScale: {x: 0, y: 0, z: 0}
   originalPosition: {x: 0, y: 0, z: 0}

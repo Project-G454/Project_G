@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 namespace Cards.Animations {
     public class CardHoverEffect: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler {
-        public float scaleUp = 1.2f;
-        public Vector3 offset = new Vector3(0f, 50f, 0f);
-        public float duration = 0.1f;
+        public float scaleUp;
+        public Vector3 offset;
+        public float duration;
         public Vector3 originalScale;
         public Vector3 originalPosition;
         private bool _isHovered = false;
