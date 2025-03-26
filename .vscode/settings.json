@@ -60,5 +60,6 @@
     "editor.formatOnType": false,
     "workbench.colorCustomizations": {
         "editor.foldBackground":"#0b0b0b40"
-    }
+    },
+    "editor.detectIndentation": false
 }
