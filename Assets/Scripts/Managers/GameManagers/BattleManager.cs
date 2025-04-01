@@ -36,7 +36,7 @@ namespace Core.Managers {
             InitManagers();
             InitMap();
             InitEntities();
-            InitDecks();
+            InitDeckAndEnergy();
             this._id = 0;
             this._entityCount = _entityManager.GetEntityList().Count;
         }
@@ -87,9 +87,10 @@ namespace Core.Managers {
             _entityManager.CreateEntity(data3, new Vector3(0, 0, 0));
         }
 
-        private void InitDecks() {
+        private void InitDeckAndEnergy() {
             foreach (Player player in EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER)) {
                 player.deckManager.InitializeDeck();
+                player.energyManager.InitializeEnergy();
             }
         }
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Effects;
 using UnityEngine;
 
 namespace Entities
@@ -15,6 +17,7 @@ namespace Entities
         public EntityTypes type;
         public EntityClasses entityClass;
         public EntityData entityData;
+        public List<Effect> effects = new();
 
         public Entity(
             int id,
@@ -41,5 +44,13 @@ namespace Entities
         }
 
         public bool IsDead() => health <= 0;
+
+        public void AddEffect(Effect effect) {
+            effects.Add(effect);
+        }
+
+        public List<Effect> GetEffectList() {
+            return effects;
+        }
     }
 }

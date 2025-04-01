@@ -1,4 +1,5 @@
 using Core.Managers.Deck;
+using Core.Managers.Energy;
 using Entities.Categories;
 using Entities.Factories;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Entities {
             if (this.entity is Player player)
             {
                 InitializePlayerDeck(player);
+                player.energyManager = gameObject.AddComponent<EnergyManager>();
             }
         }
 
