@@ -3,6 +3,7 @@ using System.Collections;
 using Core.Entities;
 using Core.Helpers;
 using Core.Interfaces;
+using Core.Loaders.Cards;
 using Core.Managers.Cards;
 using Entities;
 using Entities.Categories;
@@ -18,6 +19,7 @@ namespace Core.Managers {
         private GridManager _gridManager;
         private MapManager _mapManager;
         private CameraManager _cameraManager;
+        private CardDataLoader _cardDataLoader;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -34,6 +36,7 @@ namespace Core.Managers {
 
         public void Init() {
             InitManagers();
+            InitLoaders();
             InitMap();
             InitEntities();
             InitDecks();
@@ -54,6 +57,10 @@ namespace Core.Managers {
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
+        }
+
+        private void InitLoaders() {
+            _cardDataLoader = ManagerHelper.RequireManager(CardDataLoader.Instance);
         }
 
         private void InitMap() {

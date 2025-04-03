@@ -1,9 +1,12 @@
-namespace Cards.Data {
+using UnityEngine;
 
+namespace Cards.Data {
+    [CreateAssetMenu(fileName = "New Magic Card", menuName = "Cards/Magic")]
     /// <summary>
     /// Represents the data required to create a card.
     /// </summary>
     public class MagicCardData: CardData {
         public int effectId;
+        public override CardTypes type => CardTypes.MAGIC;
     }
 }

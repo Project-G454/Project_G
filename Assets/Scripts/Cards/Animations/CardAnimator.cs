@@ -8,18 +8,20 @@ namespace Cards.Animations {
         private RectTransform _rectTransform;
         private Coroutine _moveCoroutine;
         private Coroutine _scaleCoroutine;
-
-        void Awake() {
+        
+        void Init() {
             _rectTransform = GetComponent<RectTransform>();
         }
 
         public void MoveTo(Vector2 targetPosition, System.Action onComplete = null) {
             if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+            Init();
             _moveCoroutine = StartCoroutine(MoveAnimation(targetPosition, onComplete));
         }
 
         public void ScaleTo(Vector3 targetScale, System.Action onComplete = null) {
             if (_scaleCoroutine != null) StopCoroutine(_scaleCoroutine);
+            Init();
             _scaleCoroutine = StartCoroutine(ScaleAnimation(targetScale, onComplete));
         }
 
@@ -51,7 +53,7 @@ namespace Cards.Animations {
 
         public void StopAllAnimations() {
             StopCoroutine(_moveCoroutine);
-            StopCoroutine(_moveCoroutine);
+            StopCoroutine(_scaleCoroutine);
         }
     }
 }
