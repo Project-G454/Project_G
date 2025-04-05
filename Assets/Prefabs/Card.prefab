@@ -414,6 +414,8 @@ MonoBehaviour:
   duration: 0.1
   originalScale: {x: 0, y: 0, z: 0}
   originalPosition: {x: 0, y: 0, z: 0}
+  originalSize: {x: 0, y: 0}
+  originalWorldPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2340107889669804727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,8 +598,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

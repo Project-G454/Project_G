@@ -15,7 +15,8 @@ MonoBehaviour:
   id: 3
   cardName: Test Move Card
   description: Move Card Test
+  desctiptionIds: 010000000200000003000000
   classes: 00000000
-  rarity: 0
+  rarity: 3
   cost: 0
   step: 0

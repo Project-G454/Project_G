@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5263d460e706a93429666de5e212e959, type: 3}
-  m_Name: Test Describe
+  m_Name: Test Description 1
   m_EditorClassIdentifier: 
+  id: 1
   title: Effect 1
   description: Expelliarmus Lumos Nox Wingardium Leviosa Avada Kedavra Accio Alohomora
     Stupefy Protego Petrificus Totalus

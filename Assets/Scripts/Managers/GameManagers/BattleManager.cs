@@ -20,6 +20,7 @@ namespace Core.Managers {
         private MapManager _mapManager;
         private CameraManager _cameraManager;
         private CardDataLoader _cardDataLoader;
+        private DescriptionManager _descriptionManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -57,6 +58,7 @@ namespace Core.Managers {
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
+            _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
         }
 
         private void InitLoaders() {

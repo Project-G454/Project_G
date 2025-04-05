@@ -15,7 +15,8 @@ MonoBehaviour:
   id: 2
   cardName: Test Magic Card
   description: Magic Card Test
+  desctiptionIds: 0100000003000000
   classes: 00000000
-  rarity: 0
+  rarity: 2
   cost: 0
   effectId: 0
