@@ -2,9 +2,9 @@ using Cards;
 using Entities;
 
 namespace Events {
-    public class BattleStartEvent {}
+    public class BattleStartEvent { }
 
-    public class BattleEndEvent {}
+    public class BattleEndEvent { }
 
     public class RoundStartEvent { public int RoundNumber; }
 

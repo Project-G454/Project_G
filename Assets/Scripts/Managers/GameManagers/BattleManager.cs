@@ -88,9 +88,9 @@ namespace Core.Managers {
         }
 
         private void InitDeckAndEnergy() {
-            foreach (Player player in EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER)) {
-                player.deckManager.InitializeDeck();
-                player.energyManager.InitializeEnergy();
+            foreach (Entity entity in EntityManager.Instance.GetEntityList()) {
+                entity.deckManager.InitializeDeck();
+                entity.energyManager.InitializeEnergy();
             }
         }
 
