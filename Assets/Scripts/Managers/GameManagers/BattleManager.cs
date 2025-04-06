@@ -6,6 +6,7 @@ using Core.Interfaces;
 using Core.Managers.Cards;
 using Entities;
 using Entities.Categories;
+using Entities.Handlers;
 using UnityEngine;
 
 namespace Core.Managers {
@@ -113,6 +114,8 @@ namespace Core.Managers {
             currentEntity = _entityManager.GetEntity(_id);
             GameObject entityObject = _entityManager.GetEntityObject(_id);
             _cameraManager.SnapCameraTo(entityObject);
+            MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
+            moveHandler.step = 1;
             Debug.Log(currentEntity.entityId);
         }
     }

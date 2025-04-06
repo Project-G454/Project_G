@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using Core.Managers;
+using Core.Managers.Energy;
 using UnityEngine;
 
 namespace Entities.Handlers {
     public class MoveHandler : MonoBehaviour {
         public float moveSpeed = 5f;
+        public int step = 1;
         public Transform movePoint;
         private GridManager _gridManager;
         private MapManager _mapManager;
+        private EnergyManager _energyManager;
         
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
         private bool isMoving = false;
@@ -17,6 +21,7 @@ namespace Entities.Handlers {
         void Init(){
             _gridManager = GridManager.Instance;
             _mapManager = MapManager.Instance;
+            _energyManager = gameObject.GetComponent<EnergyManager>();
         }
 
         void Start() {
@@ -81,6 +86,18 @@ namespace Entities.Handlers {
                 pathQueue.Enqueue(path[i]);
             }
             
+            if (step == 0) {
+                if (_energyManager.energy > 0) {
+                    step += 1;
+                    _energyManager.Remove(1);
+                } else {
+                    return;
+                }
+            }
+
+            step -= 1;
+            Debug.Log(string.Format("step: {0}, energy: {1}", step, _energyManager.energy));
+
             // 開始移動到第一個點
             if (pathQueue.Count > 0) {
                 Vector2 nextCell = pathQueue.Dequeue();

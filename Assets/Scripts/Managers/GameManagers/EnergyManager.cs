@@ -25,7 +25,7 @@ namespace Core.Managers.Energy {
         public int maxEnergy = 10;
         public int defaultRecover = 3;
         public int recover = 3;
-        public int firstRoundExtra = 0;
+        public int firstRoundExtra = 5;
         public List<IEnergySource> energySources = new();
 
         public void Init() { }
@@ -59,6 +59,14 @@ namespace Core.Managers.Energy {
 
         public void UnregisterSource(IEnergySource source) {
             energySources.Remove(source);
+        }
+
+        public void Add(int amount) {
+            energy += amount;
+        }
+
+        public void Remove(int amount) {
+            energy -= amount;
         }
     }
 }
