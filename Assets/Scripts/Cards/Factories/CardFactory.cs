@@ -40,14 +40,12 @@ namespace Cards.Factories {
                 CardTypes.ATTACK => new AttackCardData(),
                 CardTypes.MAGIC => new MagicCardData(),
                 CardTypes.MOVE => new MoveCardData(),
-                _ => new CardData()
             };
 
             cardData.id = id;
             cardData.cost = id % 9 + 1;
             cardData.cardName = "Card " + id.ToString();
             cardData.description = "Description " + id.ToString();
-            cardData.type = (CardTypes)(id % 3 + 1);
             cardData.classes = new EntityClasses[] { EntityClasses.UNSET };
             cardData.rarity = (CardRarity)(id % 5 + 1);
 

@@ -8,6 +8,7 @@ class CardPositionManager: MonoBehaviour, IManager {
     public Canvas hand;
     private const float HOVERED_GAP = 10f;
     private const float DEFAULT_GAP = 240f;
+    private const float AXIS_Y = 128f;
     private float _minX;
 
     void Awake() {
@@ -27,7 +28,7 @@ class CardPositionManager: MonoBehaviour, IManager {
     public void ResetCardPos(List<GameObject> cards) {
         for (int i = 0; i < cards.Count; i++) {
             GameObject card = cards[i];
-            Vector2 position = new Vector2(_minX + DEFAULT_GAP * i, 128f);
+            Vector2 position = new Vector2(_minX + DEFAULT_GAP * i, AXIS_Y);
             CardHoverEffect hoverEffect = cards[i].GetComponent<CardHoverEffect>();
             cards[i].GetComponent<CardAnimator>()?.MoveTo(position, () => hoverEffect.Init());
         }

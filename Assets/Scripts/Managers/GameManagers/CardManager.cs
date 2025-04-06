@@ -3,6 +3,7 @@ using Cards;
 using Cards.Data;
 using Cards.Factories;
 using Core.Interfaces;
+using Core.Loaders.Cards;
 using Core.Managers.Deck;
 using Entities;
 using Entities.Categories;
@@ -16,6 +17,7 @@ namespace Core.Managers.Cards {
         private BattleManager _battleManager;
         private DeckManager _deckManager;
         private CardPositionManager _cardPositionManager;
+        private CardDataLoader _cardDataLoader;
         public static readonly List<GameObject> cardList = new();
         public bool isTurnFinished = true;
 
@@ -33,6 +35,7 @@ namespace Core.Managers.Cards {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
             _cardPositionManager = CardPositionManager.Instance;
+            _cardDataLoader = CardDataLoader.Instance;
         }
 
         public void CreateCard(CardData cardData) {
@@ -60,8 +63,9 @@ namespace Core.Managers.Cards {
                 _deckManager.DrawCards(5);
 
                 foreach (int id in _deckManager.hand.GetAllCards()) {
-                    CardData fakeData = CardFactory.GetFakeCardData(id);
-                    CreateCard(fakeData);
+                    // CardData cardData = CardFactory.GetFakeCardData(id);
+                    CardData cardData = _cardDataLoader.GetCardById(id % 3 + 1);
+                    CreateCard(cardData);
                 }
 
                 _cardPositionManager.ResetCardPos(cardList);
