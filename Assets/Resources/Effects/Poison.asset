@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9aede4066be9947870671793739ea2, type: 3}
   m_Name: Poison
   m_EditorClassIdentifier: 
-  effectId: 0
-  effectName: 
-  effectDesc: 
-  rounds: 0
-  effectType: 0
-  damage: 0
+  id: 1
+  effectName: Poison
+  effectDesc: test
+  rounds: 3
+  damage: 10
