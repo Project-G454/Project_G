@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
+using Cards.Helpers;
 
 namespace Cards.Animations {
     public class CardHoverEffect: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler {
@@ -20,7 +22,6 @@ namespace Cards.Animations {
         private bool _isDragging = false;
         private RectTransform _rectTransform;
         private CardBehaviour _cardBehaviour;
-        private CardPositionManager _cardPositionManager;
         private CardAnimator _animator;
         private Transform _parent;
         private List<CanvasGroup> _otherCards;
@@ -37,7 +38,6 @@ namespace Cards.Animations {
             originalScale = transform.localScale;
             _rectTransform = GetComponent<RectTransform>();
             _cardBehaviour = GetComponent<CardBehaviour>();
-            _cardPositionManager = CardPositionManager.Instance;
             _animator = GetComponent<CardAnimator>();
             _descriptionManager = DescriptionManager.Instance;
 
@@ -53,20 +53,28 @@ namespace Cards.Animations {
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
             if (_isHovered) return;
             _isHovered = true;
+            
+            // Move layer to top
             _originalSiblingIdx = transform.GetSiblingIndex();
             transform.SetAsLastSibling();
-            StartAnimation();
 
+            // zoom in
+            transform.DOScale(originalScale * scaleUp, duration);
+            
+            // other card dodge
+            int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
+            CardAnimation.Dodge(transform.parent, cardIdx, CardManager.cardList);
+
+            // show tooltips
             if (_descriptionManager == null || _cardBehaviour == null) return;
-
             Vector3 worldPos = originalWorldPosition + new Vector3(0, 0, 0);
-
             _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds, _rectTransform);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
             if (!_isHovered) return;
             _isHovered = false;
+
             if (_isDragging) return;
             transform.SetSiblingIndex(_originalSiblingIdx);
             EndAnimation();
@@ -74,23 +82,10 @@ namespace Cards.Animations {
             _descriptionManager?.HideAll();
         }
 
-        private void StartAnimation() {
-            _animator.MoveTo(originalPosition + offset);
-            _animator.ScaleTo(originalScale * scaleUp);
-
-            if (_cardPositionManager != null) {
-                int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
-                _cardPositionManager.RepositionCard(CardManager.cardList, cardIdx);
-            }
-        }
-
         private void EndAnimation() {
-
-            _animator.MoveTo(originalPosition);
-            _animator.ScaleTo(originalScale);
-
-            if (_cardPositionManager != null)
-                _cardPositionManager.ResetCardPos(CardManager.cardList);
+            transform.DOScale(originalScale, duration);
+            CardAnimation.ResetCardPos(transform.parent, CardManager.cardList);
+            if (!_isHovered) _descriptionManager?.HideAll();
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {

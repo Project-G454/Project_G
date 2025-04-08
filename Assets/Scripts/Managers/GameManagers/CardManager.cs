@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards;
+using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
 using Core.Interfaces;
@@ -16,7 +17,6 @@ namespace Core.Managers.Cards {
         public Transform cardParent;
         private BattleManager _battleManager;
         private DeckManager _deckManager;
-        private CardPositionManager _cardPositionManager;
         private CardDataLoader _cardDataLoader;
         public static readonly List<GameObject> cardList = new();
         public bool isTurnFinished = true;
@@ -34,7 +34,6 @@ namespace Core.Managers.Cards {
         public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
-            _cardPositionManager = CardPositionManager.Instance;
             _cardDataLoader = CardDataLoader.Instance;
         }
 
@@ -64,11 +63,12 @@ namespace Core.Managers.Cards {
 
                 foreach (int id in _deckManager.hand.GetAllCards()) {
                     // CardData cardData = CardFactory.GetFakeCardData(id);
-                    CardData cardData = _cardDataLoader.GetCardById(id % 3 + 1);
+                    CardData cardData = _cardDataLoader.GetCardById(id % 5 + 1);
                     CreateCard(cardData);
                 }
 
-                _cardPositionManager.ResetCardPos(cardList);
+                // _cardPositionManager.ResetCardPos(cardList);
+                CardAnimation.Deal(cardParent, cardList);
             }
         }
 
@@ -80,11 +80,13 @@ namespace Core.Managers.Cards {
         }
 
         public void UseCard(CardBehaviour cb, int targetId) {
-            Debug.Log(isTurnFinished);
             if (isTurnFinished) return;
 
             Entity currentEntity = _battleManager.currentEntity;
-            if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) return;
+            if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) {
+                Debug.Log("Card not found!");
+                return;
+            }
 
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck

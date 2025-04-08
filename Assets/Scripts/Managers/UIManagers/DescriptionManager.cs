@@ -67,28 +67,6 @@ namespace Core.Managers {
 
             foreach (int id in ids) {
                 DescriptionBehaviour db = GetById(id);
-                // RectTransform rt = db.view.GetComponent<RectTransform>();
-
-                // // rt.SetParent(cardRT.parent, false);
-                // rt.localScale = new Vector3(1.5f, 1.5f, 1f);
-
-                // // 計算 base 世界 pivot 位置（以卡片或上一張為基準）
-                // Vector3 baseWorldPos = (lastRT == null)
-                //     ? UIPositionHelper.GetPivotWorldPosition(cardRT)
-                //     : UIPositionHelper.GetPivotWorldPosition(lastRT);
-
-                // // Y 軸往上 offset 疊加
-                // float offsetY = (lastRT == null) ? 0f : (lastRT.rect.height * lastRT.lossyScale.y + 10f);
-                // Vector3 worldUp = cardRT.root.TransformDirection(Vector3.up);
-                // Vector3 worldRight = cardRT.root.TransformDirection(Vector3.right);
-
-                // // ⭐️ 重點：加入往右偏移一個卡片寬度
-                // Vector3 targetWorldPos = baseWorldPos + (worldUp * offsetY) + (worldRight * rightOffset);
-
-                // lastRT = rt;
-
-                // rt.position = targetWorldPos;
-
                 db.view.Show();
             }
         }

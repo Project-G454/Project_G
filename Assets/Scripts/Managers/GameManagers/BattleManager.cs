@@ -14,7 +14,6 @@ namespace Core.Managers {
         public static BattleManager Instance { get; private set; }
         private EntityManager _entityManager;
         private CardManager _cardManager;
-        private CardPositionManager _cardPositionManager;
         private EffectManager _effectManager;
         private GridManager _gridManager;
         private MapManager _mapManager;
@@ -53,7 +52,6 @@ namespace Core.Managers {
         private void InitManagers() {
             _cardManager = ManagerHelper.RequireManager(CardManager.Instance);
             _entityManager = ManagerHelper.RequireManager(EntityManager.Instance);
-            _cardPositionManager = ManagerHelper.RequireManager(CardPositionManager.Instance);
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
