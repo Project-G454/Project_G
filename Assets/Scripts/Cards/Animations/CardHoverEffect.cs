@@ -16,36 +16,36 @@ namespace Cards.Animations {
         public float duration;
         public Vector3 originalScale;
         public Vector3 originalPosition;
-        public Vector2 originalSize;
-        public Vector3 originalWorldPosition;
         private bool _isHovered = false;
         private bool _isDragging = false;
         private RectTransform _rectTransform;
         private CardBehaviour _cardBehaviour;
-        private Transform _parent;
         private List<CanvasGroup> _otherCards;
         private int _originalSiblingIdx;
         private DescriptionManager _descriptionManager;
 
         public void Init() {
-            originalPosition = _rectTransform.anchoredPosition;
-            originalSize = _rectTransform.rect.size;
-            originalWorldPosition = _rectTransform.position;
-        }
-
-        void Start() {
-            originalScale = transform.localScale;
             _rectTransform = GetComponent<RectTransform>();
             _cardBehaviour = GetComponent<CardBehaviour>();
             _descriptionManager = DescriptionManager.Instance;
 
-            _parent = transform.parent;
+            int idx = CardManager.cardList.IndexOf(gameObject);
+            originalPosition = CardPositionHelper.CalcCardPosition(
+                transform.parent, 
+                CardManager.cardList
+            )[idx];
+            originalScale = transform.localScale;
+
             _otherCards = new List<CanvasGroup>();
-            foreach (Transform child in _parent) {
+            foreach (Transform child in transform.parent) {
                 if (child == transform) continue;
                 var group = child.GetComponent<CanvasGroup>();
                 if (group != null) _otherCards.Add(group);
             }
+        }
+
+        void Start() {
+            Init();
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
@@ -57,7 +57,9 @@ namespace Cards.Animations {
             transform.SetAsLastSibling();
 
             // zoom in
+            transform.DOKill();
             transform.DOScale(originalScale * scaleUp, duration);
+            transform.DOMove(originalPosition + offset, duration);
             
             // other card dodge
             int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
@@ -65,7 +67,6 @@ namespace Cards.Animations {
 
             // show tooltips
             if (_descriptionManager == null || _cardBehaviour == null) return;
-            Vector3 worldPos = originalWorldPosition + new Vector3(0, 0, 0);
             _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds, _rectTransform);
         }
 
@@ -82,7 +83,9 @@ namespace Cards.Animations {
 
         private void EndAnimation() {
             transform.DOScale(originalScale, duration);
+
             CardAnimation.ResetCardPos(transform.parent, CardManager.cardList);
+
             if (!_isHovered) _descriptionManager?.HideAll();
         }
 

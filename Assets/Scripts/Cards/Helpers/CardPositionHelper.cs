@@ -17,7 +17,7 @@ namespace Cards.Helpers {
             float offsetX = (totalWidth - cardWidth) * 0.5f;
 
             for (int i=0; i<cards.Count(); i++) {
-                cardPositions.Add(new Vector3((cardWidth + _CARD_GAP) * i + center.x - offsetX, cardHeight * 0.5f, 0f));
+                cardPositions.Add(new Vector3((cardWidth + _CARD_GAP) * i + center.x - offsetX, cardHeight * 0.6f, 0f));
             }
 
             return cardPositions;

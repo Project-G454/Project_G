@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
+using Cards.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
@@ -62,12 +64,10 @@ namespace Core.Managers.Cards {
                 _deckManager.DrawCards(5);
 
                 foreach (int id in _deckManager.hand.GetAllCards()) {
-                    // CardData cardData = CardFactory.GetFakeCardData(id);
-                    CardData cardData = _cardDataLoader.GetCardById(id % 5 + 1);
+                    CardData cardData = _cardDataLoader.GetCardById(id);
                     CreateCard(cardData);
                 }
 
-                // _cardPositionManager.ResetCardPos(cardList);
                 CardAnimation.Deal(cardParent, cardList);
             }
         }
@@ -91,6 +91,11 @@ namespace Core.Managers.Cards {
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
             cb.DestroySelf();                                // Destroy card GameObject and Remove card from GameObject list
+
+            List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
+            for (int i=0; i<cardList.Count(); i++) {
+                cardList[i].GetComponent<CardHoverEffect>().originalPosition = cardsPos[i];
+            }
         }
 
         public void ResetCardObjects() {

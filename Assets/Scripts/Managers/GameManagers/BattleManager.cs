@@ -86,7 +86,7 @@ namespace Core.Managers {
                 100,
                 "Player3",
                 EntityTypes.PLAYER,
-                EntityClasses.WIZARD
+                EntityClasses.ROGUE
             );
 
             _entityManager.CreateEntity(data1, new Vector3(0, 0, 0));

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
   m_Name: Attack Card 2
   m_EditorClassIdentifier: 
-  id: 5
-  cardName: TAC 2
+  id: 2
+  cardName: Attack 2
   description: Attack Card Test
   desctiptionIds: 01000000
   classes: 00000000

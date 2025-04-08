@@ -409,12 +409,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleUp: 1.2
-  offset: {x: 0, y: 150, z: 0}
+  offset: {x: 0, y: 30, z: 0}
   duration: 0.1
   originalScale: {x: 0, y: 0, z: 0}
   originalPosition: {x: 0, y: 0, z: 0}
-  originalSize: {x: 0, y: 0}
-  originalWorldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3784525878025506233
 GameObject:
   m_ObjectHideFlags: 0

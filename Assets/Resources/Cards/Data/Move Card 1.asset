@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Attack Card 1
+  m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
+  m_Name: Move Card 1
   m_EditorClassIdentifier: 
-  id: 1
-  cardName: Attack 1
-  description: Attack Card Test
-  desctiptionIds: 01000000
+  id: 11
+  cardName: Move 1
+  description: Move Card Test
+  desctiptionIds: 010000000200000003000000
   classes: 00000000
-  rarity: 1
+  rarity: 3
   cost: 0
-  damage: 0
+  step: 0
