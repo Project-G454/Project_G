@@ -7,6 +7,7 @@ using Core.Loaders.Cards;
 using Core.Managers.Cards;
 using Entities;
 using Entities.Categories;
+using Entities.Handlers;
 using UnityEngine;
 
 namespace Core.Managers {
@@ -37,7 +38,7 @@ namespace Core.Managers {
             InitManagers();
             InitMap();
             InitEntities();
-            InitDecks();
+            InitDeckAndEnergy();
             this._id = 0;
             this._entityCount = _entityManager.GetEntityList().Count;
         }
@@ -88,9 +89,10 @@ namespace Core.Managers {
             _entityManager.CreateEntity(data3, new Vector3(0, 0, 0));
         }
 
-        private void InitDecks() {
-            foreach (Player player in EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER)) {
-                player.deckManager.InitializeDeck();
+        private void InitDeckAndEnergy() {
+            foreach (Entity entity in EntityManager.Instance.GetEntityList()) {
+                entity.deckManager.InitializeDeck();
+                entity.energyManager.InitializeEnergy();
             }
         }
 
@@ -113,6 +115,8 @@ namespace Core.Managers {
             currentEntity = _entityManager.GetEntity(_id);
             GameObject entityObject = _entityManager.GetEntityObject(_id);
             _cameraManager.SnapCameraTo(entityObject);
+            MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
+            moveHandler.step = 1;
             Debug.Log(currentEntity.entityId);
         }
     }

@@ -4,6 +4,8 @@ using Effects;
 using Effects.Data;
 using Effects.Factories;
 using Entities;
+using Events;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Core.Managers {
@@ -39,11 +41,28 @@ namespace Core.Managers {
 
             // Iterating the effects recorded in the entity
             // effect.Trigger(entityId);
-            EndTurn();
+            Trigger(entityId, new TurnStartEvent{entityId = entityId});
+            EndTurn(entityId);
         }
 
-        public void EndTurn() {
+        public void EndTurn(int entityId) {
             this.isTurnFinished = true;
+
+            Trigger(entityId, new TurnEndEvent{entityId = entityId});
+        }
+
+        public void Trigger<T>(int entityId, T evt)
+        {
+            Entity entity = EntityManager.Instance.GetEntity(entityId);
+            var allEffects = entity.GetEffectList();
+            
+            foreach (var effect in allEffects)
+            {
+                if (effect is IEventOn<T> typedEffect)
+                {
+                    typedEffect.On(evt);
+                }
+            }
         }
     }
 }

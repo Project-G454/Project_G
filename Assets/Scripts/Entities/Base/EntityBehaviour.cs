@@ -1,4 +1,6 @@
 using Core.Managers.Deck;
+using Core.Managers.Energy;
+using Core.Managers;
 using Entities.Categories;
 using Entities.Factories;
 using UnityEngine;
@@ -9,24 +11,30 @@ namespace Entities {
 
         public void Init(Entity entity) {
             this.entity = entity;
-            
-            if (this.entity is Player player)
-            {
-                InitializePlayerDeck(player);
-            }
+
+            InitializeEntityDeck(entity);
+            entity.energyManager = gameObject.AddComponent<EnergyManager>();
         }
 
-        private void InitializePlayerDeck(Player player)
-        {
-            player.deckManager = gameObject.AddComponent<DeckManager>();
+        private void InitializeEntityDeck(Entity entity) {
+            entity.deckManager = gameObject.AddComponent<DeckManager>();
             var initDeck = EntityFactory.GetClassDeck(entity.entityClass);
             foreach (var cardId in initDeck)
-                player.deckManager.AddCardToPlayerDeck(cardId);
+                entity.deckManager.AddCardToDeck(cardId);
+        }
+
+
+        void OnMouseEnter() {
+            HoverUIManager.Instance.Show(entity);
+        }
+
+        void OnMouseExit() {
+            HoverUIManager.Instance.Hide();
         }
 
         void OnMouseDown() {
             if (this.entity is Player player) {
-                Debug.Log(string.Join(", ", player.deckManager.playerDeck.GetAllCards())); 
+                Debug.Log(string.Join(", ", player.deckManager.deck.GetAllCards()));
             }
             entity.TakeDamage(10);
         }
