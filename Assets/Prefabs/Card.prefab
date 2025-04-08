@@ -243,7 +243,6 @@ GameObject:
   - component: {fileID: 8374850247337995901}
   - component: {fileID: 2097500870327942497}
   - component: {fileID: 8397287724741237785}
-  - component: {fileID: 2340107889669804727}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -321,7 +320,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5100642895650387270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,19 +415,6 @@ MonoBehaviour:
   originalPosition: {x: 0, y: 0, z: 0}
   originalSize: {x: 0, y: 0}
   originalWorldPosition: {x: 0, y: 0, z: 0}
---- !u!114 &2340107889669804727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428684987215517972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 214ff5df2aa151e4db6406ed3ea36617, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.1
 --- !u!1 &3784525878025506233
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,6 @@ namespace Cards.Animations {
         private bool _isDragging = false;
         private RectTransform _rectTransform;
         private CardBehaviour _cardBehaviour;
-        private CardAnimator _animator;
         private Transform _parent;
         private List<CanvasGroup> _otherCards;
         private int _originalSiblingIdx;
@@ -38,7 +37,6 @@ namespace Cards.Animations {
             originalScale = transform.localScale;
             _rectTransform = GetComponent<RectTransform>();
             _cardBehaviour = GetComponent<CardBehaviour>();
-            _animator = GetComponent<CardAnimator>();
             _descriptionManager = DescriptionManager.Instance;
 
             _parent = transform.parent;
