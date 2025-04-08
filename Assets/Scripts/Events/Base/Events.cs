@@ -6,17 +6,21 @@ namespace Events {
 
     public class BattleEndEvent { }
 
-    public class RoundStartEvent { public int RoundNumber; }
+    public class RoundStartEvent { }
 
-    public class RoundEndEvent { public int RoundNumber; }
+    public class RoundEndEvent { }
 
-    public class TurnStartEvent { public int entityId; }
+    public class BeforeTurnEvent { }
 
-    public class TurnEndEvent { public int entityId; }
+    public class TurnStartEvent { }
 
-    public class CardUseEvent { public int entityId; public int cardId; }
+    public class TurnEndEvent { }
 
-    public class DealDamageEvent { public int attackerId; public int victimId; }
+    public class AfterTurnEvent { }
 
-    public class ReceiveDamageEvent { public int attackerId; public int victimId; }
+    public class CardUseEvent { }
+
+    public class DealDamageEvent { }
+
+    public class ReceiveDamageEvent { }
 }

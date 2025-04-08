@@ -1,5 +1,6 @@
 using Core.Entities;
 using Entities;
+using UnityEngine;
 
 namespace Systems.Interactions
 {
@@ -8,6 +9,7 @@ namespace Systems.Interactions
         public static void ApplyEffect(int targetId, int effectId) {}
 
         public static void ApplyDamage(int targetId, int damage) {
+            Debug.Log("Apply Damage");
             EntityManager entityManager = EntityManager.Instance;
             Entity target = entityManager.GetEntity(targetId);
             target.TakeDamage(damage);
