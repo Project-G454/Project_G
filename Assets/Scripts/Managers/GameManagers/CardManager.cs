@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
+using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
+using Cards.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
@@ -16,8 +19,7 @@ namespace Core.Managers.Cards {
         public Transform cardParent;
         private BattleManager _battleManager;
         private DeckManager _deckManager;
-        private CardPositionManager _cardPositionManager;
-        private CardDataLoader _cardDataLoader;
+        private static Dictionary<int, CardData> _cardDict = new();
         public static readonly List<GameObject> cardList = new();
         public bool isTurnFinished = true;
 
@@ -34,11 +36,18 @@ namespace Core.Managers.Cards {
         public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
-            _cardPositionManager = CardPositionManager.Instance;
-            _cardDataLoader = CardDataLoader.Instance;
+
+            List<CardData> cardAssets = CardDataLoader.LoadAll();
+            cardAssets.ForEach(e => {
+                if (!_cardDict.ContainsKey(e.id)) _cardDict.Add(e.id, e);
+            });
         }
 
-        public void CreateCard(CardData cardData) {
+        public CardData GetCardById(int id) {
+            return _cardDict.GetValueOrDefault(id);
+        }
+
+        public void Add(CardData cardData) {
             GameObject newCard = Instantiate(cardPrefab, cardParent);
 
             RectTransform rectTransform = newCard.GetComponent<RectTransform>();
@@ -63,32 +72,38 @@ namespace Core.Managers.Cards {
                 _deckManager.DrawCards(5);
 
                 foreach (int id in _deckManager.hand.GetAllCards()) {
-                    // CardData cardData = CardFactory.GetFakeCardData(id);
-                    CardData cardData = _cardDataLoader.GetCardById(id % 3 + 1);
-                    CreateCard(cardData);
+                    CardData cardData = GetCardById(id);
+                    Add(cardData);
                 }
 
-                _cardPositionManager.ResetCardPos(cardList);
+                CardAnimation.Deal(cardParent, cardList);
             }
         }
 
         public void EndTurn() {
-            this.isTurnFinished = true;
+            isTurnFinished = true;
 
             _deckManager.DiscardHand();
             ResetCardObjects();
         }
 
         public void UseCard(CardBehaviour cb, int targetId) {
-            Debug.Log(isTurnFinished);
             if (isTurnFinished) return;
 
             Entity currentEntity = _battleManager.currentEntity;
-            if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) return;
+            if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) {
+                Debug.Log("Card not found!");
+                return;
+            }
 
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
             cb.DestroySelf();                                // Destroy card GameObject and Remove card from GameObject list
+
+            List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
+            for (int i=0; i<cardList.Count(); i++) {
+                cardList[i].GetComponent<CardHoverEffect>().originalPosition = cardsPos[i];
+            }
         }
 
         public void ResetCardObjects() {

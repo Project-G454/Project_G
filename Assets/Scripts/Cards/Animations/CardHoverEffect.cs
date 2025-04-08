@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Core.Helpers;
 using Core.Managers;
 using Core.Managers.Cards;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using DG.Tweening;
+using Cards.Helpers;
 
 namespace Cards.Animations {
     public class CardHoverEffect: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler {
@@ -14,59 +13,64 @@ namespace Cards.Animations {
         public float duration;
         public Vector3 originalScale;
         public Vector3 originalPosition;
-        public Vector2 originalSize;
-        public Vector3 originalWorldPosition;
         private bool _isHovered = false;
         private bool _isDragging = false;
         private RectTransform _rectTransform;
         private CardBehaviour _cardBehaviour;
-        private CardPositionManager _cardPositionManager;
-        private CardAnimator _animator;
-        private Transform _parent;
         private List<CanvasGroup> _otherCards;
         private int _originalSiblingIdx;
         private DescriptionManager _descriptionManager;
 
         public void Init() {
-            originalPosition = _rectTransform.anchoredPosition;
-            originalSize = _rectTransform.rect.size;
-            originalWorldPosition = _rectTransform.position;
-        }
-
-        void Start() {
-            originalScale = transform.localScale;
             _rectTransform = GetComponent<RectTransform>();
             _cardBehaviour = GetComponent<CardBehaviour>();
-            _cardPositionManager = CardPositionManager.Instance;
-            _animator = GetComponent<CardAnimator>();
             _descriptionManager = DescriptionManager.Instance;
 
-            _parent = transform.parent;
+            int idx = CardManager.cardList.IndexOf(gameObject);
+            originalPosition = CardPositionHelper.CalcCardPosition(
+                transform.parent, 
+                CardManager.cardList
+            )[idx];
+            originalScale = transform.localScale;
+
             _otherCards = new List<CanvasGroup>();
-            foreach (Transform child in _parent) {
+            foreach (Transform child in transform.parent) {
                 if (child == transform) continue;
                 var group = child.GetComponent<CanvasGroup>();
                 if (group != null) _otherCards.Add(group);
             }
         }
 
+        void Start() {
+            Init();
+        }
+
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
             if (_isHovered) return;
             _isHovered = true;
+            
+            // Move layer to top
             _originalSiblingIdx = transform.GetSiblingIndex();
             transform.SetAsLastSibling();
-            StartAnimation();
 
+            // zoom in
+            transform.DOKill();
+            transform.DOScale(originalScale * scaleUp, duration);
+            transform.DOMove(originalPosition + offset, duration);
+            
+            // other card dodge
+            int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
+            CardAnimation.Dodge(transform.parent, cardIdx, CardManager.cardList);
+
+            // show tooltips
             if (_descriptionManager == null || _cardBehaviour == null) return;
-
-            Vector3 worldPos = originalWorldPosition + new Vector3(0, 0, 0);
-
             _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds, _rectTransform);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
             if (!_isHovered) return;
             _isHovered = false;
+
             if (_isDragging) return;
             transform.SetSiblingIndex(_originalSiblingIdx);
             EndAnimation();
@@ -74,23 +78,12 @@ namespace Cards.Animations {
             _descriptionManager?.HideAll();
         }
 
-        private void StartAnimation() {
-            _animator.MoveTo(originalPosition + offset);
-            _animator.ScaleTo(originalScale * scaleUp);
-
-            if (_cardPositionManager != null) {
-                int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
-                _cardPositionManager.RepositionCard(CardManager.cardList, cardIdx);
-            }
-        }
-
         private void EndAnimation() {
+            transform.DOScale(originalScale, duration);
 
-            _animator.MoveTo(originalPosition);
-            _animator.ScaleTo(originalScale);
+            CardAnimation.ResetCardPos(transform.parent, CardManager.cardList);
 
-            if (_cardPositionManager != null)
-                _cardPositionManager.ResetCardPos(CardManager.cardList);
+            if (!_isHovered) _descriptionManager?.HideAll();
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {

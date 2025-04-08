@@ -15,12 +15,10 @@ namespace Core.Managers {
         public static BattleManager Instance { get; private set; }
         private EntityManager _entityManager;
         private CardManager _cardManager;
-        private CardPositionManager _cardPositionManager;
         private EffectManager _effectManager;
         private GridManager _gridManager;
         private MapManager _mapManager;
         private CameraManager _cameraManager;
-        private CardDataLoader _cardDataLoader;
         private DescriptionManager _descriptionManager;
         public Entity currentEntity;
         private int _id;
@@ -38,7 +36,6 @@ namespace Core.Managers {
 
         public void Init() {
             InitManagers();
-            InitLoaders();
             InitMap();
             InitEntities();
             InitDeckAndEnergy();
@@ -54,16 +51,11 @@ namespace Core.Managers {
         private void InitManagers() {
             _cardManager = ManagerHelper.RequireManager(CardManager.Instance);
             _entityManager = ManagerHelper.RequireManager(EntityManager.Instance);
-            _cardPositionManager = ManagerHelper.RequireManager(CardPositionManager.Instance);
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
-        }
-
-        private void InitLoaders() {
-            _cardDataLoader = ManagerHelper.RequireManager(CardDataLoader.Instance);
         }
 
         private void InitMap() {
@@ -89,7 +81,7 @@ namespace Core.Managers {
                 100,
                 "Player3",
                 EntityTypes.PLAYER,
-                EntityClasses.WIZARD
+                EntityClasses.ROGUE
             );
 
             _entityManager.CreateEntity(data1, new Vector3(0, 0, 0));
