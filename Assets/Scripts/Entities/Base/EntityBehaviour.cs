@@ -1,5 +1,6 @@
 using Core.Managers.Deck;
 using Core.Managers.Energy;
+using Core.Managers;
 using Entities.Categories;
 using Entities.Factories;
 using UnityEngine;
@@ -20,6 +21,15 @@ namespace Entities {
             var initDeck = EntityFactory.GetClassDeck(entity.entityClass);
             foreach (var cardId in initDeck)
                 entity.deckManager.AddCardToDeck(cardId);
+        }
+
+
+        void OnMouseEnter() {
+            HoverUIManager.Instance.Show(entity);
+        }
+
+        void OnMouseExit() {
+            HoverUIManager.Instance.Hide();
         }
 
         void OnMouseDown() {

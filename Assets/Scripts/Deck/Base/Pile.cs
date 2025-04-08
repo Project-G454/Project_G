@@ -1,3 +1,5 @@
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +8,18 @@ namespace Piles {
     /// 表示一個基本卡牌堆疊（如抽牌、手牌、棄牌）。
     /// </summary>
     public class Pile {
-        public List<int> cardIds = new List<int>();
+        private List<int> _cardIds = new List<int>();
+
+        public event Action OnPileChanged;
+
+        public List<int> cardIds
+        {
+            get => _cardIds;
+            set {
+                _cardIds = value;
+                OnPileChanged?.Invoke();
+            }
+        }
 
         public void Add(int cardId) {
             cardIds.Add(cardId);
@@ -31,7 +44,7 @@ namespace Piles {
 
         public void Shuffle() {
             for (int i = 0; i < cardIds.Count; i++) {
-                int rand = Random.Range(i, cardIds.Count);
+                int rand = UnityEngine.Random.Range(i, cardIds.Count);
                 (cardIds[i], cardIds[rand]) = (cardIds[rand], cardIds[i]);
             }
         }

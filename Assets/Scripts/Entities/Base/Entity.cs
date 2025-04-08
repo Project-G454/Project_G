@@ -12,8 +12,8 @@ namespace Entities {
     /// </summary>
     public class Entity {
         public int entityId;
-        public int health;
-        public int maxHealth;
+        private int _currentHp;
+        public int maxHp;
         public string entityName;
         public EntityTypes type;
         public EntityClasses entityClass;
@@ -22,6 +22,16 @@ namespace Entities {
         public DeckManager deckManager;
         public EnergyManager energyManager;
 
+        public event Action OnHpChanged;
+
+        public int currentHp {
+            get => _currentHp;
+            set {
+                _currentHp = Mathf.Clamp(value, 0, maxHp);
+                OnHpChanged?.Invoke(); // 通知 UI
+            }
+        }
+
         public Entity(
             int id,
             EntityData entityData
@@ -29,22 +39,22 @@ namespace Entities {
             this.entityId = id;
             this.entityName = entityData.entityName;
             this.type = entityData.type;
-            this.health = entityData.maxHealth;
-            this.maxHealth = entityData.maxHealth;
+            this.maxHp = entityData.maxHealth;
+            this.currentHp = entityData.maxHealth;
             this.entityClass = entityData.entityClass;
             this.entityData = entityData;
         }
 
         public void TakeDamage(int amount) {
-            health = Mathf.Max(health - amount, 0);
-            Debug.Log(String.Format("{0}.{1} : {2}/{3}", entityId, entityName, health, maxHealth));
+            currentHp -= amount;
+            Debug.Log(String.Format("{0}.{1} : {2}/{3}", entityId, entityName, currentHp, maxHp));
         }
 
         public void Heal(int amount) {
-            health = Mathf.Min(health + amount, maxHealth);
+            currentHp += amount;
         }
 
-        public bool IsDead() => health <= 0;
+        public bool IsDead() => currentHp <= 0;
 
         public void AddEffect(Effect effect) {
             effects.Add(effect);
