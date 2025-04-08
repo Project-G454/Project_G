@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 3
   cardName: Attack 3
   description: Attack Card Test
-  desctiptionIds: 01000000
+  desctiptionIds: 010000000200000003000000
   classes: 00000000
-  rarity: 1
+  rarity: 3
   cost: 0
   damage: 0

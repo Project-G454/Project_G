@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 10
   cardName: Magic 5
   description: Magic Card Test
-  desctiptionIds: 0100000003000000
+  desctiptionIds: 0200000003000000
   classes: 00000000
   rarity: 2
   cost: 0

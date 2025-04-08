@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 8
   cardName: Magic 3
   description: Magic Card Test
-  desctiptionIds: 0100000003000000
+  desctiptionIds: 010000000200000003000000
   classes: 00000000
-  rarity: 2
+  rarity: 3
   cost: 0
   effectId: 0

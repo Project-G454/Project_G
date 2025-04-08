@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 7
   cardName: Magic 2
   description: Magic Card Test
-  desctiptionIds: 0100000003000000
+  desctiptionIds: 0100000002000000
   classes: 00000000
   rarity: 2
   cost: 0

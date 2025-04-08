@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 4
   cardName: Attack 4
   description: Attack Card Test
-  desctiptionIds: 01000000
+  desctiptionIds: 0100000003000000
   classes: 00000000
   rarity: 1
   cost: 0
