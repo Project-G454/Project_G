@@ -18,7 +18,6 @@ namespace Core.Managers {
         private GridManager _gridManager;
         private MapManager _mapManager;
         private CameraManager _cameraManager;
-        private CardDataLoader _cardDataLoader;
         private DescriptionManager _descriptionManager;
         public Entity currentEntity;
         private int _id;
@@ -36,7 +35,6 @@ namespace Core.Managers {
 
         public void Init() {
             InitManagers();
-            InitLoaders();
             InitMap();
             InitEntities();
             InitDecks();
@@ -57,10 +55,6 @@ namespace Core.Managers {
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
-        }
-
-        private void InitLoaders() {
-            _cardDataLoader = ManagerHelper.RequireManager(CardDataLoader.Instance);
         }
 
         private void InitMap() {

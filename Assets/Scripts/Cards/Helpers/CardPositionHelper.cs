@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cards.Helpers {
     class CardPositionHelper {
-        private const float _CARD_GAP = 5f;
+        private const float _CARD_GAP = 100f;
         public static List<Vector3> CalcCardPosition(Transform cardParent, List<GameObject> cards) {
             List<Vector3> cardPositions = new();
             if (cards.Count() <= 0) return cardPositions;

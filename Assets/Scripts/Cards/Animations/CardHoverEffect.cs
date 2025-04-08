@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using Core.Helpers;
 using Core.Managers;
 using Core.Managers.Cards;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using DG.Tweening;
 using Cards.Helpers;
 

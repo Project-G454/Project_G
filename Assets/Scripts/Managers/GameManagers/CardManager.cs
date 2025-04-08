@@ -19,7 +19,7 @@ namespace Core.Managers.Cards {
         public Transform cardParent;
         private BattleManager _battleManager;
         private DeckManager _deckManager;
-        private CardDataLoader _cardDataLoader;
+        private static Dictionary<int, CardData> _cardDict = new();
         public static readonly List<GameObject> cardList = new();
         public bool isTurnFinished = true;
 
@@ -36,10 +36,18 @@ namespace Core.Managers.Cards {
         public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
-            _cardDataLoader = CardDataLoader.Instance;
+
+            List<CardData> cardAssets = CardDataLoader.LoadAll();
+            cardAssets.ForEach(e => {
+                if (!_cardDict.ContainsKey(e.id)) _cardDict.Add(e.id, e);
+            });
         }
 
-        public void CreateCard(CardData cardData) {
+        public CardData GetCardById(int id) {
+            return _cardDict.GetValueOrDefault(id);
+        }
+
+        public void Add(CardData cardData) {
             GameObject newCard = Instantiate(cardPrefab, cardParent);
 
             RectTransform rectTransform = newCard.GetComponent<RectTransform>();
@@ -64,8 +72,8 @@ namespace Core.Managers.Cards {
                 _deckManager.DrawCards(5);
 
                 foreach (int id in _deckManager.hand.GetAllCards()) {
-                    CardData cardData = _cardDataLoader.GetCardById(id);
-                    CreateCard(cardData);
+                    CardData cardData = GetCardById(id);
+                    Add(cardData);
                 }
 
                 CardAnimation.Deal(cardParent, cardList);
@@ -73,7 +81,7 @@ namespace Core.Managers.Cards {
         }
 
         public void EndTurn() {
-            this.isTurnFinished = true;
+            isTurnFinished = true;
 
             _deckManager.DiscardHand();
             ResetCardObjects();
