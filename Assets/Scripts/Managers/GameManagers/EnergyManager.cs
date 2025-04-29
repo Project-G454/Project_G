@@ -22,10 +22,9 @@ namespace Core.Managers.Energy {
             }
         }
 
-        public int maxEnergy = 10;
+        public int maxEnergy = 3;
         public int defaultRecover = 3;
         public int recover = 3;
-        public int firstRoundExtra = 5;
         public List<IEnergySource> energySources = new();
 
         public void Init() { }
@@ -34,7 +33,6 @@ namespace Core.Managers.Energy {
         /// 戰鬥開始，初始化能量。
         /// </summary>
         public void InitializeEnergy() {
-            energy = firstRoundExtra;
             UpdateEnergyRecover();
         }
 
