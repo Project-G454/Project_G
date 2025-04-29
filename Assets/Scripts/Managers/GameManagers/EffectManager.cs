@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Loaders.Effects;
 using Effects;
 using Effects.Data;
 using Effects.Factories;
@@ -13,6 +15,8 @@ namespace Core.Managers {
         public static EffectManager Instance;
         public bool isTurnFinished = true;
         private EntityManager _entityManager;
+        private BattleManager _battleManager;
+        public Dictionary<int, EffectData> effectDict = new();
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -26,43 +30,67 @@ namespace Core.Managers {
 
         public void Init() {
             _entityManager = EntityManager.Instance;
+            _battleManager = BattleManager.Instance;
+
+            List<EffectData> effects = EffectDataLoader.LoadAll();
+            effects.ForEach(e => {
+                effectDict.Add(e.id, e);
+            });
+        }
+
+        public EffectData GetEffectbyId(int id) {
+            return effectDict.GetValueOrDefault(id);
         }
 
         public void Apply(int targetId, int effectId) {
             Entity entity = _entityManager.GetEntity(targetId);
-            EffectData effectData = EffectFactory.GetFakeEffect();
-            Effect effect = EffectFactory.MakeEffect(effectData);
-            Debug.Log($"Apply Effect_{effect.effectId} -> Entity_{entity.entityId}");
-            // entity.AddEffect(effect);
+            EffectData effectData = GetEffectbyId(effectId);
+            Effect effect = EffectFactory.MakeEffect(effectData, targetId);
+            Debug.Log($"Apply Effect_{effect.id} -> Entity_{entity.entityId}");
+            entity.AddEffect(effect);
         }
 
-        public void StartTurn(int entityId) {
-            this.isTurnFinished = false;
+        public void BeforeTurn() {
+            int entityId = _battleManager.currentEntity.entityId;
+            isTurnFinished = false;
 
-            // Iterating the effects recorded in the entity
-            // effect.Trigger(entityId);
-            Trigger(entityId, new TurnStartEvent{entityId = entityId});
-            EndTurn(entityId);
-        }
-
-        public void EndTurn(int entityId) {
-            this.isTurnFinished = true;
-
-            Trigger(entityId, new TurnEndEvent{entityId = entityId});
-        }
-
-        public void Trigger<T>(int entityId, T evt)
-        {
-            Entity entity = EntityManager.Instance.GetEntity(entityId);
-            var allEffects = entity.GetEffectList();
+            _Trigger(entityId, new BeforeTurnEvent());
             
-            foreach (var effect in allEffects)
-            {
-                if (effect is IEventOn<T> typedEffect)
-                {
+            isTurnFinished = true;
+        }
+
+        public void AfterTurn() {
+            int entityId = _battleManager.currentEntity.entityId;
+            isTurnFinished = false;
+
+            _Trigger(entityId, new AfterTurnEvent());
+            _ReduceEffect(entityId);
+
+            isTurnFinished = true;
+        }
+
+        private void _Trigger<T>(int entityId, T evt) {
+            Entity entity = EntityManager.Instance.GetEntity(entityId);
+            List<Effect> allEffects = entity.GetEffectList();
+
+            allEffects.ForEach(effect => {
+                if (effect is IEventOn<T> typedEffect) {
                     typedEffect.On(evt);
                 }
-            }
+            });
+        }
+
+        private void _ReduceEffect(int entityId) {
+            Entity entity = EntityManager.Instance.GetEntity(entityId);
+            List<Effect> allEffects = entity.GetEffectList();
+            List<Effect> expiredEffects = new();
+
+            allEffects.ForEach(effect => {
+                effect.rounds--;
+                if (effect.rounds <= 0) expiredEffects.Add(effect);
+            });
+
+            expiredEffects.ForEach(e => entity.RemoveEffect(e));
         }
     }
 }

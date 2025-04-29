@@ -1,21 +1,28 @@
+using Core.Interfaces;
 using Effects.Data;
+using Events;
 using Systems.Interactions;
 using UnityEngine;
 
 namespace Effects.Categories {
-    class PoisonEffect: Effect {
+    class PoisonEffect: Effect, IEventOn<BeforeTurnEvent> {
         private int _damage;
         public PoisonEffect(
-            PoisonEffectData effectData
-        ): base(effectData) {
+            PoisonEffectData effectData,
+            int behaviourId
+        ): base(effectData, behaviourId) {
             this._damage = effectData.damage;
-            this.effectType = EffectType.POISON;
         }
 
-        public override void Trigger(int targetId) {
-            base.Trigger(targetId);
-            EffectPlayerInteraction.ApplyDamage(targetId, _damage);
-            Debug.Log($"PoisonEffect -> Entity_{targetId}");
+        public override void Trigger() {
+            if (this.rounds <= 0) return;
+            base.Trigger();
+            EffectPlayerInteraction.ApplyDamage(this.behaviourId, _damage);
+            Debug.Log($"PoisonEffect -> Entity_{this.behaviourId}");
+        }
+
+        void IEventOn<BeforeTurnEvent>.On(BeforeTurnEvent triggerEvent) {
+            Trigger();
         }
     }
 }

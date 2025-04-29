@@ -3,27 +3,17 @@ using Effects.Data;
 
 namespace Effects.Factories {
     public class EffectFactory {
-        public static Effect MakeEffect(EffectData effectData) {
+        public static Effect MakeEffect(EffectData effectData, int behaviourId) {
             Effect effect;
             switch (effectData.effectType) {
                 case EffectType.POISON:
-                    effect = new PoisonEffect(effectData as PoisonEffectData);
+                    effect = new PoisonEffect(effectData as PoisonEffectData, behaviourId);
                     break;
                 default:
-                    effect = new Effect(effectData);
+                    effect = new Effect(effectData, behaviourId);
                     break;
             }
             return effect;
-        }
-
-        public static EffectData GetFakeEffect() {
-            EffectData effectData = new PoisonEffectData();
-            effectData.effectId = 0;
-            effectData.effectName = "Poison";
-            effectData.effectDesc = "poison";
-            effectData.effectType = EffectType.POISON;
-            effectData.rounds = 5;
-            return effectData;
         }
     }
 }

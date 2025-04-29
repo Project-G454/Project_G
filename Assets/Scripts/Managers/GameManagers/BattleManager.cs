@@ -100,13 +100,17 @@ namespace Core.Managers {
             while (true) {
                 NextPlayer();
 
-                Debug.Log("Effect Phase");
-                _effectManager.StartTurn(_id);
+                Debug.Log("Effect Phase (Before)");
+                _effectManager.BeforeTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
                 Debug.Log("Card Phase");
                 _cardManager.StartTurn();
                 yield return new WaitUntil(() => _cardManager.isTurnFinished);
+
+                Debug.Log("Effect Phase (After)");
+                _effectManager.AfterTurn();
+                yield return new WaitUntil(() => _effectManager.isTurnFinished);
             }
         }
 

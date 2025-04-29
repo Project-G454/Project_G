@@ -3,4 +3,10 @@ namespace Effects.Data {
         UNSET,
         POISON
     }
+
+    public enum EffectTiming {
+        UNSET,
+        BEFORE,
+        AFTER
+    }
 }

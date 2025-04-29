@@ -9,7 +9,6 @@ namespace Cards.Categories {
         public MoveCard(
             MoveCardData data
         ) : base(data) {
-            this.type = CardTypes.MOVE;
             this.step = data.step;
         }
 

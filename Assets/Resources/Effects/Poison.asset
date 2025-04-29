@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Attack Card 3
+  m_Script: {fileID: 11500000, guid: 8d9aede4066be9947870671793739ea2, type: 3}
+  m_Name: Poison
   m_EditorClassIdentifier: 
-  id: 3
-  cardName: Attack 3
-  description: Attack Card Test
-  desctiptionIds: 010000000200000003000000
-  classes: 00000000
-  rarity: 3
-  cost: 0
-  damage: 15
+  id: 1
+  effectName: Poison
+  effectDesc: test
+  rounds: 3
+  damage: 10

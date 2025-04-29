@@ -21,6 +21,7 @@ namespace Core.Managers.Cards {
         private DeckManager _deckManager;
         private static Dictionary<int, CardData> _cardDict = new();
         public static readonly List<GameObject> cardList = new();
+        public static List<Sprite> cardAssets = new();
         public bool isTurnFinished = true;
 
         private void Awake() {
@@ -37,8 +38,9 @@ namespace Core.Managers.Cards {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
 
-            List<CardData> cardAssets = CardDataLoader.LoadAll();
-            cardAssets.ForEach(e => {
+            List<CardData> cardData = CardDataLoader.LoadAll();
+            cardAssets = CardDataLoader.LoadAssets();
+            cardData.ForEach(e => {
                 if (!_cardDict.ContainsKey(e.id)) _cardDict.Add(e.id, e);
             });
         }
