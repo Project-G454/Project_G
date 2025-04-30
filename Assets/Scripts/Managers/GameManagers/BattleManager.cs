@@ -5,6 +5,7 @@ using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Cards;
+using Core.Managers.Dice;
 using Entities;
 using Entities.Categories;
 using Entities.Handlers;
@@ -20,6 +21,7 @@ namespace Core.Managers {
         private MapManager _mapManager;
         private CameraManager _cameraManager;
         private DescriptionManager _descriptionManager;
+        private DiceManager _diceManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -56,6 +58,7 @@ namespace Core.Managers {
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
+            _diceManager = ManagerHelper.RequireManager(DiceManager.Instance);
         }
 
         private void InitMap() {
@@ -99,6 +102,7 @@ namespace Core.Managers {
         public IEnumerator GameLoop() {
             while (true) {
                 NextPlayer();
+                _diceManager.Roll(1, 6);
 
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();
