@@ -5,7 +5,7 @@ using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Cards;
-using Core.Managers.Dice;
+using Core.Managers.Dices;
 using Entities;
 using Entities.Categories;
 using Entities.Handlers;
@@ -102,7 +102,7 @@ namespace Core.Managers {
         public IEnumerator GameLoop() {
             while (true) {
                 NextPlayer();
-                _diceManager.Roll(1, 6);
+                _diceManager.Roll(1, 6, 2);
 
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();
