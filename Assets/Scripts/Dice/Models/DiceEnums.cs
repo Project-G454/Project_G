@@ -1,15 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dices.Data {
-    public class Dice_D6 {
-        public readonly static Dictionary<int, Vector3> direction = new Dictionary<int, Vector3>() {
-            {1, Vector3.up},
-            {2, Vector3.down},
-            {3, Vector3.left},
-            {4, Vector3.right},
-            {5, Vector3.forward},
-            {6, Vector3.back},
-        };
+    [CreateAssetMenu(fileName = "D6", menuName = "Dices/D6")]
+    public class DiceD6Rotation: ScriptableObject {
+        public List<DiceRotationEntry> relativeRotation;
+    }
+
+    [Serializable]
+    public class DiceRotationEntry {
+        public int from;
+        public List<DiceRotationInfo> rotation;
+    }
+
+    [Serializable]
+    public class DiceRotationInfo {
+        public int to;
+        public Vector2 rotation;
     }
 }
