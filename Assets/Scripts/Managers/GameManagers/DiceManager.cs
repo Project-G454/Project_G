@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Interfaces;
 using Dices;
 using Dices.Animations;
 using Dices.Data;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Core.Managers.Dices {
+    /// <summary>
+    /// 擲骰管理器，處理骰子的建立、模擬與結果控制。
+    /// </summary>
     public class DiceManager: MonoBehaviour, IManager {
         public static DiceManager Instance;
         public GameObject dicePrefab;
@@ -27,33 +31,44 @@ namespace Core.Managers.Dices {
             DontDestroyOnLoad(gameObject);
         }
 
+        /// <summary>
+        /// 擲出骰子，返回對應的點數清單。
+        /// </summary>
+        /// <param name="min">最小點數（限制範圍為 1～6）。</param>
+        /// <param name="max">最大點數（限制範圍為 1～6）。</param>
+        /// <param name="count">要擲出的骰子數量。</param>
+        /// <param name="forcePoints">可選的強制點數清單，用於部分骰子。</param>
+        /// <returns>點數結果清單。</returns>
         public List<int> Roll(int min, int max, int count=1, List<int> forcePoints=null) {
+            const int MINIMUM = 1;
+            const int MAXIMUM = 6;
+            min = Math.Clamp(min, MINIMUM, MAXIMUM);
+            max = Math.Clamp(max, MINIMUM, MAXIMUM);
+
             StopAllCoroutines();
             ResetDiceObjects();
 
-            // Roll dices
             List<int> points = new();
-            if (forcePoints != null) {
-                foreach(int point in forcePoints) {
-                    points.Add(point);
-                }
-            }
+            points.AddRange(forcePoints ?? Enumerable.Empty<int>());
 
+            // 建立骰子並決定點數
             count -= points.Count;
             for(int i=0; i<count; i++) {
                 GameObject diceObj = CreateDice(i);
                 this.dices.Add(diceObj);
-                
-                if (forcePoints == null) {
-                    int point = Random.Range(min, max);
-                    points.Add(point);
-                }
+                int point = UnityEngine.Random.Range(min, max);
+                points.Add(point);
             }
-            StartCoroutine(SimulateRoll(this.dices, points));               
-            Debug.Log($"Dices: {points}");
+
+            // Roll dices
+            StartCoroutine(_SimulateRoll(this.dices, points));               
+            Debug.Log($"Dices: {string.Join(", ", points)}");
             return points;
         }
 
+        /// <summary>
+        /// 重設場上的所有骰子，將它們從場景中移除並銷毀。
+        /// </summary>
         public void ResetDiceObjects() {
             if (this.dices == null || this.dices.Count == 0) return;
 
@@ -65,6 +80,9 @@ namespace Core.Managers.Dices {
             }
         }
 
+        /// <summary>
+        /// 移除指定的骰子物件並將其從管理清單中刪除。
+        /// </summary>
         public void RemoveDice(GameObject diceObj) {
             if (diceObj != null && dices.Contains(diceObj)) {
                 dices.Remove(diceObj);
@@ -72,18 +90,11 @@ namespace Core.Managers.Dices {
             }
         }
 
-        public IEnumerator GetRollResult(Dice dice) {
-            yield return WaitUntilDiceStop(dice);
-            int point = dice.GetTopFace();
-            Debug.Log($"Dice_{dice.id} Point: {point}");
-        }
-
-        public IEnumerator WaitUntilDiceStop(Dice dice) {
-            while (!dice.IsDiceStopped()) {
-                yield return null;
-            }
-        }
-
+        /// <summary>
+        /// 建立單顆骰子物件，設定其位置與初始旋轉狀態。
+        /// </summary>
+        /// <param name="diceId">此骰子的編號，用來分散初始位置。</param>
+        /// <returns>建立好的骰子 GameObject。</returns>
         public GameObject CreateDice(int diceId) {
             GameObject diceObj = Instantiate(dicePrefab, generatePoint.position, Quaternion.identity, diceParent);
 
@@ -92,70 +103,76 @@ namespace Core.Managers.Dices {
 
             Transform diceT = diceObj.GetComponent<Transform>();
             if (diceT) {
-                Vector3 offset = new Vector3(Random.Range(-2, 2), diceId * 1.2f, Random.Range(-2, 2));
                 diceT.SetParent(diceParent);
-                diceT.rotation = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
-                diceT.position += offset;
-                dice.CaptureTransform();
+                Vector3 positionOffset = new Vector3(
+                    UnityEngine.Random.Range(-2, 2), 
+                    diceId * 1.2f, // 避免骰子重疊
+                    UnityEngine.Random.Range(-2, 2)
+                );
+                Vector3 rotationOffset = new Vector3(
+                    UnityEngine.Random.Range(0, 360), 
+                    UnityEngine.Random.Range(0, 360), 
+                    UnityEngine.Random.Range(0, 360)
+                );
+                diceT.rotation = Quaternion.Euler(rotationOffset);
+                diceT.position += positionOffset;
+                dice.CaptureTransform(); // 紀錄建立時的初始狀態
             }
             
             return diceObj;
         }
 
-        public IEnumerator SimulateRoll(List<GameObject> dices, List<int> targetPoints) {
-            yield return null; // 等待一幀，等 Destory 生效
+        /// <summary>
+        /// 執行骰子模擬與動畫過程：
+        /// <para>1. 預模擬 500 幀取得軌跡與最終點數。</para>
+        /// <para>2. 設定為目標點數，進行實際動畫播放。</para>
+        /// </summary>
+        /// <param name="dices">要模擬的骰子清單。</param>
+        /// <param name="targetPoints">目標點數清單。</param>
+        /// <returns>IEnumerator 協程。</returns>
+        private IEnumerator _SimulateRoll(List<GameObject> dices, List<int> targetPoints) {
+            yield return null; // 等待 1 幀，等 Destory 生效
+            const int SIMULATION_STEPS = 500; // (模擬 500 幀)
 
+            // Roll 第一次 (模擬用)
             foreach (GameObject diceObj in dices) {
                 Dice dice = diceObj.GetComponent<Dice>();
                 dice.Hidden();
                 DiceAnimation.Roll(diceObj); 
             }
             
-            Physics.simulationMode = SimulationMode.Script;
+            // 在 1 幀內計算第一次 Roll 的結果
+            Physics.simulationMode = SimulationMode.Script; // 開始模擬
             List<DiceRecord> records = new();
-            for (int frame=0; frame<500; frame++) {
+            for (int frame=0; frame<SIMULATION_STEPS; frame++) {
+                // 將每個骰子的路徑逐幀記錄下來
                 for (int i=0; i<dices.Count; i++) {
-                    if (dices[i] == null || dices[i].GetComponent<Dice>() == null) continue;
-                    Dice dice = dices[i].GetComponent<Dice>();
-                    Rigidbody rb = dice.GetComponent<Rigidbody>();
-                    
-                    Vector3 position = rb.position;
-                    Quaternion rotation = rb.rotation;
-                    DiceRecordedFrame recordedFrame = new DiceRecordedFrame(position, rotation, dice.IsDiceStopped());
-                    
+                    if (dices[i] == null) continue; // 如果骰子已被刪除就跳過
+                    DiceRecordedFrame recordedFrame = DiceAnimation.RecordFrame(dices[i]);
                     if (frame == 0) records.Add(new DiceRecord(dices[i]));
-                    records[i].frames.Add(recordedFrame);
+                    if (recordedFrame != null) records[i].frames.Add(recordedFrame);
                 }
-                Physics.Simulate(Time.fixedDeltaTime);
+                Physics.Simulate(Time.fixedDeltaTime); // 模擬 1 幀
             }
-            Physics.simulationMode = SimulationMode.FixedUpdate;
+            Physics.simulationMode = SimulationMode.FixedUpdate; // 結束模擬
 
+            // 禁用骰子所有的物理計算，並回歸初始狀態
             for (int i=0; i<dices.Count; i++) {
-
                 Dice dice = dices[i].GetComponent<Dice>();
                 dice.DisablePhysics();
                 
                 int point = dice.GetTopFace();
-                dice.RevertToInitialState();
+                dice.ResetToInitialState();
                 dice.RotateFace(point, targetPoints[i]);
                 dice.Show();
             }
 
             yield return null; // 等待一幀，等 Simulate 完全結束
-            foreach (DiceRecord record in records) {
-                StartCoroutine(PlayDiceRecordFrames(record));
-            }
-        }
 
-        public IEnumerator PlayDiceRecordFrames(DiceRecord record) {
-            GameObject diceObj = record.dice;
-            Dice dice = diceObj.GetComponent<Dice>();
-            
-            foreach (DiceRecordedFrame frame in record.frames) {
-                diceObj.transform.SetPositionAndRotation(frame.position, frame.rotation);
-                yield return new WaitForFixedUpdate();
+            // 播放剛才模擬時儲存的位置、旋轉角度資訊 (第 2 次 Roll)
+            foreach (DiceRecord record in records) {
+                StartCoroutine(DiceAnimation.PlayDiceRecordFrames(record));
             }
-            dice.EnablePhysics();
         }
     }
 }

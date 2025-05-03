@@ -42,15 +42,15 @@ namespace Dices {
 
         public void RotateFace(int from, int to) {
             DiceD6Rotation rotationData = DiceDataLoader.LoadD6Rotation();
-            Vector2 degree = rotationData.relativeRotation[from - 1].rotation[to - 1].rotation;
+            Vector3 degree = rotationData.relativeRotation[from - 1].rotation[to - 1].rotation;
 
             Transform innerT = inner.GetComponent<Transform>();
             if (innerT) {
-                innerT.Rotate(degree.x, degree.y, 0f, Space.Self);
+                innerT.Rotate(degree.x, degree.y, degree.z, Space.Self);
             }
         }
 
-        public void RevertToInitialState() {
+        public void ResetToInitialState() {
             if (initialPosition == null) return;
             if (initialRotation == null) return;
             if (initialScale == null) return;
@@ -85,6 +85,5 @@ namespace Dices {
             MeshRenderer renderer = inner.GetComponent<MeshRenderer>();
             if (renderer != null) renderer.enabled = true;
         }
-
     }
 }

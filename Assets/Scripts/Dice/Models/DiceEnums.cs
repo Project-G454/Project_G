@@ -17,6 +17,6 @@ namespace Dices.Data {
     [Serializable]
     public class DiceRotationInfo {
         public int to;
-        public Vector2 rotation;
+        public Vector3 rotation;
     }
 }

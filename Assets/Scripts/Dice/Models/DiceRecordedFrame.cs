@@ -22,9 +22,7 @@ namespace Dices.Data {
     public class DiceRecord {
         public GameObject dice;
         public List<DiceRecordedFrame> frames;
-        public DiceRecord(
-            GameObject dice
-        ) {
+        public DiceRecord(GameObject dice) {
             this.dice = dice;
             this.frames = new();
         }
