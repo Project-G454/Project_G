@@ -64,7 +64,7 @@ namespace Cards.Animations {
 
             // show tooltips
             if (_descriptionManager == null || _cardBehaviour == null) return;
-            _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds, _rectTransform);
+            _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {

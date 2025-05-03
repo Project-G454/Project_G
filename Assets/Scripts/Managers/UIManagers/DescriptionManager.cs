@@ -59,19 +59,12 @@ namespace Core.Managers {
             return db;
         }
 
-        public void ShowDescriptions(int[] ids, RectTransform cardRT) {
-            RectTransform lastRT = null;
-
-            // 往右偏移一個卡片寬度
-            float rightOffset = cardRT.rect.width * cardRT.lossyScale.x;
-
+        public void ShowDescriptions(int[] ids) {
             foreach (int id in ids) {
                 DescriptionBehaviour db = GetById(id);
                 db.view.Show();
             }
         }
-
-
 
         public void HideAll() {
             foreach (var db in _descriptions) {
