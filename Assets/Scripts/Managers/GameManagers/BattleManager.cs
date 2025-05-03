@@ -25,6 +25,7 @@ namespace Core.Managers {
         private CameraManager _cameraManager;
         private DescriptionManager _descriptionManager;
         private DiceManager _diceManager;
+        private HoverUIManager _hoverUIManager;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -64,6 +65,7 @@ namespace Core.Managers {
             _cardManager = ManagerHelper.RequireManager(CardManager.Instance);
             _entityManager = ManagerHelper.RequireManager(EntityManager.Instance);
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
+            _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);

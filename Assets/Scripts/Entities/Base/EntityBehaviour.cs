@@ -4,6 +4,7 @@ using Core.Managers;
 using Entities.Categories;
 using Entities.Factories;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Entities {
     class EntityBehaviour: MonoBehaviour {
