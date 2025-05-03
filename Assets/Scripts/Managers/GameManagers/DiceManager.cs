@@ -18,6 +18,7 @@ namespace Core.Managers.Dices {
         public Transform diceParent;
         public Transform generatePoint;
         private List<GameObject> dices = new();
+        public int animationEndCount = 0;
 
         void IManager.Init() {}
 
@@ -44,6 +45,7 @@ namespace Core.Managers.Dices {
             const int MAXIMUM = 6;
             min = Math.Clamp(min, MINIMUM, MAXIMUM);
             max = Math.Clamp(max, MINIMUM, MAXIMUM);
+            animationEndCount = 0;
 
             StopAllCoroutines();
             ResetDiceObjects();
@@ -61,9 +63,20 @@ namespace Core.Managers.Dices {
             }
 
             // Roll dices
-            StartCoroutine(_SimulateRoll(this.dices, points));               
-            Debug.Log($"Dices: {string.Join(", ", points)}");
+            StartCoroutine(_SimulateRoll(this.dices, points));
             return points;
+        }
+
+        public bool IsAllAnimationStopped() {
+            return animationEndCount == dices.Count;
+        }
+
+        public bool IsAllDiceStopped() {
+            foreach (GameObject diceObj in dices) {
+                Dice dice = diceObj.GetComponent<Dice>();
+                if (!dice.IsDiceStopped()) return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -153,6 +166,7 @@ namespace Core.Managers.Dices {
                     if (recordedFrame != null) records[i].frames.Add(recordedFrame);
                 }
                 Physics.Simulate(Time.fixedDeltaTime); // 模擬 1 幀
+                if (IsAllDiceStopped()) break;
             }
             Physics.simulationMode = SimulationMode.FixedUpdate; // 結束模擬
 
@@ -171,8 +185,13 @@ namespace Core.Managers.Dices {
 
             // 播放剛才模擬時儲存的位置、旋轉角度資訊 (第 2 次 Roll)
             foreach (DiceRecord record in records) {
-                StartCoroutine(DiceAnimation.PlayDiceRecordFrames(record));
+                StartCoroutine(_PlayAnimationWithCallback(record, () => animationEndCount++));
             }
+        }
+
+        private IEnumerator _PlayAnimationWithCallback(DiceRecord record, Action callback) {
+            yield return DiceAnimation.PlayDiceRecordFrames(record);
+            callback?.Invoke();
         }
     }
 }

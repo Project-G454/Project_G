@@ -16,84 +16,84 @@ MonoBehaviour:
   - from: 1
     rotation:
     - to: 1
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
     - to: 2
-      rotation: {x: 90, y: 0}
+      rotation: {x: 90, y: 0, z: 0}
     - to: 3
-      rotation: {x: 0, y: 90}
+      rotation: {x: 0, y: 90, z: 0}
     - to: 4
-      rotation: {x: 0, y: -90}
+      rotation: {x: 0, y: -90, z: 0}
     - to: 5
-      rotation: {x: -90, y: 0}
+      rotation: {x: -90, y: 0, z: 0}
     - to: 6
-      rotation: {x: 180, y: 0}
+      rotation: {x: 180, y: 0, z: 0}
   - from: 2
     rotation:
     - to: 1
-      rotation: {x: -90, y: 0}
+      rotation: {x: -90, y: 0, z: 0}
     - to: 2
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
     - to: 3
-      rotation: {x: -90, y: 90}
+      rotation: {x: 0, y: 0, z: -90}
     - to: 4
-      rotation: {x: -90, y: -90}
+      rotation: {x: 0, y: 0, z: 90}
     - to: 5
-      rotation: {x: 180, y: 0}
+      rotation: {x: 180, y: 0, z: 0}
     - to: 6
-      rotation: {x: 90, y: 0}
+      rotation: {x: 90, y: 0, z: 0}
   - from: 3
     rotation:
     - to: 1
-      rotation: {x: 0, y: -90}
+      rotation: {x: 0, y: -90, z: 0}
     - to: 2
-      rotation: {x: 90, y: -90}
+      rotation: {x: 90, y: -90, z: 0}
     - to: 3
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
     - to: 4
-      rotation: {x: -90, y: -90}
+      rotation: {x: 0, y: 0, z: 180}
     - to: 5
-      rotation: {x: 0, y: 180}
+      rotation: {x: 0, y: 0, z: -90}
     - to: 6
-      rotation: {x: 0, y: 90}
+      rotation: {x: 0, y: 90, z: 0}
   - from: 4
     rotation:
     - to: 1
-      rotation: {x: 0, y: 90}
+      rotation: {x: 0, y: 90, z: 0}
     - to: 2
-      rotation: {x: 90, y: 90}
+      rotation: {x: 0, y: 0, z: -90}
     - to: 3
-      rotation: {x: -90, y: 90}
+      rotation: {x: 0, y: 180, z: 0}
     - to: 4
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
     - to: 5
-      rotation: {x: 0, y: 180}
+      rotation: {x: 0, y: 0, z: 90}
     - to: 6
-      rotation: {x: 0, y: -90}
+      rotation: {x: 0, y: -90, z: 0}
   - from: 5
     rotation:
     - to: 1
-      rotation: {x: 90, y: 0}
+      rotation: {x: 90, y: 0, z: 0}
     - to: 2
-      rotation: {x: 90, y: 90}
+      rotation: {x: 180, y: 0, z: 0}
     - to: 3
-      rotation: {x: 90, y: -90}
+      rotation: {x: 0, y: 0, z: 90}
     - to: 4
-      rotation: {x: 180, y: 0}
+      rotation: {x: 0, y: 0, z: -90}
     - to: 5
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
     - to: 6
-      rotation: {x: -90, y: 0}
+      rotation: {x: -90, y: 0, z: 0}
   - from: 6
     rotation:
     - to: 1
-      rotation: {x: 180, y: 0}
+      rotation: {x: 180, y: 0, z: 0}
     - to: 2
-      rotation: {x: 180, y: 90}
+      rotation: {x: -90, y: 0, z: 0}
     - to: 3
-      rotation: {x: 180, y: -90}
+      rotation: {x: 0, y: -90, z: 0}
     - to: 4
-      rotation: {x: 90, y: 0}
+      rotation: {x: 0, y: 90, z: 0}
     - to: 5
-      rotation: {x: -90, y: 0}
+      rotation: {x: 90, y: 0, z: 0}
     - to: 6
-      rotation: {x: 0, y: 0}
+      rotation: {x: 0, y: 0, z: 0}
