@@ -15,4 +15,15 @@ namespace Cards.Data {
         EPIC,
         LEGENDARY
     }
+
+    public enum CardState {
+        Idle,
+        Hover,
+        Active,
+        Dragging,
+        Targeting,
+        Use,
+        Applying,
+        Destroy
+    }
 }

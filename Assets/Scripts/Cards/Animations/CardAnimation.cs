@@ -33,5 +33,39 @@ namespace Cards.Animations {
                 else cardRT.DOMoveX(cardPositions[i].x + offset, 0.2f);
             }
         }
+
+        public static void ZoomIn(GameObject cardObj, float scaleFactor=1.2f, float duration=1f) {
+            CardView view = cardObj.GetComponent<CardView>();
+            Transform cardTransform = cardObj.GetComponent<Transform>();
+            if (cardTransform == null || view == null) return;
+
+            cardTransform.DOKill();
+            cardTransform.DOScale(view.GetInitialScale() * scaleFactor, duration);
+        }
+
+        public static void ZoomOut(GameObject cardObj, float duration=1f) {
+            CardView view = cardObj.GetComponent<CardView>();
+            Transform cardTransform = cardObj.GetComponent<Transform>();
+            if (cardTransform == null || view == null) return;
+
+            cardTransform.DOKill();
+            cardTransform.DOScale(view.GetInitialScale(), duration);
+        }
+
+        public static void MoveTo(GameObject cardObj, Vector3 offset, float duration=1f) {
+            CardView view = cardObj.GetComponent<CardView>();
+            Transform cardTransform = cardObj.GetComponent<Transform>();
+            if (cardTransform == null || view == null) return;
+
+            cardTransform.DOKill();
+            cardTransform.DOMove(view.GetInitialPosition() + offset, duration);
+        }
+
+        public static void SetAlpha(GameObject cardObj, float alpha=0.5f) {
+            CanvasGroup cg = cardObj.GetComponent<CanvasGroup>();
+            if (cg == null) return;
+
+            cg.alpha = alpha;
+        }
     }
 }
