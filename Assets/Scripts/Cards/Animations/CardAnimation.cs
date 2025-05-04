@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 
 namespace Cards.Animations {
     class CardAnimation {
+        private static Tween _dragTween;
+
         // 發牌
         public static void Deal(Transform cardParent, List<GameObject> cards) {
             ResetCardPos(cardParent, cards);
@@ -63,7 +65,7 @@ namespace Cards.Animations {
             cardTransform.DOMove(position, duration);
         }
 
-        public static void MoveToPointer(GameObject cardObj, PointerEventData eventData) {
+        public static void MoveToPointer(GameObject cardObj, PointerEventData eventData, float duration=0.1f) {
             Canvas canvas = cardObj.GetComponent<Canvas>();
             RectTransform rt = cardObj.GetComponent<RectTransform>();
 
@@ -75,7 +77,7 @@ namespace Cards.Animations {
                 out worldPos
             );
 
-            rt.position = worldPos;
+            rt.DOMove(worldPos, duration);
         }
 
         public static void MoveToEntity(GameObject cardObj, int targetId) {

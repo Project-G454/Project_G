@@ -187,11 +187,14 @@ namespace Cards.Handlers {
         private void _HandleApplying() {
             /* 動畫、等待其他動作反應，完成 → Destroy */
             // do something
-            SetState(CardState.Destroy);        
+            SetState(CardState.Destroy);
         }
         
         private void _HandleDestroy() {
             /* 卡片已被使用完成 */
+            CardManager.Instance.RemoveCard(gameObject);
+            CardManager.Instance.SetNewCardPosition();
+            Destroy(gameObject);
         }
 
         private IEnumerator _DelayClear() {

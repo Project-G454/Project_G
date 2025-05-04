@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cards.Handlers;
 using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Descriptions;
@@ -16,6 +19,7 @@ namespace Core.Managers {
         private readonly Dictionary<int, DescriptionBehaviour> _descriptions = new();
         private List<int> _showing = new();
         private bool _is_initialized = false; // 避免初始化兩次的保護
+        private Coroutine _clearCoroutine;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
