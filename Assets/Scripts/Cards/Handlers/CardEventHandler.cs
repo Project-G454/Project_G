@@ -19,6 +19,7 @@ namespace Cards.Handlers {
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
+            Debug.Log("Exit");
             _isPointerOver = false;
         }
 

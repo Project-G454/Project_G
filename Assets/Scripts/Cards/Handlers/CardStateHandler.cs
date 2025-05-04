@@ -46,7 +46,7 @@ namespace Cards.Handlers {
 
         public void SetState(CardState newState) {
             if (_currentState == newState) return;
-            _ExitState(newState);
+            _ExitState(_currentState);
             _prevState = _currentState;
             _currentState = newState;
             _EnterState(newState);
