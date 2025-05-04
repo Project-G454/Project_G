@@ -4,6 +4,7 @@ using System.Linq;
 using Cards.Helpers;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Cards.Animations {
     class CardAnimation {
@@ -34,7 +35,7 @@ namespace Cards.Animations {
             }
         }
 
-        public static void ZoomIn(GameObject cardObj, float scaleFactor=1.2f, float duration=1f) {
+        public static void ZoomIn(GameObject cardObj, float scaleFactor=1.2f, float duration=0.1f) {
             CardView view = cardObj.GetComponent<CardView>();
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
@@ -43,7 +44,7 @@ namespace Cards.Animations {
             cardTransform.DOScale(view.GetInitialScale() * scaleFactor, duration);
         }
 
-        public static void ZoomOut(GameObject cardObj, float duration=1f) {
+        public static void ZoomOut(GameObject cardObj, float duration=0.1f) {
             CardView view = cardObj.GetComponent<CardView>();
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
@@ -52,13 +53,28 @@ namespace Cards.Animations {
             cardTransform.DOScale(view.GetInitialScale(), duration);
         }
 
-        public static void MoveTo(GameObject cardObj, Vector3 offset, float duration=1f) {
+        public static void MoveTo(GameObject cardObj, Vector3 position, float duration=0.1f) {
             CardView view = cardObj.GetComponent<CardView>();
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
 
             cardTransform.DOKill();
-            cardTransform.DOMove(view.GetInitialPosition() + offset, duration);
+            cardTransform.DOMove(position, duration);
+        }
+
+        public static void MoveToPointer(GameObject cardObj, PointerEventData eventData) {
+            Canvas canvas = cardObj.GetComponent<Canvas>();
+            RectTransform rt = cardObj.GetComponent<RectTransform>();
+
+            Vector3 worldPos;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                canvas.transform as RectTransform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out worldPos
+            );
+
+            rt.position = worldPos;
         }
 
         public static void SetAlpha(GameObject cardObj, float alpha=0.5f) {
@@ -66,6 +82,21 @@ namespace Cards.Animations {
             if (cg == null) return;
 
             cg.alpha = alpha;
+        }
+
+        public static void SendToFront(GameObject cardObj) {
+            Transform cardTransform = cardObj.GetComponent<Transform>();
+            if (cardTransform == null) return;
+
+            cardTransform.SetAsLastSibling();
+        }
+
+        public static void ResetSibling(GameObject cardObj) {
+            Transform cardTransform = cardObj.GetComponent<Transform>();
+            CardView view = cardObj.GetComponent<CardView>();
+            if (cardTransform == null || view == null) return;
+
+            cardTransform.SetSiblingIndex(view.GetInitialSiblingIdx());
         }
     }
 }

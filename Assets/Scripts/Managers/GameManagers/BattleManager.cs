@@ -116,7 +116,7 @@ namespace Core.Managers {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
-                    yield return InitializeTurnOrder();
+                    // yield return InitializeTurnOrder();
                 }
 
                 NextPlayer();

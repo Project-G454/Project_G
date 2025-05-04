@@ -17,6 +17,7 @@ namespace Cards {
         public Card card;
         private Vector3 _originalPosition;
         private Vector3 _originalScale;
+        private int _originalSiblingIdx;
 
         public void SetCardView(Card card) {
             this.card = card;
@@ -30,11 +31,19 @@ namespace Cards {
             titleBackground.sprite = CardLayoutHelper.GetTitleSprite((int)card.rarity);
             typeBackground.sprite = CardLayoutHelper.GetTypeSprite(card.type.ToString());
 
-            _originalPosition = transform.position;
-            _originalScale = transform.lossyScale;
+            // _originalPosition = transform.position;
+            // _originalScale = transform.lossyScale;
+            // _originalSiblingIdx = transform.GetSiblingIndex();
         }
 
         public Vector3 GetInitialPosition() => _originalPosition;
         public Vector3 GetInitialScale() => _originalScale;
+        public int GetInitialSiblingIdx() => _originalSiblingIdx;
+
+        public void SetInitialState(Vector3 position, Vector3 scale, int siblingIdx) {
+            _originalPosition = position;
+            _originalScale = scale;
+            _originalSiblingIdx = siblingIdx;
+        }
     }
 }

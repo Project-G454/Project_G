@@ -7,7 +7,7 @@ using DG.Tweening;
 using Cards.Helpers;
 
 namespace Cards.Animations {
-    public class CardHoverEffect: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler {
+    public class CardHoverEffect: MonoBehaviour/*, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler*/ {
         public float scaleUp;
         public Vector3 offset;
         public float duration;
@@ -25,6 +25,7 @@ namespace Cards.Animations {
             _rectTransform = GetComponent<RectTransform>();
             _cardBehaviour = GetComponent<CardBehaviour>();
             _descriptionManager = DescriptionManager.Instance;
+            CardView view = GetComponent<CardView>();
 
             int idx = CardManager.cardList.IndexOf(gameObject);
             originalPosition = CardPositionHelper.CalcCardPosition(
@@ -32,6 +33,7 @@ namespace Cards.Animations {
                 CardManager.cardList
             )[idx];
             originalScale = transform.localScale;
+            view.SetInitialState(originalPosition, originalScale, transform.GetSiblingIndex());
 
             _otherCards = new List<CanvasGroup>();
             foreach (Transform child in transform.parent) {
@@ -45,64 +47,64 @@ namespace Cards.Animations {
             Init();
         }
 
-        void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
-            if (_isHovered) return;
-            _isHovered = true;
+        // void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
+        //     if (_isHovered) return;
+        //     _isHovered = true;
             
-            // Move layer to top
-            _originalSiblingIdx = transform.GetSiblingIndex();
-            transform.SetAsLastSibling();
+        //     // Move layer to top
+        //     _originalSiblingIdx = transform.GetSiblingIndex();
+        //     transform.SetAsLastSibling();
 
-            // zoom in
-            transform.DOKill();
-            transform.DOScale(originalScale * scaleUp, duration);
-            transform.DOMove(originalPosition + offset, duration);
+        //     // zoom in
+        //     transform.DOKill();
+        //     transform.DOScale(originalScale * scaleUp, duration);
+        //     transform.DOMove(originalPosition + offset, duration);
             
-            // other card dodge
-            int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
-            CardAnimation.Dodge(transform.parent, cardIdx, CardManager.cardList);
+        //     // other card dodge
+        //     int cardIdx = CardManager.cardList.IndexOf(_cardBehaviour.cardObject);
+        //     CardAnimation.Dodge(transform.parent, cardIdx, CardManager.cardList);
 
-            // show tooltips
-            if (_descriptionManager == null || _cardBehaviour == null) return;
-            _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds);
-        }
+        //     // show tooltips
+        //     if (_descriptionManager == null || _cardBehaviour == null) return;
+        //     _descriptionManager.ShowDescriptions(_cardBehaviour.card.desctiptionIds);
+        // }
 
-        void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
-            if (!_isHovered) return;
-            _isHovered = false;
+        // void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
+        //     if (!_isHovered) return;
+        //     _isHovered = false;
 
-            if (_isDragging) return;
-            transform.SetSiblingIndex(_originalSiblingIdx);
-            EndAnimation();
+        //     if (_isDragging) return;
+        //     transform.SetSiblingIndex(_originalSiblingIdx);
+        //     EndAnimation();
 
-            _descriptionManager?.HideAll();
-        }
+        //     _descriptionManager?.HideAll();
+        // }
 
-        private void EndAnimation() {
-            transform.DOScale(originalScale, duration);
+        // private void EndAnimation() {
+        //     transform.DOScale(originalScale, duration);
 
-            CardAnimation.ResetCardPos(transform.parent, CardManager.cardList);
+        //     CardAnimation.ResetCardPos(transform.parent, CardManager.cardList);
 
-            if (!_isHovered) _descriptionManager?.HideAll();
-        }
+        //     if (!_isHovered) _descriptionManager?.HideAll();
+        // }
 
-        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
-            _isDragging = true;
+        // void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
+        //     _isDragging = true;
 
-            foreach (CanvasGroup group in _otherCards) {
-                if (group != null) group.blocksRaycasts = false;
-            }
-        }
+        //     foreach (CanvasGroup group in _otherCards) {
+        //         if (group != null) group.blocksRaycasts = false;
+        //     }
+        // }
 
-        void IEndDragHandler.OnEndDrag(PointerEventData eventData) {
-            _isDragging = false;
-            transform.SetSiblingIndex(_originalSiblingIdx);
+        // void IEndDragHandler.OnEndDrag(PointerEventData eventData) {
+        //     _isDragging = false;
+        //     transform.SetSiblingIndex(_originalSiblingIdx);
 
-            foreach (CanvasGroup group in _otherCards) {
-                if (group != null) group.blocksRaycasts = true;
-            }
+        //     foreach (CanvasGroup group in _otherCards) {
+        //         if (group != null) group.blocksRaycasts = true;
+        //     }
 
-            EndAnimation();
-        }
+        //     EndAnimation();
+        // }
     }
 }

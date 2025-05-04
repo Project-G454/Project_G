@@ -1,4 +1,5 @@
 using Cards.Data;
+using Core.Managers.Cards;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,7 +8,7 @@ namespace Cards.Handlers {
         private bool _isPointerOver = false;
         private bool _isClicked = false;
         private bool _isDragging = false;
-        private bool _isTargeting = false;
+        private PointerEventData _eventData;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
             _isClicked = true;
@@ -23,19 +24,21 @@ namespace Cards.Handlers {
 
         void IDragHandler.OnDrag(PointerEventData eventData) {
             _isDragging = true;
+            _eventData = eventData;
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
-            throw new System.NotImplementedException();
+            _isDragging = true;
         }
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData) {
-            throw new System.NotImplementedException();
+            _isDragging = false;
         }
 
         public bool IsPointerEnter() => _isPointerOver;
         public bool IsPointerExit() => !_isPointerOver;
         public bool IsDragging() => _isDragging;
+        public PointerEventData GetEventData() => _eventData;
 
         public bool IsClicked() {
             if (_isClicked) {
@@ -57,6 +60,24 @@ namespace Cards.Handlers {
             if (Physics.Raycast(ray, out RaycastHit hit)) {
                 var receiver = hit.collider.GetComponent<UseCardReceiver>();
                 if (receiver != null) return true;
+            }
+            return false;
+        }
+
+        public int GetHoveringCardIdx() {
+            for (int i=0; i<CardManager.cardList.Count; i++) {
+                GameObject cardObj = CardManager.cardList[i];
+                CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
+                if (stateHandler.GetState() == CardState.Hover) return i;
+            }
+            return -1;
+        }
+
+        public bool IsAnyCardHovering() {
+            for (int i=0; i<CardManager.cardList.Count; i++) {
+                GameObject cardObj = CardManager.cardList[i];
+                CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
+                if (stateHandler.GetState() == CardState.Hover) return true;
             }
             return false;
         }

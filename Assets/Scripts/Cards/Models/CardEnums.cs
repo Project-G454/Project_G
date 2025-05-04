@@ -17,6 +17,7 @@ namespace Cards.Data {
     }
 
     public enum CardState {
+        Dodge,
         Idle,
         Hover,
         Active,
