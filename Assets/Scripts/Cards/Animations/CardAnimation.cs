@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards.Helpers;
+using Core.Entities;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -73,6 +74,25 @@ namespace Cards.Animations {
                 eventData.pressEventCamera,
                 out worldPos
             );
+
+            rt.position = worldPos;
+        }
+
+        public static void MoveToEntity(GameObject cardObj, int targetId) {
+            Canvas canvas = cardObj.GetComponentInParent<Canvas>();
+            RectTransform rt = cardObj.GetComponent<RectTransform>();
+            RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+            GameObject entityObj = EntityManager.Instance.GetEntityObject((int)targetId);
+
+            // 取得 entity 的世界座標
+            Vector3 entityWorldPos = entityObj.transform.position;
+
+            // 把 entity 的世界座標映射到 UI 座標
+            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, entityWorldPos);
+
+            // 計算 UI 投影出的世界座標
+            Vector3 worldPos;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(canvasRect, screenPos, canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, out worldPos);
 
             rt.position = worldPos;
         }

@@ -11,7 +11,7 @@ namespace Cards.Handlers {
         private PointerEventData _eventData;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
-            _isClicked = true;
+            if (!_isDragging) _isClicked = true;
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
@@ -19,16 +19,15 @@ namespace Cards.Handlers {
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
-            Debug.Log("Exit");
             _isPointerOver = false;
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData) {
-            _isDragging = true;
             _eventData = eventData;
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
+            _isClicked = false;
             _isDragging = true;
         }
 
@@ -54,7 +53,6 @@ namespace Cards.Handlers {
             if (cg == null) return false;
 
             cg.blocksRaycasts = true;
-            cg.alpha = 1f;
 
             // UI to World Raytrace
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -69,7 +67,8 @@ namespace Cards.Handlers {
             for (int i=0; i<CardManager.cardList.Count; i++) {
                 GameObject cardObj = CardManager.cardList[i];
                 CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
-                if (stateHandler.GetState() == CardState.Hover) return i;
+                CardState state = stateHandler.GetState();
+                if (_IsHoverState(state)) return i;
             }
             return -1;
         }
@@ -78,9 +77,18 @@ namespace Cards.Handlers {
             for (int i=0; i<CardManager.cardList.Count; i++) {
                 GameObject cardObj = CardManager.cardList[i];
                 CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
-                if (stateHandler.GetState() == CardState.Hover) return true;
+                CardState state = stateHandler.GetState();
+                if (_IsHoverState(state)) return true;
             }
             return false;
+        }
+
+        private bool _IsHoverState(CardState state) {
+            return (
+                state == CardState.Hover || 
+                state == CardState.Dragging ||
+                state == CardState.Targeting
+            );
         }
     }
 }

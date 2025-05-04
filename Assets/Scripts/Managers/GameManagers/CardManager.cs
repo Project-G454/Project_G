@@ -104,7 +104,9 @@ namespace Core.Managers.Cards {
 
             List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
             for (int i=0; i<cardList.Count(); i++) {
-                cardList[i].GetComponent<CardHoverEffect>().originalPosition = cardsPos[i];
+                CardView view = cardList[i].GetComponent<CardView>();
+                view.SetInitialState(cardsPos[i], view.GetInitialScale(), view.GetInitialSiblingIdx());
+                // cardList[i].GetComponent<CardHoverEffect>().originalPosition = cardsPos[i];
             }
         }
 

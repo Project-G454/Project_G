@@ -58,14 +58,14 @@ namespace Cards.Handlers {
         // }
 
         public void UseCard() {
-            var targetId = _GetTargetId();
+            var targetId = GetTargetId();
             if (targetId == null) return;
 
             Entity target = EntityManager.Instance.GetEntity((int)targetId);
             _cardManager.UseCard(_cardBehaviour, target.entityId);
         }
 
-        private int? _GetTargetId() {
+        public int? GetTargetId() {
             // UI to World Raytrace
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
