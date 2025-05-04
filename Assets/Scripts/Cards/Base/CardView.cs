@@ -1,5 +1,6 @@
 using Cards.Helpers;
 using Core.Loaders.Cards;
+using Core.Managers.Cards;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,6 +45,16 @@ namespace Cards {
             _originalPosition = position;
             _originalScale = scale;
             _originalSiblingIdx = siblingIdx;
+        }
+
+        public void RecordInitialState() {
+            int idx = CardManager.cardList.IndexOf(gameObject);
+            Vector3 originalPosition = CardPositionHelper.CalcCardPosition(
+                transform.parent, 
+                CardManager.cardList
+            )[idx];
+            Vector3 originalScale = transform.localScale;
+            SetInitialState(originalPosition, originalScale, transform.GetSiblingIndex());
         }
     }
 }

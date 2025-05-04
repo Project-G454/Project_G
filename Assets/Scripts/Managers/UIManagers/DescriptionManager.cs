@@ -78,12 +78,17 @@ namespace Core.Managers {
                 }
             }
 
+            List<int> readyToRemove = new();
             foreach (int id in _showing) {
                 if (!ids.Contains(id)) {
                     DescriptionBehaviour db = GetById(id);
                     db.view.Hide();
-                    _showing.Remove(id);
+                    readyToRemove.Add(id);
                 }
+            }
+
+            foreach (int id in readyToRemove) {
+                _showing.Remove(id);
             }
         }
 

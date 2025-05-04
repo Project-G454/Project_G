@@ -116,12 +116,11 @@ namespace Core.Managers {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
-                    // yield return InitializeTurnOrder();
+                    yield return InitializeTurnOrder();
                 }
 
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
-                // _diceManager.Roll(1, 6, 2);
 
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();

@@ -79,6 +79,11 @@ namespace Core.Managers.Cards {
                 }
 
                 CardAnimation.Deal(cardParent, cardList);
+
+                foreach (GameObject cardObj in cardList) {
+                    CardView view = cardObj.GetComponent<CardView>();
+                    view.RecordInitialState();
+                }
             }
         }
 

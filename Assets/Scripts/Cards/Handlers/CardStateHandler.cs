@@ -103,8 +103,6 @@ namespace Cards.Handlers {
             CardAnimation.ResetSibling(gameObject);
             CardAnimation.SetAlpha(gameObject, 1f);
 
-            
-
             if (eventHandler.IsPointerEnter()) SetState(CardState.Hover);
             else if (eventHandler.IsAnyCardHovering()) SetState(CardState.Dodge);
         }
@@ -178,7 +176,9 @@ namespace Cards.Handlers {
         private void _HandleUse() { 
             /* 使用卡片的瞬間，完成 → Applying */
             UseCardHandler useHandler = GetComponent<UseCardHandler>();
+            DescriptionManager descriptionManager = DescriptionManager.Instance;
             if (useHandler == null) return;
+            descriptionManager.HideAll();
             
             useHandler.UseCard();
             SetState(CardState.Applying);
@@ -187,12 +187,11 @@ namespace Cards.Handlers {
         private void _HandleApplying() {
             /* 動畫、等待其他動作反應，完成 → Destroy */
             // do something
-            SetState(CardState.Destroy);
+            SetState(CardState.Destroy);        
         }
         
         private void _HandleDestroy() {
             /* 卡片已被使用完成 */
-            // do something
         }
 
         private IEnumerator _DelayClear() {
