@@ -1,7 +1,6 @@
-using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class DistanceManager : MonoBehaviour
 {
@@ -11,26 +10,57 @@ public class DistanceManager : MonoBehaviour
     public int maxDistance = 5;
 
     [Header("References")]
-    public Tilemap groundTilemap;
-    public Tilemap highlightTilemap;
-    public TileBase highlightTile;
+    public GameObject highlightTilePrefab;
+    public Transform highlightParent;
     public Text warningText;
+
+    [Header("Optional")]
+    public Vector3 highlightOffset = Vector3.zero; // 👉 預設偏移為 0，可手動調整
+
+    private List<GameObject> currentHighlights = new();
 
     private void Awake()
     {
         Instance = this;
-        warningText.gameObject.SetActive(false);
+        warningText?.gameObject.SetActive(false);
     }
 
     public void ShowReachableTiles(Vector2Int origin)
     {
         ClearHighlights();
 
-        var reachable = GetTilesInRange(origin, maxDistance);
-        foreach (var pos in reachable)
+        for (int dx = -maxDistance; dx <= maxDistance; dx++)
         {
-            highlightTilemap.SetTile((Vector3Int)pos, highlightTile);
+            for (int dy = -maxDistance; dy <= maxDistance; dy++)
+            {
+                int dist = Mathf.Abs(dx) + Mathf.Abs(dy);
+                if (dist <= maxDistance)
+                {
+                    Vector2Int tilePos = origin + new Vector2Int(dx, dy);
+                    Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
+
+                    GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity, highlightParent);
+
+                    // 自動設定 Sorting Order 讓格子蓋在地圖上
+                    SpriteRenderer sr = highlight.GetComponent<SpriteRenderer>();
+                    if (sr != null)
+                    {
+                        sr.sortingOrder = 10;
+                    }
+
+                    currentHighlights.Add(highlight);
+                }
+            }
         }
+    }
+
+    public void ClearHighlights()
+    {
+        foreach (var obj in currentHighlights)
+        {
+            if (obj != null) Destroy(obj);
+        }
+        currentHighlights.Clear();
     }
 
     public bool IsTileInRange(Vector2Int origin, Vector2Int target)
@@ -41,37 +71,18 @@ public class DistanceManager : MonoBehaviour
 
     public void ShowOutOfRangeWarning()
     {
-        warningText.text = "超出可移動範圍！";
-        warningText.color = Color.red;
-        warningText.gameObject.SetActive(true);
-        CancelInvoke(nameof(HideWarning));
-        Invoke(nameof(HideWarning), 2f); // 自動隱藏
+        if (warningText != null)
+        {
+            warningText.text = "超出可移動範圍！";
+            warningText.color = Color.red;
+            warningText.gameObject.SetActive(true);
+            CancelInvoke(nameof(HideWarning));
+            Invoke(nameof(HideWarning), 2f);
+        }
     }
 
     private void HideWarning()
     {
-        warningText.gameObject.SetActive(false);
-    }
-
-    private void ClearHighlights()
-    {
-        highlightTilemap.ClearAllTiles();
-    }
-
-    private List<Vector3Int> GetTilesInRange(Vector2Int origin, int range)
-    {
-        List<Vector3Int> tiles = new List<Vector3Int>();
-        for (int dx = -range; dx <= range; dx++)
-        {
-            for (int dy = -range; dy <= range; dy++)
-            {
-                int dist = Mathf.Abs(dx) + Mathf.Abs(dy);
-                if (dist <= range)
-                {
-                    tiles.Add(new Vector3Int(origin.x + dx, origin.y + dy, 0));
-                }
-            }
-        }
-        return tiles;
+        warningText?.gameObject.SetActive(false);
     }
 }
