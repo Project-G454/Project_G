@@ -1,4 +1,5 @@
 using Cards.Helpers;
+using Core.Loaders.Cards;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,11 +22,11 @@ namespace Cards {
             cost.text = card.cost.ToString();
             description.text = card.description;
 
-            background.sprite = CardLayoutHelper.getBackgroundSprite(card.id);
-            frame.sprite = CardLayoutHelper.getFrameSprite((int)card.rarity);
-            costBackground.sprite = CardLayoutHelper.getCostSprite((int)card.rarity);
-            titleBackground.sprite = CardLayoutHelper.getTitleSprite((int)card.rarity);
-            typeBackground.sprite = CardLayoutHelper.getTypeSprite(card.type.ToString());
+            background.sprite = CardDataLoader.LoadBackground(card.id);
+            frame.sprite = CardLayoutHelper.GetFrameSprite((int)card.rarity);
+            costBackground.sprite = CardLayoutHelper.GetCostSprite((int)card.rarity);
+            titleBackground.sprite = CardLayoutHelper.GetTitleSprite((int)card.rarity);
+            typeBackground.sprite = CardLayoutHelper.GetTypeSprite(card.type.ToString());
         }
     }
 }

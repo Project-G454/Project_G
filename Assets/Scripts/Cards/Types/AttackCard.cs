@@ -13,7 +13,6 @@ namespace Cards.Categories {
         public AttackCard(
             AttackCardData data
         ): base(data) {
-            this.type = CardTypes.ATTACK;
             this.damage = data.damage;
         }
 

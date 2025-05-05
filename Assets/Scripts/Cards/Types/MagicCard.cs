@@ -10,7 +10,6 @@ namespace Cards.Categories {
         public MagicCard(
             MagicCardData data
         ) : base(data) {
-            this.type = CardTypes.MAGIC;
             this.effectId = data.effectId;
         }
 

@@ -7,19 +7,19 @@ namespace Core.Managers.Deck {
     /// 管理玩家卡組邏輯：抽牌堆、手牌、棄牌堆皆為 Pile 類別。
     /// </summary>
     public class DeckManager: MonoBehaviour, IManager {
-        public Pile playerDeck = new();
+        public Pile deck = new();
         public Pile draw = new();
         public Pile hand = new();
         public Pile discard = new();
         public int handSize = 5;
 
-        public void Init() {}
-        
+        public void Init() { }
+
         public void InitializeDeck() {
             draw.Clear();
             hand.Clear();
             discard.Clear();
-            draw.Add(this.playerDeck.GetAllCards());
+            draw.Add(this.deck.GetAllCards());
             draw.Shuffle();
         }
 
@@ -60,15 +60,15 @@ namespace Core.Managers.Deck {
         /// <summary>
         /// 新增卡牌到玩家卡組。
         /// </summary>
-        public void AddCardToPlayerDeck(int cardId) {
-            playerDeck.Add(cardId);
+        public void AddCardToDeck(int cardId) {
+            deck.Add(cardId);
         }
 
         /// <summary>
         /// 移除玩家卡組中的特定卡牌。
         /// </summary>
-        public bool RemoveCardFromPlayerDeck(int cardId) {
-            return playerDeck.Remove(cardId);
+        public bool RemoveCardFromDeck(int cardId) {
+            return deck.Remove(cardId);
         }
     }
 }

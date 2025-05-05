@@ -29,8 +29,8 @@ namespace Cards {
         /// 將卡片物件刪除，並從 CardManager 取消註冊。
         /// </summary>
         public void DestroySelf() {
-            CardManager.Instance.RemoveCard(this.cardObject);
-            Destroy(this.cardObject);
+            CardManager.Instance.RemoveCard(cardObject);
+            Destroy(cardObject);
         }
     }
 }

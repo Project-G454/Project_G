@@ -6,21 +6,22 @@ using UnityEngine;
 namespace Effects {
     public class Effect {
         private EffectData _effectData;
-        public int effectId { get => _effectData.effectId; }
-        public string effectName { get => _effectData.effectName; }
+        public int id { get => _effectData.id; }
+        public string name { get => _effectData.name; }
         public string effectDesc { get => effectDesc; }
         public int rounds { get; set; }
         public EffectType effectType { get; set; }
+        public int behaviourId { get; set; }
 
-        public Effect(EffectData effectData) {
+        public Effect(EffectData effectData, int behaviourId) {
             this._effectData = effectData;
             this.rounds = effectData.rounds;
             this.effectType = effectData.effectType;
+            this.behaviourId = behaviourId;
         }
 
-        public virtual void Trigger(int targetId) {
-            this.rounds--;
-            Debug.Log($"Effect_{effectId} -> Entity_{targetId}");
+        public virtual void Trigger() {
+            Debug.Log($"Effect_{id} -> Entity_{behaviourId}");
         }
     }
 }
