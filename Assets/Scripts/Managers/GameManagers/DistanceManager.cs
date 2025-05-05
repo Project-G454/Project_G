@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DistanceManager : MonoBehaviour
+public class DistanceManager : MonoBehaviour, IManager
 {
     public static DistanceManager Instance;
 
@@ -19,10 +20,18 @@ public class DistanceManager : MonoBehaviour
 
     private List<GameObject> currentHighlights = new();
 
-    private void Awake()
-    {
-        Instance = this;
+    void IManager.Init() {
         warningText?.gameObject.SetActive(false);
+    }
+
+    void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ShowReachableTiles(Vector2Int origin)
@@ -39,7 +48,8 @@ public class DistanceManager : MonoBehaviour
                     Vector2Int tilePos = origin + new Vector2Int(dx, dy);
                     Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
 
-                    GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity, highlightParent);
+                    GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity);
+                    highlight.transform.SetParent(highlightParent);
 
                     // 自動設定 Sorting Order 讓格子蓋在地圖上
                     SpriteRenderer sr = highlight.GetComponent<SpriteRenderer>();

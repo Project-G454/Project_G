@@ -2489,6 +2489,7 @@ GameObject:
   - component: {fileID: 1802369979}
   - component: {fileID: 1802369980}
   - component: {fileID: 1802369981}
+  - component: {fileID: 1802369982}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -2656,6 +2657,24 @@ MonoBehaviour:
   diceParent: {fileID: 1130947087}
   generatePoint: {fileID: 219401651}
   animationEndCount: 0
+--- !u!114 &1802369982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802369968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8e3db165d06a84cb24a40f09a3c1b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 5
+  highlightTilePrefab: {fileID: 8361880298418746685, guid: b0a9b1282a4cb4c44bb2452135161256,
+    type: 3}
+  highlightParent: {fileID: 270207623}
+  warningText: {fileID: 0}
+  highlightOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1808384829
 GameObject:
   m_ObjectHideFlags: 0
