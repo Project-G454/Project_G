@@ -123,7 +123,6 @@ namespace Core.Managers {
 
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
-                // _diceManager.Roll(1, 6, 2);
 
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();

@@ -1,4 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Cards.Handlers;
 using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Descriptions;
@@ -13,7 +17,9 @@ namespace Core.Managers {
         public GameObject descPrefab;
         public Transform descParent;
         private readonly Dictionary<int, DescriptionBehaviour> _descriptions = new();
+        private List<int> _showing = new();
         private bool _is_initialized = false; // 避免初始化兩次的保護
+        private Coroutine _clearCoroutine;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -63,6 +69,30 @@ namespace Core.Managers {
             foreach (int id in ids) {
                 DescriptionBehaviour db = GetById(id);
                 db.view.Show();
+                _showing.Add(id);
+            }
+        }
+
+        public void ShowOnly(int[] ids) {
+            foreach (int id in ids) {
+                if (!_showing.Contains(id)) {
+                    DescriptionBehaviour db = GetById(id);
+                    db.view.Show();
+                    _showing.Add(id);
+                }
+            }
+
+            List<int> readyToRemove = new();
+            foreach (int id in _showing) {
+                if (!ids.Contains(id)) {
+                    DescriptionBehaviour db = GetById(id);
+                    db.view.Hide();
+                    readyToRemove.Add(id);
+                }
+            }
+
+            foreach (int id in readyToRemove) {
+                _showing.Remove(id);
             }
         }
 
@@ -70,6 +100,7 @@ namespace Core.Managers {
             foreach (var db in _descriptions) {
                 db.Value.view.Hide();
             }
+            _showing.Clear();
         }
     }
 }
