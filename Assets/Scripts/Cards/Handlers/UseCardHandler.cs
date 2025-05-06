@@ -2,6 +2,7 @@ using Cards.Data;
 using Core.Entities;
 using Core.Managers.Cards;
 using Entities;
+using Systems.Interactions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,10 +31,10 @@ namespace Cards.Handlers {
             // UI to World Raytrace
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
-                var receiver = hit.collider.GetComponent<UseCardReceiver>();
-                if (receiver == null) return null;
+                Receiver receiver = hit.collider.GetComponent<Receiver>();
+                if (receiver == null || !receiver.HasReceiver(ReceiverType.Card)) return null;
 
-                EntityBehaviour entityBehaviour = receiver.GetComponent<EntityBehaviour>();
+                EntityBehaviour entityBehaviour = hit.collider.GetComponent<EntityBehaviour>();
                 if (entityBehaviour == null) return null;
 
                 int targetId = entityBehaviour.entity.entityId;

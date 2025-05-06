@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bouncing Wall
+  - Card Receiver
   layers:
   - Default
   - TransparentFX

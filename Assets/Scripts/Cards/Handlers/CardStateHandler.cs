@@ -1,19 +1,42 @@
-using System;
 using System.Collections;
 using Cards.Animations;
 using Cards.Data;
-using Core.Entities;
 using Core.Managers;
 using Core.Managers.Cards;
-using Entities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Cards.Handlers {
     class CardStateHandler: MonoBehaviour {
+        // --- Serialize Fields ---
+        [SerializeField] private float _zoomInScale = 1.2f;
+        [SerializeField] private float _transformY = 140f;
+        [SerializeField] private float _dodgeGap = 40f;
+        
+        // --- Classes ---
+        private CardEventHandler _eventHandler;
+        private CardView _view;
+        private CanvasGroup _canvasGroup;
+        private DescriptionManager _descriptionManager;
+        private CardBehaviour _cardBehaviour;
+        private UseCardHandler _useCardHandler;
+
+        // --- arguments ---
         private CardState _currentState = CardState.Idle;
         private CardState _prevState = CardState.Idle;
+
+        public void Init() {
+            _view = GetComponent<CardView>();
+            _eventHandler = GetComponent<CardEventHandler>();
+            _cardBehaviour = GetComponent<CardBehaviour>();
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _useCardHandler = GetComponent<UseCardHandler>();
+            _descriptionManager = DescriptionManager.Instance;
+        }
+
+        void Start() {
+            Init();
+        }
 
         void Update() {
             switch (_currentState) {
@@ -53,10 +76,8 @@ namespace Cards.Handlers {
             if (_currentState != CardState.Dodge && newState != CardState.Dodge) {
                 Debug.Log($"{_currentState} -> {newState}");
             }
-            _ExitState(_currentState);
             _prevState = _currentState;
             _currentState = newState;
-            _EnterState(newState);
         }
 
         public CardState GetState() {
@@ -67,126 +88,94 @@ namespace Cards.Handlers {
             return _prevState;
         }
 
-
-        private void _ExitState(CardState state) {
-            // Debug.Log($"Exit State: {state}");
-        }
-
-        private void _EnterState(CardState state) {
-            // Debug.Log($"Enter State: {state}");
-        }
-
         private void _HandleDodge() {
-            Transform cardTransform = GetComponent<Transform>();
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            CanvasGroup cg = GetComponent<CanvasGroup>();
-            if (cardTransform == null || eventHandler == null) return;
+            _canvasGroup.blocksRaycasts = false;
+            int hovering = _eventHandler.GetHoveringCardIdx();
+            if (hovering != -1) {
+                CardAnimation.StopAllAnimation(gameObject);
+                CardAnimation.Dodge(transform.parent, hovering, CardManager.cardList, _dodgeGap);
+            }
 
-            cg.blocksRaycasts = false;
-            int hovering = eventHandler.GetHoveringCardIdx();
-            if (hovering != -1) CardAnimation.Dodge(cardTransform.parent, hovering, CardManager.cardList);
-
-            if (!eventHandler.IsAnyCardHovering()) SetState(CardState.Idle);
+            if (!_eventHandler.IsAnyCardHovering()) SetState(CardState.Idle);
         }
 
         private void _HandleIdle() { 
-            /* 檢查滑鼠是否進入 → Hover */ 
-            CardView view = GetComponent<CardView>();
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            CanvasGroup cg = GetComponent<CanvasGroup>();
-            if (eventHandler == null || view == null) return;
-
+            /* 檢查滑鼠是否進入 → Hover */
             StartCoroutine(_DelayClear());
-            cg.blocksRaycasts = !eventHandler.IsAnyCardHovering();
+            _canvasGroup.blocksRaycasts = !_eventHandler.IsAnyCardHovering();
+
+            CardAnimation.StopAllAnimation(gameObject);
             CardAnimation.ZoomOut(gameObject);
-            CardAnimation.MoveTo(gameObject, view.GetInitialPosition());
+            CardAnimation.MoveTo(gameObject, _view.GetInitialPosition());
             CardAnimation.ResetSibling(gameObject);
             CardAnimation.SetAlpha(gameObject, 1f);
 
-            if (eventHandler.IsPointerEnter()) SetState(CardState.Hover);
-            else if (eventHandler.IsAnyCardHovering()) SetState(CardState.Dodge);
+            if (_eventHandler.IsPointerEnter()) SetState(CardState.Hover);
+            else if (_eventHandler.IsAnyCardHovering()) SetState(CardState.Dodge);
         }
 
         private void _HandleHover() { 
-            /* 檢查點擊 → Active, 移開 → Idle */ 
-            CardView view = GetComponent<CardView>();
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            DescriptionManager descriptionManager = DescriptionManager.Instance;
-            CardBehaviour cb = GetComponent<CardBehaviour>();
-            if (eventHandler == null || view == null || cb == null) return;
-
-            CardAnimation.ZoomIn(gameObject);
-            CardAnimation.MoveTo(gameObject, view.GetInitialPosition() + new Vector3(0f, 20f, 0f));
+            /* 檢查點擊 → Active, 移開 → Idle */
+            CardAnimation.StopAllAnimation(gameObject);
+            CardAnimation.ZoomIn(gameObject, _zoomInScale);
+            CardAnimation.MoveTo(gameObject, _view.GetInitialPosition() + new Vector3(0f, _transformY, 0f));
             CardAnimation.SendToFront(gameObject);
-            Card card = cb.card;
+            Card card = _cardBehaviour.card;
             
-            descriptionManager.ShowOnly(card.desctiptionIds);
+            _descriptionManager.ShowOnly(card.desctiptionIds);
 
-            if (eventHandler.IsPointerExit()) SetState(CardState.Idle);
-            else if (eventHandler.IsDragging()) SetState(CardState.Dragging);
-            else if (eventHandler.IsClicked()) SetState(CardState.Active);
+            if (_eventHandler.IsPointerExit()) SetState(CardState.Idle);
+            else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
+            else if (_eventHandler.IsClicked()) SetState(CardState.Active);
         }
 
         private void _HandleActive() { 
-            /* 檢查拖曳 → Dragging, 點擊 → Idle */ 
-            CardView view = GetComponent<CardView>();
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            if (eventHandler == null || view == null) return;
-
-            CardAnimation.ZoomIn(gameObject);
-            CardAnimation.MoveTo(gameObject, view.GetInitialPosition() + new Vector3(0f, 20f, 0f));
+            /* 檢查拖曳 → Dragging, 點擊 → Idle */
+            CardAnimation.StopAllAnimation(gameObject);
+            CardAnimation.ZoomIn(gameObject, _zoomInScale);
+            CardAnimation.MoveTo(gameObject, _view.GetInitialPosition() + new Vector3(0f, _transformY, 0f));
             CardAnimation.SendToFront(gameObject);
 
-            if (eventHandler.IsClicked()) SetState(CardState.Idle);
-            else if (eventHandler.IsDragging()) SetState(CardState.Dragging);
+            if (_eventHandler.IsClicked()) SetState(CardState.Idle);
+            else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
         }
 
         private void _HandleDragging() { 
-            /* 檢查釋放 → Idle, 指向目標 → Targeting */ 
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            RectTransform rt = GetComponent<RectTransform>();
-            Canvas canvas = GetComponentInParent<Canvas>();
-            CanvasGroup cg = GetComponent<CanvasGroup>();
-            if (eventHandler == null || rt == null || canvas == null) return;
-            if (_prevState != _currentState) cg.blocksRaycasts = false;
+            /* 檢查釋放 → Idle, 指向目標 → Targeting */
+            if (_prevState != _currentState) _canvasGroup.blocksRaycasts = false;
             
-            PointerEventData eventData = eventHandler.GetEventData();
+            PointerEventData eventData = _eventHandler.GetEventData();
             if (eventData == null) return;
 
+            CardAnimation.StopAllAnimation(gameObject);
             CardAnimation.MoveToPointer(gameObject, eventData);
             CardAnimation.SetAlpha(gameObject, 0.5f);
 
-            if (!eventHandler.IsDragging()) SetState(CardState.Idle);
-            else if (eventHandler.IsPointingAtTarget()) SetState(CardState.Targeting);
+            if (!_eventHandler.IsDragging()) SetState(CardState.Idle);
+            else if (_eventHandler.IsPointingAtTarget()) SetState(CardState.Targeting);
         }
 
         private void _HandleTargeting() {
-            /* 離開目標 → Dragging, 釋放 → Use */ 
-            CardEventHandler eventHandler = GetComponent<CardEventHandler>();
-            UseCardHandler useHandler = GetComponent<UseCardHandler>();
-            if (useHandler == null || eventHandler == null) return;
-            
-            int? targetId = useHandler.GetTargetId();
-            if (targetId != null) CardAnimation.MoveToEntity(gameObject, (int)targetId);
+            /* 離開目標 → Dragging, 釋放 → Use */
+            int? targetId = _useCardHandler.GetTargetId();
+            if (targetId != null) {
+                CardAnimation.StopAllAnimation(gameObject);
+                CardAnimation.MoveToEntity(gameObject, (int)targetId);
+            }
 
-            if (!eventHandler.IsPointingAtTarget()) SetState(CardState.Dragging);
-            else if (!eventHandler.IsDragging()) SetState(CardState.Use);
+            if (!_eventHandler.IsPointingAtTarget()) SetState(CardState.Dragging);
+            else if (!_eventHandler.IsDragging()) SetState(CardState.Use);
         }
 
         private void _HandleUse() { 
             /* 使用卡片的瞬間，完成 → Applying */
-            UseCardHandler useHandler = GetComponent<UseCardHandler>();
-            DescriptionManager descriptionManager = DescriptionManager.Instance;
-            if (useHandler == null) return;
-            descriptionManager.HideAll();
-            
-            useHandler.UseCard();
+            _descriptionManager.HideAll();
+            _useCardHandler.UseCard();
             SetState(CardState.Applying);
         }
 
         private void _HandleApplying() {
             /* 動畫、等待其他動作反應，完成 → Destroy */
-            // do something
             SetState(CardState.Destroy);
         }
         

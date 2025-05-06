@@ -9,7 +9,10 @@ using UnityEngine.EventSystems;
 
 namespace Cards.Animations {
     class CardAnimation {
-        private static Tween _dragTween;
+
+        public static void StopAllAnimation(GameObject cardObj) {
+            DOTween.Kill(cardObj);
+        }
 
         // 發牌
         public static void Deal(Transform cardParent, List<GameObject> cards) {
@@ -25,13 +28,13 @@ namespace Cards.Animations {
             return returnPos? cardPositions : null;
         }
 
-        public static void Dodge(Transform cardParent, int targetIdx, List<GameObject> cards) {
+        public static void Dodge(Transform cardParent, int targetIdx, List<GameObject> cards, float gap=20f) {
             for (int i=0; i<cards.Count(); i++) {
                 if (i == targetIdx) continue;
 
                 List<Vector3> cardPositions = CardPositionHelper.CalcCardPosition(cardParent, cards);
                 RectTransform cardRT = cards[i].GetComponent<RectTransform>();
-                float offset = 20f * Math.Max(0, 3 - Math.Abs(targetIdx - i));
+                float offset = gap * Math.Max(0, 3 - Math.Abs(targetIdx - i));
 
                 if (i < targetIdx) cardRT.DOMoveX(cardPositions[i].x - offset, 0.2f);
                 else cardRT.DOMoveX(cardPositions[i].x + offset, 0.2f);
@@ -43,7 +46,6 @@ namespace Cards.Animations {
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
 
-            cardTransform.DOKill();
             cardTransform.DOScale(view.GetInitialScale() * scaleFactor, duration);
         }
 
@@ -52,7 +54,6 @@ namespace Cards.Animations {
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
 
-            cardTransform.DOKill();
             cardTransform.DOScale(view.GetInitialScale(), duration);
         }
 
@@ -61,7 +62,6 @@ namespace Cards.Animations {
             Transform cardTransform = cardObj.GetComponent<Transform>();
             if (cardTransform == null || view == null) return;
 
-            cardTransform.DOKill();
             cardTransform.DOMove(position, duration);
         }
 

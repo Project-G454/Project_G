@@ -1,6 +1,7 @@
 using Cards.Data;
 using Cards.Helpers;
 using Core.Managers.Cards;
+using Systems.Interactions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -58,8 +59,8 @@ namespace Cards.Handlers {
             // UI to World Raytrace
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
-                var receiver = hit.collider.GetComponent<UseCardReceiver>();
-                if (receiver != null) return true;
+                Receiver receiver = hit.collider.GetComponent<Receiver>();
+                return receiver != null && receiver.HasReceiver(ReceiverType.Card);
             }
             return false;
         }

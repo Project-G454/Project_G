@@ -409,6 +409,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 852720099b151c24884bed650de6c677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hoverScale: 1.2
+  _hoverTransformY: 120
 --- !u!114 &550390974296077762
 MonoBehaviour:
   m_ObjectHideFlags: 0
