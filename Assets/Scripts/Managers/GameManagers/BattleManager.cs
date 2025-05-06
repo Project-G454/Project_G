@@ -5,9 +5,11 @@ using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Cards;
+using Core.Managers.Energy;
 using Entities;
 using Entities.Categories;
 using Entities.Handlers;
+using TMPro;
 using UnityEngine;
 
 namespace Core.Managers {
@@ -20,6 +22,8 @@ namespace Core.Managers {
         private MapManager _mapManager;
         private CameraManager _cameraManager;
         private DescriptionManager _descriptionManager;
+        private HoverUIManager _hoverUIManager;
+        private EnergyUIManager _energyUIManager;
         public Entity currentEntity;
         private int _id;
         private int _entityCount;
@@ -56,6 +60,8 @@ namespace Core.Managers {
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
+            _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
+            _energyUIManager = ManagerHelper.RequireManager(EnergyUIManager.Instance);
         }
 
         private void InitMap() {
@@ -111,6 +117,8 @@ namespace Core.Managers {
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
+
+                _energyUIManager.UnBind(currentEntity.energyManager);
             }
         }
 
@@ -119,8 +127,12 @@ namespace Core.Managers {
             currentEntity = _entityManager.GetEntity(_id);
             GameObject entityObject = _entityManager.GetEntityObject(_id);
             _cameraManager.SnapCameraTo(entityObject);
+            
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
             moveHandler.step = 1;
+
+            _energyUIManager.Bind(currentEntity.energyManager);
+            currentEntity.energyManager.RecoverEnergy();
             Debug.Log(currentEntity.entityId);
         }
     }
