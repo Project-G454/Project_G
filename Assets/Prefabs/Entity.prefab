@@ -131,10 +131,10 @@ GameObject:
   - component: {fileID: 2507832354074014931}
   - component: {fileID: 4077533291263753558}
   - component: {fileID: 2328070728321297548}
-  - component: {fileID: 7670593958927579765}
+  - component: {fileID: 8199501866691936732}
   m_Layer: 0
   m_Name: Entity
-  m_TagString: Untagged
+  m_TagString: Card Receiver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  step: 1
   movePoint: {fileID: 3825765803543626584}
 --- !u!65 &2328070728321297548
 BoxCollider:
@@ -203,7 +204,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2816466, y: 0.39544508, z: 1}
   m_Center: {x: -0.010668638, y: 0.02667153, z: 0}
---- !u!114 &7670593958927579765
+--- !u!114 &8199501866691936732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -212,6 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8023814419902361496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ee97971418740148bfa765ee5ccdf13, type: 3}
+  m_Script: {fileID: 11500000, guid: f27803bd7307f2345add7eb76e76c597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  receivers: 00000000

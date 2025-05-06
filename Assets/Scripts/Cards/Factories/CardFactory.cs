@@ -40,6 +40,7 @@ namespace Cards.Factories {
                 CardTypes.ATTACK => new AttackCardData(),
                 CardTypes.MAGIC => new MagicCardData(),
                 CardTypes.MOVE => new MoveCardData(),
+                _ => throw new System.NotImplementedException(),
             };
 
             cardData.id = id;

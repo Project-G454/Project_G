@@ -79,6 +79,11 @@ namespace Core.Managers.Cards {
                 }
 
                 CardAnimation.Deal(cardParent, cardList);
+
+                foreach (GameObject cardObj in cardList) {
+                    CardView view = cardObj.GetComponent<CardView>();
+                    view.RecordInitialState();
+                }
             }
         }
 
@@ -100,11 +105,13 @@ namespace Core.Managers.Cards {
 
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
-            cb.DestroySelf();                                // Destroy card GameObject and Remove card from GameObject list
+        }
 
+        public void SetNewCardPosition() {
             List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
             for (int i=0; i<cardList.Count(); i++) {
-                cardList[i].GetComponent<CardHoverEffect>().originalPosition = cardsPos[i];
+                CardView view = cardList[i].GetComponent<CardView>();
+                view.SetInitialState(cardsPos[i], view.GetInitialScale(), view.GetInitialSiblingIdx());
             }
         }
 
