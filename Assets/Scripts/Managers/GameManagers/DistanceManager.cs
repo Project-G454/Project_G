@@ -3,96 +3,98 @@ using Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DistanceManager : MonoBehaviour, IManager
-{
-    public static DistanceManager Instance;
+namespace Core.Managers {
+    public class DistanceManager : MonoBehaviour, IManager
+    {
+        public static DistanceManager Instance;
 
-    [Header("Settings")]
-    public int maxDistance = 5;
+        [Header("Settings")]
+        public int maxDistance = 5;
 
-    [Header("References")]
-    public GameObject highlightTilePrefab;
-    public Transform highlightParent;
-    public Text warningText;
+        [Header("References")]
+        public GameObject highlightTilePrefab;
+        public Transform highlightParent;
+        public Text warningText;
 
-    [Header("Optional")]
-    public Vector3 highlightOffset = Vector3.zero; // 👉 預設偏移為 0，可手動調整
+        [Header("Optional")]
+        public Vector3 highlightOffset = Vector3.zero; // 👉 預設偏移為 0，可手動調整
 
-    private List<GameObject> currentHighlights = new();
+        private List<GameObject> currentHighlights = new();
 
-    void IManager.Init() {
-        warningText?.gameObject.SetActive(false);
-    }
-
-    void Awake() {
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-            return;
+        void IManager.Init() {
+            warningText?.gameObject.SetActive(false);
         }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
+        void Awake() {
+            if (Instance != null && Instance != this) {
+                Destroy(gameObject);
+                return;
+            }
 
-    public void ShowReachableTiles(Vector2Int origin)
-    {
-        ClearHighlights();
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
-        for (int dx = -maxDistance; dx <= maxDistance; dx++)
+        public void ShowReachableTiles(Vector2Int origin)
         {
-            for (int dy = -maxDistance; dy <= maxDistance; dy++)
+            ClearHighlights();
+
+            for (int dx = -maxDistance; dx <= maxDistance; dx++)
             {
-                int dist = Mathf.Abs(dx) + Mathf.Abs(dy);
-                if (dist <= maxDistance)
+                for (int dy = -maxDistance; dy <= maxDistance; dy++)
                 {
-                    Vector2Int tilePos = origin + new Vector2Int(dx, dy);
-                    Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
-
-                    GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity);
-                    highlight.transform.SetParent(highlightParent);
-
-                    // 自動設定 Sorting Order 讓格子蓋在地圖上
-                    SpriteRenderer sr = highlight.GetComponent<SpriteRenderer>();
-                    if (sr != null)
+                    int dist = Mathf.Abs(dx) + Mathf.Abs(dy);
+                    if (dist <= maxDistance)
                     {
-                        sr.sortingOrder = 10;
-                    }
+                        Vector2Int tilePos = origin + new Vector2Int(dx, dy);
+                        Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
 
-                    currentHighlights.Add(highlight);
+                        GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity);
+                        highlight.transform.SetParent(highlightParent);
+
+                        // 自動設定 Sorting Order 讓格子蓋在地圖上
+                        SpriteRenderer sr = highlight.GetComponent<SpriteRenderer>();
+                        if (sr != null)
+                        {
+                            sr.sortingOrder = 10;
+                        }
+
+                        currentHighlights.Add(highlight);
+                    }
                 }
             }
         }
-    }
 
-    public void ClearHighlights()
-    {
-        foreach (var obj in currentHighlights)
+        public void ClearHighlights()
         {
-            if (obj != null) Destroy(obj);
+            foreach (var obj in currentHighlights)
+            {
+                if (obj != null) Destroy(obj);
+            }
+            currentHighlights.Clear();
         }
-        currentHighlights.Clear();
-    }
 
-    public bool IsTileInRange(Vector2Int origin, Vector2Int target)
-    {
-        int distance = Mathf.Abs(origin.x - target.x) + Mathf.Abs(origin.y - target.y);
-        return distance <= maxDistance;
-    }
-
-    public void ShowOutOfRangeWarning()
-    {
-        if (warningText != null)
+        public bool IsTileInRange(Vector2Int origin, Vector2Int target)
         {
-            warningText.text = "超出可移動範圍！";
-            warningText.color = Color.red;
-            warningText.gameObject.SetActive(true);
-            CancelInvoke(nameof(HideWarning));
-            Invoke(nameof(HideWarning), 2f);
+            int distance = Mathf.Abs(origin.x - target.x) + Mathf.Abs(origin.y - target.y);
+            return distance <= maxDistance;
         }
-    }
 
-    private void HideWarning()
-    {
-        warningText?.gameObject.SetActive(false);
+        public void ShowOutOfRangeWarning()
+        {
+            if (warningText != null)
+            {
+                warningText.text = "超出可移動範圍！";
+                warningText.color = Color.red;
+                warningText.gameObject.SetActive(true);
+                CancelInvoke(nameof(HideWarning));
+                Invoke(nameof(HideWarning), 2f);
+            }
+        }
+
+        private void HideWarning()
+        {
+            warningText?.gameObject.SetActive(false);
+        }
     }
 }
