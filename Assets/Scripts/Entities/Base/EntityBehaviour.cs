@@ -32,12 +32,5 @@ namespace Entities {
         void OnMouseExit() {
             HoverUIManager.Instance.Hide();
         }
-
-        void OnMouseDown() {
-            if (this.entity is Player player) {
-                Debug.Log(string.Join(", ", player.deckManager.deck.GetAllCards()));
-            }
-            entity.TakeDamage(10);
-        }
     }
 }

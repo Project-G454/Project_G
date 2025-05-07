@@ -2,6 +2,7 @@ using UnityEngine;
 using Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Core.Managers.Energy {
     /// <summary>
@@ -9,7 +10,7 @@ namespace Core.Managers.Energy {
     /// </summary>
     public class EnergyManager: MonoBehaviour, IManager {
         private int _energy;
-
+        
         public int energy {
             get { return _energy; }
             set {
@@ -19,13 +20,15 @@ namespace Core.Managers.Energy {
                     _energy = maxEnergy;
                 else
                     _energy = value;
+                
+                OnEnergyChanged?.Invoke(energy, maxEnergy); // 通知 UI
             }
         }
 
-        public int maxEnergy = 10;
+        public event Action<int, int> OnEnergyChanged;
+        public int maxEnergy = 3;
         public int defaultRecover = 3;
         public int recover = 3;
-        public int firstRoundExtra = 5;
         public List<IEnergySource> energySources = new();
 
         public void Init() { }
@@ -34,8 +37,8 @@ namespace Core.Managers.Energy {
         /// 戰鬥開始，初始化能量。
         /// </summary>
         public void InitializeEnergy() {
-            energy = firstRoundExtra;
             UpdateEnergyRecover();
+            RecoverEnergy();
         }
 
         /// <summary>
@@ -49,8 +52,6 @@ namespace Core.Managers.Energy {
         public void UpdateEnergyRecover() {
             int bonus = energySources.Sum(src => src.GetEnergyModifier());
             recover = defaultRecover + bonus;
-            // 串接 UI 顯示
-            //UI_Energy.Show(newRecover, energySources);
         }
 
         public void RegisterSource(IEnergySource source) {

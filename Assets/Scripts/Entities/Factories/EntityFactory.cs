@@ -16,6 +16,7 @@ namespace Entities.Factories
 
         private static readonly Dictionary<EntityClasses, List<int>> classDeck = new()
         {
+            //{ EntityClasses.WARRIOR, new List<int> { 101, 101, 101, 102, 102, 103, 103, 104, 105, 105, 106, 106, 107, 108, 109 } },
             { EntityClasses.WARRIOR, new List<int> { 1, 2, 3, 4, 5 } },
             { EntityClasses.RANGER, new List<int> { 6, 7, 8, 9, 10 } },
             { EntityClasses.ROGUE, new List<int> { 11, 12, 13, 14, 15 } },

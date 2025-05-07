@@ -7,11 +7,13 @@ using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Cards;
+using Core.Managers.Energy;
 using Core.Managers.Dices;
 using Dices;
 using Entities;
 using Entities.Categories;
 using Entities.Handlers;
+using TMPro;
 using UnityEngine;
 
 namespace Core.Managers {
@@ -27,6 +29,7 @@ namespace Core.Managers {
         private DiceManager _diceManager;
         private HoverUIManager _hoverUIManager;
         private DistanceManager _distanceManager;
+        private EnergyUIManager _energyUIManager;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -73,6 +76,8 @@ namespace Core.Managers {
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
             _diceManager = ManagerHelper.RequireManager(DiceManager.Instance);
             _distanceManager = ManagerHelper.RequireManager(DistanceManager.Instance);
+            _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
+            _energyUIManager = ManagerHelper.RequireManager(EnergyUIManager.Instance);
         }
 
         private void InitMap() {
@@ -135,6 +140,8 @@ namespace Core.Managers {
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
+
+                _energyUIManager.UnBind(currentEntity.energyManager);
             }
         }
 
@@ -147,6 +154,10 @@ namespace Core.Managers {
             
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
             moveHandler.step = 1;
+
+            _energyUIManager.Bind(currentEntity.energyManager);
+            currentEntity.energyManager.RecoverEnergy();
+            Debug.Log(currentEntity.entityId);
             
             _turn++;
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
