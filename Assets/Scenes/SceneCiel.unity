@@ -1782,16 +1782,12 @@ MonoBehaviour:
   _tilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
     type: 3}
   _obstacleTilePrefab: {fileID: 0}
+  floorColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  wallColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   _generateIrregularRoom: 1
   _iterations: 100
   _walkLength: 50
-  _startRandomlyEachIteration: 1
-  _roomCenter: {x: 0, y: 0}
   _boundaryOffset: 1
-  _generateMultipleRooms: 0
-  _roomCount: 3
-  _minRoomDistance: 5
-  _connectRooms: 1
   map: {fileID: 270207623}
 --- !u!114 &1802369977
 MonoBehaviour:
