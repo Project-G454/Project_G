@@ -4,7 +4,8 @@ namespace Cards.Data {
         ATTACK,
         MAGIC,
         MOVE,
-        DEFENCE
+        DEFENCE,
+        Heal
     }
 
     public enum CardRarity {
