@@ -21,6 +21,7 @@ namespace Entities {
         public List<Effect> effects = new();
         public DeckManager deckManager;
         public EnergyManager energyManager;
+        public Vector2 position;
 
         public event Action OnHpChanged;
 

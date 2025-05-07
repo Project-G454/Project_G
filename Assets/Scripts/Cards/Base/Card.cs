@@ -17,6 +17,7 @@ namespace Cards {
         public CardRarity rarity { get => _cardData.rarity; }               // 卡片稀有度
         public int cost { get; set; }                                       // 出牌時需要消耗的點數
         public CardTypes type { get; set; }                                 // 卡片類型 (攻擊牌、魔法牌 ... 等)
+        public int range {get => _cardData.range; }                         // 卡片範圍，0 代表只能用於自己
 
         /// <param name="data">卡片資料 <see cref="CardData"/></param>
         public Card(

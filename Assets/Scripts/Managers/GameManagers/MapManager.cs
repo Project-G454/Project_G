@@ -35,20 +35,26 @@ namespace Core.Managers {
             if (Input.GetMouseButtonDown(0)) {
                 if (EventSystem.current.IsPointerOverGameObject()) return;
                 Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 clickPosition = new Vector2(Mathf.RoundToInt(mouseWorldPos.x), Mathf.RoundToInt(mouseWorldPos.y));
-                
-                Tile selectedTile = _gridManager.GetTileAtPosition(clickPosition);
-                
-                if (selectedTile != null) {
-                    ClearAllHighlights();
-                    
-                    selectedTile.SetHighlight(true);
+                MoveTo(mouseWorldPos);
+            }
+        }
 
-                    int playerId = _battleManager.currentEntity.entityId;
-                    GameObject player = _entityManager.GetEntityObject(playerId);
-                    MoveHandler moveHandler = player.GetComponent<MoveHandler>();
-                    moveHandler.MoveToTile(selectedTile);
-                }
+        public void MoveTo(Vector2 targetPos) {
+            Vector2 clickPosition = new Vector2(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
+                
+            Tile selectedTile = _gridManager.GetTileAtPosition(clickPosition);
+            
+            if (selectedTile != null) {
+                ClearAllHighlights();
+                
+                selectedTile.SetHighlight(true);
+
+                int playerId = _battleManager.currentEntity.entityId;
+                GameObject player = _entityManager.GetEntityObject(playerId);
+                Entity entity = _entityManager.GetEntity(playerId);
+                entity.position = clickPosition;
+                MoveHandler moveHandler = player.GetComponent<MoveHandler>();
+                moveHandler.MoveToTile(selectedTile);
             }
         }
         

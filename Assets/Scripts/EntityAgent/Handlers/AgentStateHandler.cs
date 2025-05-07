@@ -1,11 +1,11 @@
 using System;
 using Agents.Data;
-using Agents.Helpers;
 using UnityEngine;
 
 namespace Agents.Handlers {
     public class AgentStateHandler : MonoBehaviour {
         private AgentState _currentState = AgentState.Waiting;
+        private AgentAction _actionState = AgentAction.End;
         private EntityAgent _agent;
 
         void Update() {
@@ -29,20 +29,25 @@ namespace Agents.Handlers {
 
         private void _HandleWaiting() {
             // 等到輪到自己行動
-            if (AgentStateHelper.IsAgentTurn(_agent)) ChangeState(AgentState.Planning);
+            if (_agent.IsAgentTurn()) ChangeState(AgentState.Planning);
         }
 
         private void _HandlePlanning() {
-            _agent.DecisionStrategy();
+            _actionState = _agent.DecisionStrategy();
+            if (!_agent.CanUseStrategy(_actionState)) {
+                _actionState = AgentAction.End;
+            }
             ChangeState(AgentState.Acting);
         }
 
         private void _HandleActing() {
-            _agent.strategy.Execute();
-            _EndTurn();
+            if (_actionState != AgentAction.End) {
+                _agent.ExecuteStrategy(_actionState);
+            }
+            _EndAction();
             ChangeState(AgentState.Waiting);
         }
 
-        private void _EndTurn() {}
+        private void _EndAction() {}
     }
 }

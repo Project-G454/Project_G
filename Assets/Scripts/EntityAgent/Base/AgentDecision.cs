@@ -1,5 +1,8 @@
 namespace Agents {
     public abstract class AgentDecision {
-        public void Execute() {}
+        protected EntityAgent _agent;
+        public virtual void Execute(EntityAgent agent) {
+            _agent = agent;
+        }
     }
 }

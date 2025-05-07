@@ -6,8 +6,9 @@ namespace Agents.Data {
     }
 
     public enum AgentAction {
-        Idle,
+        End,
         Move,
+        Escape,
         Attack,
         Heal
     }
