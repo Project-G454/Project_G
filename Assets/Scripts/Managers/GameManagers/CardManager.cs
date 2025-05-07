@@ -94,17 +94,23 @@ namespace Core.Managers.Cards {
             ResetCardObjects();
         }
 
-        public void UseCard(CardBehaviour cb, int targetId) {
-            if (isTurnFinished) return;
+        public bool UseCard(CardBehaviour cb, int targetId) {
+            if (isTurnFinished) return false;
 
             Entity currentEntity = _battleManager.currentEntity;
             if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) {
                 Debug.Log("Card not found!");
-                return;
+                return false;
+            }
+            if (currentEntity.energyManager.energy < cb.card.cost) {
+                Debug.Log("No energy!");
+                return false;
             }
 
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
+            currentEntity.energyManager.Remove(cb.card.cost);
+            return true;
         }
 
         public void SetNewCardPosition() {

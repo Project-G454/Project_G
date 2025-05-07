@@ -170,8 +170,8 @@ namespace Cards.Handlers {
         private void _HandleUse() { 
             /* 使用卡片的瞬間，完成 → Applying */
             _descriptionManager.HideAll();
-            _useCardHandler.UseCard();
-            SetState(CardState.Applying);
+            if (_useCardHandler.UseCard()) SetState(CardState.Applying);
+            else SetState(CardState.Idle);
         }
 
         private void _HandleApplying() {

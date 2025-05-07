@@ -19,12 +19,12 @@ namespace Cards.Handlers {
             Init();
         }
 
-        public void UseCard() {
+        public bool UseCard() {
             var targetId = GetTargetId();
-            if (targetId == null) return;
+            if (targetId == null) return false;
 
             Entity target = EntityManager.Instance.GetEntity((int)targetId);
-            _cardManager.UseCard(_cardBehaviour, target.entityId);
+            return _cardManager.UseCard(_cardBehaviour, target.entityId);
         }
 
         public int? GetTargetId() {

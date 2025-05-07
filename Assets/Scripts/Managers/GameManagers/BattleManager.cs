@@ -179,11 +179,12 @@ namespace Core.Managers {
 
                 List<int> dicePoints = _diceManager.Roll(1, 6, 2);
                 int point = dicePoints.Sum();
-                yield return new WaitUntil(() => _diceManager.IsAllAnimationStopped());
                 points[id] = point;
 
                 string displayPoints = string.Join("+", dicePoints);
                 Debug.Log($"Entity {id}: {displayPoints}={point}");
+                
+                yield return new WaitUntil(() => _diceManager.IsAllAnimationStopped());
             }
             _orderedIds = points.OrderByDescending(e => e.Value)
                                 .Select(e => e.Key)
