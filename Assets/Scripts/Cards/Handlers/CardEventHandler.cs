@@ -89,6 +89,7 @@ namespace Cards.Handlers {
             return (
                 state == CardState.Hover || 
                 state == CardState.Dragging ||
+                state == CardState.Active ||
                 state == CardState.Targeting
             );
         }

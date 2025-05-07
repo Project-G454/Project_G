@@ -52,6 +52,9 @@ TagManager:
   - name: Layer 3
     uniqueID: 4189426099
     locked: 0
+  - name: UI
+    uniqueID: 638209629
+    locked: 0
   - name: Map
     uniqueID: 2422609915
     locked: 0

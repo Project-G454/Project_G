@@ -120,8 +120,8 @@ namespace Cards.Handlers {
             CardAnimation.ZoomIn(gameObject, _zoomInScale);
             CardAnimation.MoveTo(gameObject, _view.GetInitialPosition() + new Vector3(0f, _transformY, 0f));
             CardAnimation.SendToFront(gameObject);
-            Card card = _cardBehaviour.card;
             
+            Card card = _cardBehaviour.card;
             _descriptionManager.ShowOnly(card.desctiptionIds);
 
             if (_eventHandler.IsPointerExit()) SetState(CardState.Idle);
@@ -135,6 +135,9 @@ namespace Cards.Handlers {
             CardAnimation.ZoomIn(gameObject, _zoomInScale);
             CardAnimation.MoveTo(gameObject, _view.GetInitialPosition() + new Vector3(0f, _transformY, 0f));
             CardAnimation.SendToFront(gameObject);
+
+            Card card = _cardBehaviour.card;
+            _descriptionManager.ShowOnly(card.desctiptionIds);
 
             if (_eventHandler.IsClicked()) SetState(CardState.Idle);
             else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
