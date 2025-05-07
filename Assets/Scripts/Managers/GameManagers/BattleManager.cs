@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Core.Entities;
 using Core.Helpers;
 using Core.Interfaces;
@@ -84,9 +85,11 @@ namespace Core.Managers {
                 EntityClasses.ROGUE
             );
 
-            _entityManager.CreateEntity(data1, new Vector3(0, 0, 0));
-            _entityManager.CreateEntity(data2, new Vector3(0, 0, 0));
-            _entityManager.CreateEntity(data3, new Vector3(0, 0, 0));
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(3);
+
+            _entityManager.CreateEntity(data1, spawnPositions[0]);
+            _entityManager.CreateEntity(data2, spawnPositions[1]);
+            _entityManager.CreateEntity(data3, spawnPositions[2]);
         }
 
         private void InitDeckAndEnergy() {

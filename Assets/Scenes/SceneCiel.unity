@@ -1556,8 +1556,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592741831}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1935.331}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1565,7 +1565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00024414062}
+  m_AnchoredPosition: {x: 203.70996, y: -158.82083}
   m_SizeDelta: {x: 0.00012207, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1592741833
@@ -1695,7 +1695,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030a606cfd547084ea55ad0813153697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSprites: []
 --- !u!114 &1802369970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1778,10 +1777,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea9371d7ec64b2aa1ea308fe2d3bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 18
-  _height: 10
+  _width: 40
+  _height: 30
   _tilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
     type: 3}
+  _obstacleTilePrefab: {fileID: 0}
+  _generateIrregularRoom: 1
+  _iterations: 100
+  _walkLength: 50
+  _startRandomlyEachIteration: 1
+  _roomCenter: {x: 0, y: 0}
+  _boundaryOffset: 1
+  _generateMultipleRooms: 0
+  _roomCount: 3
+  _minRoomDistance: 5
+  _connectRooms: 1
   map: {fileID: 270207623}
 --- !u!114 &1802369977
 MonoBehaviour:
