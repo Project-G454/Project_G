@@ -18,6 +18,7 @@ namespace Core.Managers {
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
 
+
         public Transform map;
         private Transform _cam;
 
@@ -77,83 +78,155 @@ namespace Core.Managers {
         public List<Vector3> GetSpawnPositions(int count) {
             List<Vector3> spawnPositions = new List<Vector3>();
             
+            // 基本檢查
             if (tiles == null || tiles.Count == 0) {
-                Debug.LogError("Map not generated yet, cannot get spawn positions");
+                Debug.LogError("地圖尚未生成，無法獲取生成位置");
                 return spawnPositions;
             }
 
+            // 獲取所有可用的邊緣位置
             List<Vector2> edgePositions = GetEdgeWalkablePositions();
             
+            // 檢查是否有足夠的位置
             if (edgePositions.Count < count) {
-                Debug.LogWarning($"Cannot find enough spawn positions, need {count}, but only have {edgePositions.Count}");
-                foreach (var pos in edgePositions) {
-                    spawnPositions.Add(new Vector3(pos.x, pos.y, 0));
-                }
-                return spawnPositions;
+                Debug.LogWarning($"找不到足夠的生成位置，需要 {count} 個，僅有 {edgePositions.Count} 個");
+                return ConvertToVector3(edgePositions);
             }
             
-            int randomStartIndex = Random.Range(0, edgePositions.Count);
-            Vector2 centerPosition = edgePositions[randomStartIndex];
+            // 設置距離參數
+            float minDistance = 2.0f;  // 最小距離
+            float maxDistance = 5.0f;  // 最大距離
+            
+            // 隨機選擇第一個位置
             List<Vector2> selectedPositions = new List<Vector2>();
-            selectedPositions.Add(centerPosition);
-            edgePositions.RemoveAt(randomStartIndex);
+            selectedPositions.Add(GetAndRemoveRandomPosition(edgePositions));
             
+            // 尋找其餘位置
             int maxAttempts = 100;
-            int attempts = 0;
+            for (int attempt = 0; attempt < maxAttempts && selectedPositions.Count < count && edgePositions.Count > 0; attempt++) {
+                // 尋找符合條件的位置
+                List<Vector2> validPositions = FindValidPositions(edgePositions, selectedPositions, minDistance, maxDistance);
+                
+                // 如果沒有完全符合的位置，僅考慮最小距離
+                if (validPositions.Count == 0) {
+                    validPositions = FindPositionsWithMinDistance(edgePositions, selectedPositions, minDistance);
+                }
+                
+                // 如果找到有效位置，添加一個隨機位置
+                if (validPositions.Count > 0) {
+                    int randomIndex = Random.Range(0, validPositions.Count);
+                    Vector2 selectedPos = validPositions[randomIndex];
+                    selectedPositions.Add(selectedPos);
+                    edgePositions.Remove(selectedPos);
+                } else {
+                    break; // 無法找到更多符合條件的位置
+                }
+            }
             
-            while (selectedPositions.Count < count && attempts < maxAttempts && edgePositions.Count > 0) {
-                attempts++;
+            // 如果位置不夠，添加最接近的位置
+            if (selectedPositions.Count < count) {
+                AddClosestPositions(ref selectedPositions, ref edgePositions, count);
+            }
+            
+            // 轉換為 Vector3 並返回
+            return ConvertToVector3(selectedPositions);
+        }
+
+        // 從列表中隨機獲取並移除一個位置
+        private Vector2 GetAndRemoveRandomPosition(List<Vector2> positions) {
+            int index = Random.Range(0, positions.Count);
+            Vector2 position = positions[index];
+            positions.RemoveAt(index);
+            return position;
+        }
+
+        // 查找同時滿足最小和最大距離要求的位置
+        private List<Vector2> FindValidPositions(List<Vector2> candidates, List<Vector2> existingPositions, float minDist, float maxDist) {
+            List<Vector2> validPositions = new List<Vector2>();
+            
+            foreach (Vector2 candidate in candidates) {
+                bool isValid = true;
+                bool hasOneInRange = false;
                 
-                Vector2 closestPosition = Vector2.zero;
-                float closestDistance = float.MaxValue;
-                int closestIndex = -1;
-                
-                for (int i = 0; i < edgePositions.Count; i++) {
-                    Vector2 pos = edgePositions[i];
+                foreach (Vector2 existing in existingPositions) {
+                    float distance = Vector2.Distance(candidate, existing);
                     
-                    float distance = Vector2.Distance(pos, centerPosition);
+                    if (distance < minDist) {
+                        isValid = false;
+                        break;
+                    }
                     
-                    if (distance <= 3.0f && distance < closestDistance) {
-                        closestDistance = distance;
-                        closestPosition = pos;
-                        closestIndex = i;
+                    if (distance <= maxDist) {
+                        hasOneInRange = true;
                     }
                 }
                 
-                if (closestIndex != -1) {
-                    selectedPositions.Add(closestPosition);
-                    edgePositions.RemoveAt(closestIndex);
-                } else {
-                    break;
+                if (isValid && hasOneInRange) {
+                    validPositions.Add(candidate);
                 }
             }
             
-            if (selectedPositions.Count < count) {
-                Debug.LogWarning($"Cannot find enough nearby positions, will use more distant positions");
+            return validPositions;
+        }
+
+        // 僅查找滿足最小距離要求的位置
+        private List<Vector2> FindPositionsWithMinDistance(List<Vector2> candidates, List<Vector2> existingPositions, float minDist) {
+            List<Vector2> validPositions = new List<Vector2>();
+            
+            foreach (Vector2 candidate in candidates) {
+                bool isFarEnough = true;
                 
-                edgePositions = GetEdgeWalkablePositions();
-                
-                foreach (var selected in selectedPositions) {
-                    edgePositions.Remove(selected);
+                foreach (Vector2 existing in existingPositions) {
+                    if (Vector2.Distance(candidate, existing) < minDist) {
+                        isFarEnough = false;
+                        break;
+                    }
                 }
                 
-                edgePositions.Sort((a, b) => {
-                    float distA = Vector2.Distance(a, centerPosition);
-                    float distB = Vector2.Distance(b, centerPosition);
-                    return distA.CompareTo(distB);
-                });
-                
-                while (selectedPositions.Count < count && edgePositions.Count > 0) {
-                    selectedPositions.Add(edgePositions[0]);
-                    edgePositions.RemoveAt(0);
+                if (isFarEnough) {
+                    validPositions.Add(candidate);
                 }
             }
             
-            foreach (var pos in selectedPositions) {
-                spawnPositions.Add(new Vector3(pos.x, pos.y, 0));
+            return validPositions;
+        }
+
+        // 添加最接近參考點的位置
+        private void AddClosestPositions(ref List<Vector2> selectedPositions, ref List<Vector2> candidates, int targetCount) {
+            // 重新獲取所有邊緣位置（如果需要）
+            if (candidates.Count == 0) {
+                candidates = GetEdgeWalkablePositions();
+                
+                // 移除已選位置
+                foreach (Vector2 selected in selectedPositions) {
+                    candidates.Remove(selected);
+                }
             }
             
-            return spawnPositions;
+            // 參考點為第一個選擇的位置
+            Vector2 referencePos = selectedPositions[0];
+            
+            // 根據距離排序
+            candidates.Sort((a, b) => {
+                float distA = Vector2.Distance(a, referencePos);
+                float distB = Vector2.Distance(b, referencePos);
+                return distA.CompareTo(distB);
+            });
+            
+            // 添加最接近的位置
+            while (selectedPositions.Count < targetCount && candidates.Count > 0) {
+                selectedPositions.Add(candidates[0]);
+                candidates.RemoveAt(0);
+            }
+        }
+
+        // 將 Vector2 列表轉換為 Vector3 列表
+        private List<Vector3> ConvertToVector3(List<Vector2> positions) {
+            List<Vector3> result = new List<Vector3>();
+            foreach (Vector2 pos in positions) {
+                result.Add(new Vector3(pos.x, pos.y, 0));
+            }
+            return result;
         }
 
         private List<Vector2> GetAllWalkablePositions() {

@@ -17,6 +17,7 @@ namespace Entities.Handlers {
         private bool isMoving = false;
         private bool _endMoving = true;
         private Vector2 _nextPosition;
+        private Vector2 _currentGridPosition;
 
         void Init() {
             _gridManager = GridManager.Instance;
@@ -27,7 +28,10 @@ namespace Entities.Handlers {
         void Start() {
             Init();
             _nextPosition = transform.position;
-            // movePoint.parent = null;
+            _currentGridPosition = _gridManager.WorldToGridPosition(transform.position);
+    
+            // 初始化時將位置設為不可行走
+            _gridManager.SetTileWalkable(_currentGridPosition, false);
         }
 
         void Update() {
@@ -39,13 +43,16 @@ namespace Entities.Handlers {
             transform.position = Vector3.MoveTowards(transform.position, _nextPosition, moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _nextPosition) <= 0.05f) {
-                if (_gridManager != null) {
-                    Vector2 gridPos = _gridManager.WorldToGridPosition(transform.position);
-                    Tile currentTile = _gridManager.GetTileAtPosition(gridPos);
-
-                    if (currentTile != null) {
-                        // Debug.Log($"角色位於格子: {currentTile.name}, 座標: ({gridPos.x}, {gridPos.y})");
-                    }
+                // 更新當前網格位置
+                Vector2 newGridPos = _gridManager.WorldToGridPosition(transform.position);
+                
+                // 只有在網格位置實際變化時才更新可行走狀態
+                if (newGridPos != _currentGridPosition) {
+                    _gridManager.SetTileWalkable(_currentGridPosition, true);
+                    
+                    _currentGridPosition = newGridPos;
+                    
+                    _gridManager.SetTileWalkable(_currentGridPosition, false);
                 }
 
                 // 如果還有路徑點，繼續移動
