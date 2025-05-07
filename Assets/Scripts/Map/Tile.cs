@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class Tile : MonoBehaviour {
-    [SerializeField] private Color baseColor, offsetColor;
     [SerializeField] private new SpriteRenderer renderer;
     [SerializeField] private GameObject highlight;
 
@@ -11,9 +10,7 @@ public class Tile : MonoBehaviour {
 
     public Vector2 GridPosition { get; private set; }
 
-    public void Init(bool isOffset, Vector2 gridPosition) {
-        renderer.color = isOffset ? offsetColor : baseColor;
-
+    public void Init(Vector2 gridPosition) {
         this.GridPosition = gridPosition;
     }
 

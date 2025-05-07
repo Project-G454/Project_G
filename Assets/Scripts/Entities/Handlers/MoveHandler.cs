@@ -26,6 +26,7 @@ namespace Entities.Handlers {
 
         void Start() {
             Init();
+            _nextPosition = transform.position;
             // movePoint.parent = null;
         }
 
