@@ -26,6 +26,7 @@ namespace Core.Managers {
         private DescriptionManager _descriptionManager;
         private DiceManager _diceManager;
         private HoverUIManager _hoverUIManager;
+        private DistanceManager _distanceManager;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -71,6 +72,7 @@ namespace Core.Managers {
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
             _diceManager = ManagerHelper.RequireManager(DiceManager.Instance);
+            _distanceManager = ManagerHelper.RequireManager(DistanceManager.Instance);
         }
 
         private void InitMap() {
