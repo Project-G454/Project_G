@@ -23,6 +23,7 @@ namespace Core.Managers {
         private CardManager _cardManager;
         private EffectManager _effectManager;
         private GridManager _gridManager;
+        private SpawnPositionManager _spawnPositionManager;
         private MapManager _mapManager;
         private CameraManager _cameraManager;
         private DescriptionManager _descriptionManager;
@@ -71,6 +72,7 @@ namespace Core.Managers {
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
             _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
+            _spawnPositionManager = ManagerHelper.RequireManager(SpawnPositionManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
@@ -106,8 +108,8 @@ namespace Core.Managers {
                 EntityClasses.ROGUE
             );
 
-            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(3);
-
+            List<Vector3> spawnPositions = _spawnPositionManager.GetSpawnPositions(3);
+    
             _entityManager.CreateEntity(data1, spawnPositions[0]);
             _entityManager.CreateEntity(data2, spawnPositions[1]);
             _entityManager.CreateEntity(data3, spawnPositions[2]);
