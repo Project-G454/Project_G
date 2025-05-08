@@ -13,11 +13,9 @@ namespace Core.Managers {
         [SerializeField] private Color floorColor, wallColor;
 
         [Header("Random Room")]
-        [SerializeField] private bool _generateIrregularRoom = true;
         [SerializeField] private int _iterations = 10;
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
-
 
         public Transform map;
         private Transform _cam;
@@ -45,32 +43,12 @@ namespace Core.Managers {
             // GenerateGrid();
         }
 
-        public void GenerateRectangularGrid() {
-            tiles = new Dictionary<Vector2, Tile>();
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    var spawnedTile = Instantiate(_tilePrefab, new Vector2(x, y), Quaternion.identity, map);
-                    spawnedTile.name = $"Tile {x} {y}";
-
-                    spawnedTile.Init(new Vector2(x, y));
-
-                    tiles[new Vector2(x, y)] = spawnedTile;
-                }
-            }
-
-            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
-        }
-
         public void GenerateGrid() {
             tiles = new Dictionary<Vector2, Tile>();
             
-            if (_generateIrregularRoom) {
-                Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
-                HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
-                CreateTilesFromFloorPositions(floorPositions); // 視覺化
-            } else {
-                GenerateRectangularGrid();
-            }
+            Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
+            HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
+            CreateTilesFromFloorPositions(floorPositions); // 視覺化
 
             _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         }
