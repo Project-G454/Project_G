@@ -2730,6 +2730,7 @@ GameObject:
   - component: {fileID: 1802369970}
   - component: {fileID: 1802369975}
   - component: {fileID: 1802369976}
+  - component: {fileID: 1802369984}
   - component: {fileID: 1802369977}
   - component: {fileID: 1802369978}
   - component: {fileID: 1802369972}
@@ -2834,10 +2835,10 @@ MonoBehaviour:
   _obstacleTilePrefab: {fileID: 0}
   floorColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   wallColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
-  _generateIrregularRoom: 1
-  _iterations: 100
-  _walkLength: 50
   _boundaryOffset: 1
+  _randomWalkData:
+    iterations: 100
+    walkLength: 50
   map: {fileID: 270207623}
 --- !u!114 &1802369977
 MonoBehaviour:
@@ -2943,6 +2944,20 @@ MonoBehaviour:
   highlightParent: {fileID: 402886713}
   warningText: {fileID: 0}
   highlightOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &1802369984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802369968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077bba427cecf41a498213c00f956553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minDistance: 2
+  _maxDistance: 5
 --- !u!1 &1808384829
 GameObject:
   m_ObjectHideFlags: 0
