@@ -14,19 +14,5 @@ namespace Agents.Strategy {
         }
 
         // --- helper functions ---
-        private Entity _FindNearestTarget() {
-            List<Entity> entities = EntityManager.Instance.GetEntityList();
-            float minDistance = 10;
-            Entity target = null;
-            foreach (Entity entity in entities) {
-                if (_agent.entity.entityId == entity.entityId) continue;
-                float distance = Vector2.Distance(_agent.entity.position, entity.position);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    target = entity;
-                }
-            }
-            return target;
-        }
     }
 }
