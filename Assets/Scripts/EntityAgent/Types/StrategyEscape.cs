@@ -23,7 +23,8 @@ namespace Agents.Strategies {
             Vector2 agentPos = _agent.entity.position;
             Queue<Vector2> q = new();
             HashSet<Vector2> visited = new();
-            q.Enqueue(targetPos);
+            Vector2 dv = agentPos - targetPos;
+            q.Enqueue(agentPos + dv);
 
             Vector2 res = agentPos;
             float resDistance = 0;
@@ -31,6 +32,7 @@ namespace Agents.Strategies {
             while (q.Count > 0) {
                 Vector2 curr = q.Dequeue();
                 visited.Add(curr);
+                Debug.Log($"Finding {curr}");
 
                 // 超出可移動範圍 -> 跳過
                 if (!DistanceHelper.InRange(curr, agentPos, maxDistance)) {
@@ -40,15 +42,14 @@ namespace Agents.Strategies {
                 // 在可移動範圍內，且不為障礙物 -> 可視為目的地
                 if (_IsWalkable(curr)) {
                     // 以距離較遠的格子為目的地
-                    float currDistance = Vector2.Distance(agentPos, curr);
+                    float currDistance = Vector2.Distance(targetPos, curr);
                     if (currDistance > resDistance) { 
                         res = curr;
                         resDistance = currDistance;
+                        // 如果已經是可走到的最大距離就直接 break
+                        if (Vector2.Distance(agentPos, curr) == maxDistance) break;
                     }
 
-                    // 如果已經是可走到的最大距離就直接 break
-                    if (currDistance == maxDistance) break;
-                    continue;
                 }
 
                 // 四向搜尋
@@ -71,7 +72,7 @@ namespace Agents.Strategies {
 
         private bool _IsWalkable(Vector2 pos) {
             Tile tile = GridManager.Instance.GetTileAtPosition(pos);
-            return tile.Walkable;
+            return tile != null && tile.Walkable;
         }
     }
 }

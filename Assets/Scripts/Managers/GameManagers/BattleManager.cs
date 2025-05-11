@@ -63,7 +63,7 @@ namespace Core.Managers {
         }
 
         public void BindAgents() {
-            GameObject enemy = _entityManager.GetEntityObject(3);
+            GameObject enemy = _entityManager.GetEntityObject(4);
             enemy.AddComponent<EntityAgent>();
         }
 
@@ -114,11 +114,19 @@ namespace Core.Managers {
                 EntityClasses.ROGUE
             );
 
-            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(3);
+            EntityData data4 = new EntityData(
+                100,
+                "Player4",
+                EntityTypes.PLAYER,
+                EntityClasses.WIZARD
+            );
+
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(4);
 
             _entityManager.CreateEntity(data1, spawnPositions[0]);
             _entityManager.CreateEntity(data2, spawnPositions[1]);
             _entityManager.CreateEntity(data3, spawnPositions[2]);
+            _entityManager.CreateEntity(data4, spawnPositions[3]);
         }
 
         private void InitDeckAndEnergy() {

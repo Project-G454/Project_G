@@ -10,8 +10,9 @@ namespace Agents.Strategies {
             base.Execute(agent);
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
             if (cardBehaviours.Count == 0) return;
-            int cardIdx = Random.Range(0, cardBehaviours.Count - 1);
+            int cardIdx = Random.Range(0, cardBehaviours.Count);
             CardBehaviour cardBehaviour = cardBehaviours[cardIdx];
+            Debug.Log($"Agent selected {cardBehaviour.card.cardName}");
 
             // use card
             CardManager.Instance.UseCard(cardBehaviour, agent.entity.entityId);

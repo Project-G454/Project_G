@@ -14,13 +14,13 @@ namespace Agents.Strategies {
             // pick a card
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
             if (cardBehaviours.Count == 0) return;
-            int cardIdx = Random.Range(0, cardBehaviours.Count - 1);
+            int cardIdx = Random.Range(0, cardBehaviours.Count);
             CardBehaviour cardBehaviour = cardBehaviours[cardIdx];
 
             // choose a target
             List<int> targetIds = _GetReachableEntityIds(cardBehaviour.card.range);
             if (targetIds.Count == 0) return;
-            int targetIdx = Random.Range(0, targetIds.Count - 1);
+            int targetIdx = Random.Range(0, targetIds.Count);
             int targetId = targetIds[targetIdx];
 
             // use card
@@ -47,7 +47,10 @@ namespace Agents.Strategies {
             List<int> Ids = new();
             List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
             foreach (Entity target in players) {
-                if (DistanceHelper.InRange(_agent.entity.position, target.position, range)) {
+                if (
+                    DistanceHelper.InRange(_agent.entity.position, target.position, range) &&
+                    !target.IsDead()
+                ) {
                     Ids.Add(target.entityId);
                 }
             }

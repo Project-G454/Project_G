@@ -60,7 +60,7 @@ namespace Agents.Handlers {
             if (_actionState != AgentAction.End) {
                 _agent.ExecuteStrategy(_actionState);
             }
-            _EndAction();
+            else _EndAction();
             ChangeState(AgentState.Waiting);
         }
 

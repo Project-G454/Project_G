@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Attack Card 4
+  m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
+  m_Name: Heal Card 1
   m_EditorClassIdentifier: 
-  id: 4
-  cardName: Attack 4
-  description: Attack Card Test
-  desctiptionIds: 0100000003000000
+  id: 16
+  cardName: Heal 1
+  description: Heal Card Test
+  desctiptionIds: 
   classes: 00000000
-  rarity: 1
+  rarity: 0
   cost: 1
-  range: 3
-  damage: 20
+  range: 0
+  healingAmount: 10

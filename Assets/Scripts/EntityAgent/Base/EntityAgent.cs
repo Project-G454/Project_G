@@ -10,6 +10,7 @@ using Core.Entities;
 using Core.Managers;
 using Core.Managers.Cards;
 using Entities;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Agents {
@@ -47,7 +48,8 @@ namespace Agents {
             }
             else {
                 if (IsAttackCardUsable()) return AgentAction.Attack;
-                else return AgentAction.Move;
+                else if (HasResource() && !HasReachablePlayer(1)) return AgentAction.Move;
+                else return AgentAction.End;
             }
         }
 
