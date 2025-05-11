@@ -15,6 +15,8 @@ using Entities.Categories;
 using Entities.Handlers;
 using TMPro;
 using UnityEngine;
+using Agents;
+using Agents.Handlers;
 
 namespace Core.Managers {
     public class BattleManager: MonoBehaviour, IManager {
@@ -60,8 +62,14 @@ namespace Core.Managers {
             }
         }
 
+        public void BindAgents() {
+            GameObject enemy = _entityManager.GetEntityObject(3);
+            enemy.AddComponent<EntityAgent>();
+        }
+
         private void Start() {
             Init();
+            BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -120,12 +128,19 @@ namespace Core.Managers {
             }
         }
 
+        public void UnlockAgent() {
+            GameObject entityObj = _entityManager.GetEntityObject(currentEntity.entityId);
+            var agent = entityObj.GetComponent<AgentStateHandler>();
+            if (agent != null) agent.Unlock();
+        }
+
         public IEnumerator GameLoop() {
             while (true) {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
-                    yield return InitializeTurnOrder();
+                    currentEntity = null;
+                    // yield return InitializeTurnOrder();
                 }
 
                 NextPlayer();
@@ -136,6 +151,7 @@ namespace Core.Managers {
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
                 Debug.Log("Card Phase");
+                UnlockAgent();
                 _cardManager.StartTurn();
                 yield return new WaitUntil(() => _cardManager.isTurnFinished);
 
@@ -165,7 +181,7 @@ namespace Core.Managers {
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
         }
 
-        public IEnumerator InitializeTurnOrder() {
+        public IEnumerator InitTurnOrder() {
             Dictionary<int, int> points = new();
             foreach (int id in _orderedIds) {
                 GameObject entityObj = _entityManager.GetEntityObject(id);

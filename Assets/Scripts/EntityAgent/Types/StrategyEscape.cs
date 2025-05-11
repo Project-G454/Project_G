@@ -6,11 +6,11 @@ using Core.Managers;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategy {
-    class StrategyEscape: AgentDecision {
+namespace Agents.Strategies {
+    class StrategyEscape: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
-            Entity target = _FindNearestTarget();
+            Entity target = _FindNearestPlayer();
             if (target == null) return;
             Vector2 bestPos = _FindBestPosition(target.position, 5);
             MapManager.Instance.MoveTo(bestPos);

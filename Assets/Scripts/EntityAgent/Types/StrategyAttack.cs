@@ -6,8 +6,8 @@ using Core.Managers.Cards;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategy {
-    class StrategyAttack: AgentDecision {
+namespace Agents.Strategies {
+    class StrategyAttack: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
 
@@ -32,10 +32,10 @@ namespace Agents.Strategy {
             // 找出可以使用的攻擊牌 (Attack/Magic)
             List<CardBehaviour> cardBehaviours = new();
             foreach (GameObject cardObj in CardManager.cardList) {
-                Card card = cardObj.GetComponent<Card>();
                 CardBehaviour cardBehaviour = cardObj.GetComponent<CardBehaviour>();
+                Card card = cardBehaviour.card;
                 if (cardBehaviour == null) continue;
-                if (AgentCardHelper.IsAttackCard(card) && _agent.CanUseCard(card) && _agent.HasReachableEntity(card.range)) {
+                if (AgentCardHelper.IsAttackCard(card) && _agent.CanUseCard(card) && _agent.HasReachablePlayer(card.range)) {
                     cardBehaviours.Add(cardBehaviour);
                 }
             }
@@ -45,8 +45,8 @@ namespace Agents.Strategy {
         private List<int> _GetReachableEntityIds(int range) {
             // 找出可以攻擊的實體
             List<int> Ids = new();
-            foreach (Entity target in EntityManager.Instance.GetEntityList()) {
-                if (_agent.entity.entityId == target.entityId) continue;
+            List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
+            foreach (Entity target in players) {
                 if (DistanceHelper.InRange(_agent.entity.position, target.position, range)) {
                     Ids.Add(target.entityId);
                 }
