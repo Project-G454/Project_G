@@ -15,7 +15,7 @@ namespace Agents.Strategies {
             Debug.Log($"Agent selected {cardBehaviour.card.cardName}");
 
             // use card
-            CardManager.Instance.UseCard(cardBehaviour, agent.entity.entityId);
+            base._UseCard(cardBehaviour, agent.entity.entityId);
         }
 
         private List<CardBehaviour> _GetUsableCards() {

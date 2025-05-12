@@ -24,7 +24,7 @@ namespace Agents.Strategies {
             int targetId = targetIds[targetIdx];
 
             // use card
-            CardManager.Instance.UseCard(cardBehaviour, targetId);
+            base._UseCard(cardBehaviour, targetId);
         }
 
         // --- helper functions ---

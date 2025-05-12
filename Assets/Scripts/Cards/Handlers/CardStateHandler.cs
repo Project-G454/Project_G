@@ -73,9 +73,9 @@ namespace Cards.Handlers {
 
         public void SetState(CardState newState) {
             if (_currentState == newState) return;
-            if (_currentState != CardState.Dodge && newState != CardState.Dodge) {
-                Debug.Log($"{_currentState} -> {newState}");
-            }
+            // if (_currentState != CardState.Dodge && newState != CardState.Dodge) {
+            //     Debug.Log($"{_currentState} -> {newState}");
+            // }
             _prevState = _currentState;
             _currentState = newState;
         }

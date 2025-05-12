@@ -10,8 +10,9 @@ namespace Agents.Strategies {
             base.Execute(agent);
             Entity target = _FindNearestPlayer();
             if (target == null) return;
-            Debug.Log($"Agent target to Player_{target.entityId}, Pos: {target.position}");
-            MapManager.Instance.MoveTo(target.position);
+            Vector2 bestPos = base._FindBestPosition(target.position, 5);
+            Debug.Log($"Agent trying move to Player_{target.entityId}, Pos: {bestPos}");
+            MapManager.Instance.MoveTo(bestPos);
         }
 
         // --- helper functions ---

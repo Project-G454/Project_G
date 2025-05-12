@@ -19,6 +19,7 @@ namespace Agents {
         public AgentStrategy strategy;
         private AgentStateHandler _agentStateHandler;
         private bool _isBinded = false;
+        public bool canMove = true;
 
         public void Start() {
             Bind();
@@ -37,19 +38,32 @@ namespace Agents {
             _isBinded = true;
         }
 
+        public void ResetState() {
+            canMove = true;
+        }
+
         public AgentAction DecisionStrategy() {
             const int ESCAPE_RANGE = 5;
 
-            if (!HasResource()) return AgentAction.End;
+            if (!HasResource()) {
+                Debug.Log("No Resource");
+                return AgentAction.End;
+            }
             else if (LowHP(0.5f)) {
-                if (HasReachablePlayer(ESCAPE_RANGE)) return AgentAction.Escape;
+                if (HasReachablePlayer(ESCAPE_RANGE) && canMove) return AgentAction.Escape;
                 else if (IsHealCardUsable()) return AgentAction.Heal;
-                else return AgentAction.End;
+                else {
+                    Debug.Log("Can not use Heal Card");
+                    return AgentAction.End;
+                }
             }
             else {
                 if (IsAttackCardUsable()) return AgentAction.Attack;
                 else if (HasResource() && !HasReachablePlayer(1)) return AgentAction.Move;
-                else return AgentAction.End;
+                else {
+                    Debug.Log("Can not use Attack Card");
+                    return AgentAction.End;
+                }
             }
         }
 
@@ -106,7 +120,7 @@ namespace Agents {
                     if (!HasResource()) return false;
                     break;
                 case AgentAction.Escape:
-                    if (!HasResource()) return false;
+                    if (!HasResource() || !canMove) return false;
                     break;
             }
             return true;
@@ -149,7 +163,7 @@ namespace Agents {
         }
 
         public bool CanUseCard(Card card) {
-            return card.cost < entity.energyManager.energy;
+            return card.cost <= entity.energyManager.energy;
         }
     }
 }

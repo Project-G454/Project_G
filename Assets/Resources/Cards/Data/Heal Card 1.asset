@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Heal Card Test
   desctiptionIds: 
   classes: 00000000
-  rarity: 0
+  rarity: 3
   cost: 1
   range: 0
   healingAmount: 10

@@ -1,6 +1,7 @@
 using System;
 using Agents.Data;
 using Core.Managers.Cards;
+using Entities.Handlers;
 using UnityEngine;
 
 namespace Agents.Handlers {
@@ -38,7 +39,7 @@ namespace Agents.Handlers {
         }
 
         private void ChangeState(AgentState newState) {
-            Debug.Log($"Agent state: {_currentState} → {newState}");
+            // Debug.Log($"Agent state: {_currentState} → {newState}");
             _currentState = newState;
         }
 
@@ -49,7 +50,9 @@ namespace Agents.Handlers {
 
         private void _HandlePlanning() {
             _actionState = _agent.DecisionStrategy();
+            Debug.Log($"Agent Select Action: {_actionState}");
             if (!_agent.CanUseStrategy(_actionState)) {
+                Debug.Log($"Action {_actionState} error");
                 _actionState = AgentAction.End;
             }
             ChangeState(AgentState.Acting);
@@ -57,15 +60,22 @@ namespace Agents.Handlers {
 
         private void _HandleActing() {
             Debug.Log($"Agent Action: {_actionState}");
-            if (_actionState != AgentAction.End) {
-                _agent.ExecuteStrategy(_actionState);
+            _agent.ExecuteStrategy(_actionState);
+
+            if (!IsMoving()) {
+                if (_actionState == AgentAction.End) _EndAction();
+                ChangeState(AgentState.Waiting);
             }
-            else _EndAction();
-            ChangeState(AgentState.Waiting);
+        }
+
+        private bool IsMoving() {
+            MoveHandler moveHandler = GetComponent<MoveHandler>();
+            return moveHandler != null && moveHandler.isMoving;
         }
 
         private void _EndAction() {
             if (!CardManager.Instance.isTurnFinished) {
+                _agent.ResetState();
                 CardManager.Instance.EndTurn();
                 Lock();
             }

@@ -717,7 +717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CardAssets_16
+      name: Card_Type_Heal
       rect:
         serializedVersion: 2
         x: 466
@@ -1399,7 +1399,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CardAssets_47
+      name: Card_Asset_40
       rect:
         serializedVersion: 2
         x: 493
@@ -2232,7 +2232,6 @@ TextureImporter:
       CardAssets_13: -664327047
       CardAssets_14: 582076787
       CardAssets_15: -1987393811
-      CardAssets_16: -1757635165
       CardAssets_17: 1151939665
       CardAssets_18: -1602328573
       CardAssets_19: 504294984
@@ -2256,7 +2255,6 @@ TextureImporter:
       CardAssets_41: 664972446
       CardAssets_42: 484281625
       CardAssets_46: 1533233389
-      CardAssets_47: -25610926
       CardAssets_48: 1444177010
       CardAssets_49: -150019795
       CardAssets_50: -1662588414
@@ -2290,6 +2288,7 @@ TextureImporter:
       CardAssets_83: -930931130
       CardAssets_84: 457275506
       CardAssets_9: -1657403942
+      Card_Asset_40: -25610926
       Card_Background_1: 2016145113
       Card_Background_2: -844312336
       Card_Background_3: -1630496528
@@ -2309,6 +2308,7 @@ TextureImporter:
       Card_Title_3: -169562485
       Card_Type_ATTACK: -923797468
       Card_Type_DEFENCE: 344846671
+      Card_Type_Heal: -1757635165
       Card_Type_MAGIC: -1547991054
       Card_Type_MOVE: 983965485
   mipmapLimitGroupName: 

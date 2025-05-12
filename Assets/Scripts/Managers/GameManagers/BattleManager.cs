@@ -63,13 +63,17 @@ namespace Core.Managers {
         }
 
         public void BindAgents() {
-            GameObject enemy = _entityManager.GetEntityObject(4);
-            enemy.AddComponent<EntityAgent>();
+            GameObject enemy1 = _entityManager.GetEntityObject(1);
+            enemy1.AddComponent<EntityAgent>();
+            GameObject enemy2 = _entityManager.GetEntityObject(2);
+            enemy2.AddComponent<EntityAgent>();
+            GameObject enemy3 = _entityManager.GetEntityObject(4);
+            enemy3.AddComponent<EntityAgent>();
         }
 
         private void Start() {
             Init();
-            BindAgents();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
