@@ -13,10 +13,7 @@ namespace Systems.Interactions
             target.TakeDamage(damage);
         }
 
-        public static void ApplyHeal(int targetId, int healingAmount) {
-            Entity target = EntityManager.Instance.GetEntity(targetId);
-            target.Heal(healingAmount);
-        }
+        public static void ApplyHeal(int targetId, int healing) {}
 
         public static void ApplyMove(int targetId, int step) {}
         

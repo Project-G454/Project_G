@@ -1,84 +1,71 @@
 using System.Collections.Generic;
 using System.Linq;
-using Agents.Data;
-using Agents.Handlers;
 using Agents.Helpers;
 using Core.Entities;
 using Core.Managers;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategies {
-    class StrategyEscape: AgentStrategy {
+namespace Agents.Strategy {
+    class StrategyEscape: AgentDecision {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
-            Entity player = _FindNearestPlayer();
-            if (player == null) return;
-            Vector2 targetPos = _FindBestEscapePosition(5);
-            Vector2 bestPos = base._FindBestPosition(targetPos, 5);
-            MapManager.Instance.MoveTo(bestPos);
-            if (bestPos == (Vector2)agent.transform.position) {
-                _agent.canMove = false;
-            }
+            Entity target = _FindNearestTarget();
+            if (target == null) return;
+            List<Vector2> bestPos = _FindBestPosition(target.position, 5);
+            MapManager.Instance.MoveTo(bestPos.First());
         }
 
         // --- helper functions ---
+        private Entity _FindNearestTarget() {
+            List<Entity> entities = EntityManager.Instance.GetEntityList();
+            float minDistance = 10;
+            Entity target = null;
+            foreach (Entity entity in entities) {
+                if (_agent.entity.entityId == entity.entityId) continue;
+                float distance = Vector2.Distance(_agent.entity.position, entity.position);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    target = entity;
+                }
+            }
+            return target;
+        }
 
-        private Vector2 _FindBestEscapePosition(int detectDistance) {
-            Vector2 agentPos = _agent.transform.position;
-            base.DebugDrawPoint(agentPos, Color.blue, 0.3f, 1f);
-
+        private List<Vector2> _FindBestPosition(Vector2 targetPos, int maxDistance) {
+            Vector2 agentPos = _agent.entity.position;
             Queue<Vector2> q = new();
             HashSet<Vector2> visited = new();
-
-            // 初始化
-            q.Enqueue(agentPos);
-            visited.Add(agentPos);
-
-            Vector2 res = agentPos;
-            float maxScore = 0;
+            q.Enqueue(targetPos);
+            List<Vector2> res = new();
 
             while (q.Count > 0) {
                 Vector2 curr = q.Dequeue();
-
-                // 超出地圖範圍 -> 跳過
-                if (!IsTile(curr)) {
-                    Debug.LogWarning($"{curr} is not tile");
+                visited.Add(curr);
+                if (!IsBlocked(curr)) {
+                    res.Add(curr);
                     continue;
                 }
 
-                // 在可移動範圍內，且不為障礙物 -> 可視為目的地
-                if (DistanceHelper.InRange(curr, agentPos, detectDistance) && _IsWalkable(curr)) {
-                    base.DebugDrawPoint(curr, Color.red, 0.2f, 1f);
-                    float currScore = calcScore(curr);
-
-                    if (currScore > maxScore && DistanceHelper.ManhattanDistance(agentPos, curr) <= detectDistance) {
-                        res = curr;
-                        maxScore = currScore;
-                    }
+                if (!visited.Contains(curr+Vector2.up) && DistanceHelper.InRange(curr+Vector2.up, agentPos, maxDistance)) {
+                    q.Enqueue(curr+Vector2.up);
                 }
-
-                // 搜尋四個方向
-                Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
-                foreach (Vector2 dir in directions) {
-                    Vector2 next = curr + dir;
-                    if (!visited.Contains(next)) {
-                        visited.Add(next);
-                        q.Enqueue(next);
-                    }
+                if (!visited.Contains(curr+Vector2.left) && DistanceHelper.InRange(curr+Vector2.left, agentPos, maxDistance)) {
+                    q.Enqueue(curr+Vector2.left);
+                }
+                if (!visited.Contains(curr+Vector2.down) && DistanceHelper.InRange(curr+Vector2.down, agentPos, maxDistance)) {
+                    q.Enqueue(curr+Vector2.down);
+                }
+                if (!visited.Contains(curr+Vector2.right) && DistanceHelper.InRange(curr+Vector2.right, agentPos, maxDistance)) {
+                    q.Enqueue(curr+Vector2.right);
                 }
             }
 
             return res;
         }
 
-        private float calcScore(Vector2 pos) {
-            float score = 0;
-            List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
-            foreach (Entity player in players) {
-                score += Vector2.Distance(player.position, pos);
-            }
-            return score;
+        private bool IsBlocked(Vector2 pos) {
+            return false;
         }
     }
 }

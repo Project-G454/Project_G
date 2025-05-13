@@ -65,9 +65,6 @@ namespace Core.Managers {
                     // 點其他格子：檢查範圍
                     if (DistanceManager.Instance.IsTileInRange(playerPos, clickedPos)) {
                         moveHandler.MoveToTile(selectedTile);
-                        Entity entity = _entityManager.GetEntity(playerId);
-                        entity.position = selectedTile.transform.position;
-                        Debug.Log($"Entity_{entity.entityId} Move to {entity.position}");
                         DistanceManager.Instance.ClearHighlights(); // ✅ 移動後清除綠格
                     } else {
                         DistanceManager.Instance.ShowOutOfRangeWarning();

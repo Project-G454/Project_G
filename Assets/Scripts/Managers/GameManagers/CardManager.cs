@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
@@ -6,7 +5,6 @@ using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
 using Cards.Helpers;
-using Core.Entities;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
@@ -100,19 +98,12 @@ namespace Core.Managers.Cards {
             if (isTurnFinished) return false;
 
             Entity currentEntity = _battleManager.currentEntity;
-            GameObject currObj = EntityManager.Instance.GetEntityObject(currentEntity.entityId);
-            GameObject targetObj = EntityManager.Instance.GetEntityObject(targetId);
             if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) {
                 Debug.Log("Card not found!");
                 return false;
             }
             if (currentEntity.energyManager.energy < cb.card.cost) {
                 Debug.Log("No energy!");
-                return false;
-            }
-            Vector2 dv = currObj.transform.position - targetObj.transform.position;
-            if (Math.Abs(dv.x) + Math.Abs(dv.y) > cb.card.range) {
-                Debug.Log("Out of card range!");
                 return false;
             }
 

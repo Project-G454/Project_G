@@ -1,5 +1,6 @@
 using Cards.Categories;
 using Cards.Data;
+using Entities;
 
 namespace Cards.Factories {
     public static class CardFactory {
@@ -23,13 +24,47 @@ namespace Cards.Factories {
                 case CardTypes.MOVE:
                     card = new MoveCard(cardData as MoveCardData);
                     break;
-                case CardTypes.Heal:
-                    card = new HealCard(cardData as HealCardData);
-                    break;
                 default:
                     break;
             }
             return card;
+        }
+
+        /// <summary>
+        /// 根據 id 回傳測試用的卡片資料。
+        /// </summary>
+        public static CardData GetFakeCardData(int id) {
+            CardTypes type = (CardTypes)(id % 3 + 1);
+
+            CardData cardData = type switch {
+                CardTypes.ATTACK => new AttackCardData(),
+                CardTypes.MAGIC => new MagicCardData(),
+                CardTypes.MOVE => new MoveCardData(),
+                _ => throw new System.NotImplementedException(),
+            };
+
+            cardData.id = id;
+            cardData.cost = id % 9 + 1;
+            cardData.cardName = "Card " + id.ToString();
+            cardData.description = "Description " + id.ToString();
+            cardData.classes = new EntityClasses[] { EntityClasses.UNSET };
+            cardData.rarity = (CardRarity)(id % 5 + 1);
+
+            switch (type) {
+                case CardTypes.ATTACK:
+                    ((AttackCardData)cardData).damage = 5;
+                    break;
+                case CardTypes.MAGIC:
+                    ((MagicCardData)cardData).effectId = 1;
+                    break;
+                case CardTypes.MOVE:
+                    ((MoveCardData)cardData).step = 10;
+                    break;
+                default:
+                    break;
+            }
+
+            return cardData;
         }
     }
 }

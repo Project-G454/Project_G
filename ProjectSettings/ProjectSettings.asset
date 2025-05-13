@@ -141,9 +141,7 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1
-  preloadedAssets:
-  - {fileID: 11400000, guid: 146bcad40f50b244992fad57016ee7e5, type: 2}
-  - {fileID: 11400000, guid: f6b522eaacfd08f4da461d7b0c62bde2, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -812,23 +810,23 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Android: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    EmbeddedLinux: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
+    Android: DOTWEEN
+    EmbeddedLinux: DOTWEEN
     GameCoreScarlett: DOTWEEN
-    GameCoreXboxOne: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
+    GameCoreXboxOne: DOTWEEN
     LinuxHeadlessSimulation: DOTWEEN
-    Nintendo Switch: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    PS4: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    PS5: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    QNX: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    ReservedCFE: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    Standalone: AMPLIFY_SHADER_EDITOR;DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    VisionOS: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    WebGL: AMPLIFY_SHADER_EDITOR;DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
+    Nintendo Switch: DOTWEEN
+    PS4: DOTWEEN
+    PS5: DOTWEEN
+    QNX: DOTWEEN
+    ReservedCFE: DOTWEEN
+    Standalone: AMPLIFY_SHADER_EDITOR;DOTWEEN
+    VisionOS: DOTWEEN
+    WebGL: AMPLIFY_SHADER_EDITOR;DOTWEEN
     Windows Store Apps: DOTWEEN
-    XboxOne: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
+    XboxOne: DOTWEEN
     iPhone: DOTWEEN
-    tvOS: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
+    tvOS: DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

@@ -19,5 +19,5 @@ MonoBehaviour:
   classes: 00000000
   rarity: 1
   cost: 1
-  range: 3
+  range: 0
   damage: 20

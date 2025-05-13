@@ -12,9 +12,4 @@ namespace Entities {
         ROGUE,
         WIZARD
     }
-
-    public enum MoveState {
-        Idle,
-        Moving
-    }
 }
