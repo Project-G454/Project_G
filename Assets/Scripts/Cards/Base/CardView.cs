@@ -27,7 +27,7 @@ namespace Cards {
             description.text = card.description;
 
             background.sprite = CardDataLoader.LoadBackground(card.id);
-            frame.sprite = CardLayoutHelper.GetFrameSprite((int)card.rarity);
+            frame.sprite = CardDataLoader.LoadFrame((int)card.rarity);
             costBackground.sprite = CardLayoutHelper.GetCostSprite((int)card.rarity);
             titleBackground.sprite = CardLayoutHelper.GetTitleSprite((int)card.rarity);
             typeBackground.sprite = CardLayoutHelper.GetTypeSprite(card.type.ToString());
