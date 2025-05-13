@@ -350,7 +350,7 @@ namespace Core.Managers {
 
                         sr.sprite = wallSprite; // ✅ 改為拖入 sprite
                         sr.sortingOrder = 1;
-                        sr.transform.position += new Vector3(0, -0.5f, -1f);
+                        // sr.transform.position += new Vector3(0, -0.2f, -1f);
                         // sr.color = wallColor;   // ✅ 疊加顏色
                     }
 
