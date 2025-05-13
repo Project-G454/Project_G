@@ -14,7 +14,7 @@ namespace Entities.Handlers {
         private EnergyManager _energyManager;
 
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
-        private bool isMoving = false;
+        public bool isMoving = false;
         private bool _endMoving = true;
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
@@ -76,7 +76,7 @@ namespace Entities.Handlers {
         public void MoveToTile(Tile targetTile) {
             if (targetTile == null || !targetTile.Walkable)
                 return;
-
+            
             Vector2 targetPosition = targetTile.transform.position; //目標座標
             Vector2 currentPosition = transform.position; //目前座標
 

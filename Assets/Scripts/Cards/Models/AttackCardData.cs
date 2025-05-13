@@ -8,6 +8,8 @@ namespace Cards.Data {
     /// </summary>
     public class AttackCardData: CardData {
         public int damage;
+        public int effectId = -1;
+        public int attackTimes = 1;
         public override CardTypes type => CardTypes.ATTACK; 
     }
 }
