@@ -15,6 +15,8 @@ using Entities.Categories;
 using Entities.Handlers;
 using TMPro;
 using UnityEngine;
+using Agents;
+using Agents.Handlers;
 
 namespace Core.Managers {
     public class BattleManager: MonoBehaviour, IManager {
@@ -61,8 +63,18 @@ namespace Core.Managers {
             }
         }
 
+        public void BindAgents() {
+            GameObject enemy1 = _entityManager.GetEntityObject(1);
+            enemy1.AddComponent<EntityAgent>();
+            GameObject enemy2 = _entityManager.GetEntityObject(2);
+            enemy2.AddComponent<EntityAgent>();
+            GameObject enemy3 = _entityManager.GetEntityObject(4);
+            enemy3.AddComponent<EntityAgent>();
+        }
+
         private void Start() {
             Init();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -108,11 +120,19 @@ namespace Core.Managers {
                 EntityClasses.ROGUE
             );
 
-            List<Vector3> spawnPositions = _spawnPositionManager.GetSpawnPositions(3);
-    
+            EntityData data4 = new EntityData(
+                100,
+                "Player4",
+                EntityTypes.PLAYER,
+                EntityClasses.WIZARD
+            );
+
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(4);
+
             _entityManager.CreateEntity(data1, spawnPositions[0]);
             _entityManager.CreateEntity(data2, spawnPositions[1]);
             _entityManager.CreateEntity(data3, spawnPositions[2]);
+            _entityManager.CreateEntity(data4, spawnPositions[3]);
         }
 
         private void InitDeckAndEnergy() {
@@ -122,12 +142,19 @@ namespace Core.Managers {
             }
         }
 
+        public void UnlockAgent() {
+            GameObject entityObj = _entityManager.GetEntityObject(currentEntity.entityId);
+            var agent = entityObj.GetComponent<AgentStateHandler>();
+            if (agent != null) agent.Unlock();
+        }
+
         public IEnumerator GameLoop() {
             while (true) {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
-                    yield return InitializeTurnOrder();
+                    currentEntity = null;
+                    // yield return InitializeTurnOrder();
                 }
 
                 NextPlayer();
@@ -138,6 +165,7 @@ namespace Core.Managers {
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
                 Debug.Log("Card Phase");
+                UnlockAgent();
                 _cardManager.StartTurn();
                 yield return new WaitUntil(() => _cardManager.isTurnFinished);
 
@@ -167,7 +195,7 @@ namespace Core.Managers {
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
         }
 
-        public IEnumerator InitializeTurnOrder() {
+        public IEnumerator InitTurnOrder() {
             Dictionary<int, int> points = new();
             foreach (int id in _orderedIds) {
                 GameObject entityObj = _entityManager.GetEntityObject(id);
