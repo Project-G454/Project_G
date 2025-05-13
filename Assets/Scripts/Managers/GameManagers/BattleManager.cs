@@ -31,7 +31,7 @@ namespace Core.Managers {
         private DiceManager _diceManager;
         private HoverUIManager _hoverUIManager;
         private DistanceManager _distanceManager;
-        private EnergyUIManager _energyUIManager;
+        private GlobalUIManager _globalUIManager;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -89,7 +89,7 @@ namespace Core.Managers {
             _diceManager = ManagerHelper.RequireManager(DiceManager.Instance);
             _distanceManager = ManagerHelper.RequireManager(DistanceManager.Instance);
             _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
-            _energyUIManager = ManagerHelper.RequireManager(EnergyUIManager.Instance);
+            _globalUIManager = ManagerHelper.RequireManager(GlobalUIManager.Instance);
         }
 
         private void InitMap() {
@@ -171,7 +171,7 @@ namespace Core.Managers {
                 _effectManager.AfterTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
-                _energyUIManager.UnBind(currentEntity.energyManager);
+                _globalUIManager.energyUI.UnBind(currentEntity.energyManager);
             }
         }
 
@@ -183,9 +183,10 @@ namespace Core.Managers {
             _cameraManager.SnapCameraTo(entityObject);
             
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
-            moveHandler.step = 1;
+            moveHandler.freestep += 1;
+            _globalUIManager.freestepUI.SetVisible(true);
 
-            _energyUIManager.Bind(currentEntity.energyManager);
+            _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
             Debug.Log(currentEntity.entityId);
             

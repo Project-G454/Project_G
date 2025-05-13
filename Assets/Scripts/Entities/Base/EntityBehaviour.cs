@@ -30,7 +30,7 @@ namespace Entities {
         }
 
         void OnMouseExit() {
-            HoverUIManager.Instance.Hide();
+            //HoverUIManager.Instance.Hide();
         }
     }
 }

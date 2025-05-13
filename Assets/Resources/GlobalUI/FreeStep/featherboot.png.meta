@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 23576fb07ffb10f44900564bec4859d9
+guid: 3bed73c6897c62d46afe7e725fa3a97f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8152513202347649984
-    second: Card_Background_20_0
+      213: -4606851341882454848
+    second: featherboot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Card_Background_20_0
+      name: featherboot_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 534
-        height: 668
+        x: 143
+        y: 88
+        width: 770
+        height: 809
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0cb2d9c409b832170800000000000000
-      internalID: 8152513202347649984
+      spriteID: 0cc801adc1d2110c0800000000000000
+      internalID: -4606851341882454848
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Card_Background_20_0: 8152513202347649984
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -7,10 +7,11 @@ using UnityEngine;
 namespace Entities.Handlers {
     public class MoveHandler: MonoBehaviour {
         public float moveSpeed = 5f;
-        public int step = 1;
+        public int freestep = 0;
         public Transform movePoint;
         private GridManager _gridManager;
         private MapManager _mapManager;
+        private GlobalUIManager _globalUIManager;
         private EnergyManager _energyManager;
 
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
@@ -21,6 +22,7 @@ namespace Entities.Handlers {
         void Init() {
             _gridManager = GridManager.Instance;
             _mapManager = MapManager.Instance;
+            _globalUIManager = GlobalUIManager.Instance;
             _energyManager = gameObject.GetComponent<EnergyManager>();
         }
 
@@ -90,18 +92,18 @@ namespace Entities.Handlers {
             // 開始移動到第一個點
             if (pathQueue.Count > 0) {
                 // 判斷能量是否夠用於產生額外步數
-                if (step == 0) {
+                if (freestep == 0) {
                     if (_energyManager.energy > 0) {
-                        step += 1;
                         _energyManager.Remove(1);
                     }
                     else {
                         return;
                     }
+                } else {
+                    Debug.Log(string.Format("step: {0}, energy: {1}", freestep, _energyManager.energy));
+                    freestep -= 1;
+                    if (freestep == 0) _globalUIManager.freestepUI.SetVisible(false);
                 }
-
-                step -= 1;
-                // Debug.Log(string.Format("step: {0}, energy: {1}", step, _energyManager.energy));
 
                 Vector2 nextCell = pathQueue.Dequeue();
                 _nextPosition = new Vector3(nextCell.x, nextCell.y, 0);
