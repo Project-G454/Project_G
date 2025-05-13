@@ -182,6 +182,8 @@ namespace Core.Managers {
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraManager.SnapCameraTo(entityObject);
             
+            HoverUIManager.Instance.Show(currentEntity);
+
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
             moveHandler.freestep += 1;
             _globalUIManager.freestepUI.SetVisible(true);
