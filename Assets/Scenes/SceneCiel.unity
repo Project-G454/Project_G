@@ -3157,7 +3157,7 @@ MonoBehaviour:
   hpBar: {fileID: 552546063}
   hpText: {fileID: 512689742}
   drawText: {fileID: 1111324798}
-  effectSlotPrefab: {fileID: 933146796961207475, guid: 3746ce911c8ec1b41b33828a55d65acd,
+  effectSlotPrefab: {fileID: 5704944626118138152, guid: 2ff770e8dfee1074c9ab463d28088e86,
     type: 3}
   slotContainer: {fileID: 44792171}
 --- !u!114 &1802369981

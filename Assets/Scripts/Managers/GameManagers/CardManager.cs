@@ -11,6 +11,7 @@ using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
 using Entities;
+using Entities.Animations;
 using Entities.Categories;
 using UnityEngine;
 
@@ -100,6 +101,7 @@ namespace Core.Managers.Cards {
             if (isTurnFinished) return false;
 
             Entity currentEntity = _battleManager.currentEntity;
+            Entity targetEntity = EntityManager.Instance.GetEntity(targetId);
             GameObject currObj = EntityManager.Instance.GetEntityObject(currentEntity.entityId);
             GameObject targetObj = EntityManager.Instance.GetEntityObject(targetId);
             if (!_deckManager.hand.GetAllCards().Contains(cb.card.id)) {
@@ -115,10 +117,13 @@ namespace Core.Managers.Cards {
                 Debug.Log("Out of card range!");
                 return false;
             }
-
+            
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
             ParticalAnimation.PlayCardAnimation(targetObj, cb.card.partical);
+            EntityAnimation.PlayAnimationOnce(currObj, PlayerState.ATTACK);
+            EntityAnimation.PlayAnimationOnce(targetObj, PlayerState.DAMAGED);
+            if (targetEntity.IsDead()) EntityAnimation.PlayAnimation(targetObj, PlayerState.DEATH);
             currentEntity.energyManager.Remove(cb.card.cost);
             return true;
         }

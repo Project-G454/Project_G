@@ -22,7 +22,7 @@ namespace Agents {
             float minDistance = float.MaxValue;
             foreach (Entity entity in players) {
                 float distance = DistanceHelper.ManhattanDistance(_agent.entity.position, entity.position);
-                if (distance < minDistance) {
+                if (distance < minDistance && !entity.IsDead()) {
                     minDistance = distance;
                     target = entity;
                 }

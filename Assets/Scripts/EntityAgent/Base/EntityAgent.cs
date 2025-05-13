@@ -133,7 +133,7 @@ namespace Agents {
         public bool HasReachablePlayer(int range) {
             List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
             foreach (Entity target in players) {
-                if (DistanceHelper.InRange(entity.position, target.position, range)) {
+                if (DistanceHelper.InRange(entity.position, target.position, range) && !target.IsDead()) {
                     return true;
                 }
             }

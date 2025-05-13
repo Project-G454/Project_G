@@ -16,4 +16,5 @@ MonoBehaviour:
   effectName: Poison
   effectDesc: Deal 1 damage for 5 rounds.
   rounds: 5
+  icon: {fileID: -1602328573, guid: 4154d7be234afc74e8cb6613b60b4189, type: 3}
   damage: 1
