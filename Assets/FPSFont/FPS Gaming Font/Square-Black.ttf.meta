@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: d7cffddcbc0cc8f4ebe6e28eb9804082
+AssetOrigin:
+  serializedVersion: 1
+  productId: 216954
+  packageName: Fatality FPS Gaming Font
+  packageVersion: 1.0
+  assetPath: Assets/FPSFont/FPS Gaming Font/Square-Black.ttf
+  uploadId: 490185
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -12,17 +19,10 @@ TrueTypeFontImporter:
   - Square
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 0
+  fontRenderingMode: 1
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 216954
-  packageName: Fatality FPS Gaming Font
-  packageVersion: 1.0
-  assetPath: Assets/FPSFont/FPS Gaming Font/Square-Black.ttf
-  uploadId: 490185
