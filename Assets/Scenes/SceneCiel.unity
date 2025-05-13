@@ -2835,6 +2835,8 @@ MonoBehaviour:
   _obstacleTilePrefab: {fileID: 0}
   floorColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   wallColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+  floorSprite: {fileID: 21300030, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
+  wallSprite: {fileID: 21300064, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   _boundaryOffset: 1
   _randomWalkData:
     iterations: 100
