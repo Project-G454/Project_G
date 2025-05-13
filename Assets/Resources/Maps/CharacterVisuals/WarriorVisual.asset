@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WarriorVisual
   m_EditorClassIdentifier: 
   characterClass: 1
-  characterSprite: {fileID: -3209045776052173730, guid: 28ff4c736625943f7bf3ad2e56b1c969,
+  characterPrefab: {fileID: 4653941335150068188, guid: 81a169a76bbaf4c54b41b6823890732f,
     type: 3}
   characterColor: {r: 1, g: 1, b: 1, a: 1}
   animatorController: {fileID: 0}
