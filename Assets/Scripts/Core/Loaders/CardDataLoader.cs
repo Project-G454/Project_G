@@ -16,5 +16,9 @@ namespace Core.Loaders.Cards {
         public static Sprite LoadBackground(int id) {
             return Resources.Load<Sprite>("Cards/Backgrounds/Card_Background_" + id.ToString());
         }
+
+        public static Sprite LoadFrame(int id) {
+            return Resources.Load<Sprite>("Cards/Frames/Card_Frame_" + id.ToString());
+        }
     }
 }

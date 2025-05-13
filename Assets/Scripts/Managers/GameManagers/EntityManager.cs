@@ -39,6 +39,7 @@ namespace Core.Entities {
             EntityBehaviour eb = newEntity.GetComponent<EntityBehaviour>();
             int id = nextEntityId++;
             Entity entity = EntityFactory.MakeEntity(id, entityData);
+            entity.position = position;
 
             eb.Init(entity);
             RegisterEntity(entity, newEntity);

@@ -4,29 +4,17 @@ using Core.Managers;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategy {
-    class StrategyMove: AgentDecision {
+namespace Agents.Strategies {
+    class StrategyMove: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
-            Entity target = _FindNearestTarget();
+            Entity target = _FindNearestPlayer();
             if (target == null) return;
-            MapManager.Instance.MoveTo(target.position);
+            Vector2 bestPos = base._FindBestPosition(target.position, 5);
+            Debug.Log($"Agent trying move to Player_{target.entityId}, Pos: {bestPos}");
+            MapManager.Instance.MoveTo(bestPos);
         }
 
         // --- helper functions ---
-        private Entity _FindNearestTarget() {
-            List<Entity> entities = EntityManager.Instance.GetEntityList();
-            float minDistance = 10;
-            Entity target = null;
-            foreach (Entity entity in entities) {
-                if (_agent.entity.entityId == entity.entityId) continue;
-                float distance = Vector2.Distance(_agent.entity.position, entity.position);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    target = entity;
-                }
-            }
-            return target;
-        }
     }
 }
