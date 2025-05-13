@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Entities.Categories;
 using Entities.Models;
@@ -40,7 +41,17 @@ namespace Entities.Handlers {
             //     characterRenderer.color = visual.characterColor;
             // }
             GameObject character = Instantiate(visual.characterPrefab, transform);
-            character.transform.position = gameObject.transform.position;
+            character.transform.position = transform.position;
+
+            PlayerObj SPUMScript = GetComponent<PlayerObj>();
+            SPUM_Prefabs prefabScript = character.GetComponent<SPUM_Prefabs>();
+            if(!prefabScript.allListsHaveItemsExist()){
+                prefabScript.PopulateAnimationLists();
+            }
+
+            // 指定關聯
+            SPUMScript._prefabs = prefabScript;
+
 
             if (characterAnimator != null && visual.animatorController != null) {
                 characterAnimator.runtimeAnimatorController = visual.animatorController;

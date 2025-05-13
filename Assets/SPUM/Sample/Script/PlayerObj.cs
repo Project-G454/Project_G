@@ -11,6 +11,7 @@ public class PlayerObj : MonoBehaviour
     public SPUM_Prefabs _prefabs;
     public float _charMS;
     private PlayerState _currentState;
+    private PlayerState _prevState = PlayerState.IDLE;
 
     public Vector3 _goalPos;
     public bool isAction = false;
@@ -27,6 +28,7 @@ public class PlayerObj : MonoBehaviour
         _prefabs.OverrideControllerInit();
         foreach (PlayerState state in Enum.GetValues(typeof(PlayerState)))
         {
+            Debug.Log("Set state");
             IndexPair[state] = 0;
         }
     }
@@ -44,15 +46,17 @@ public class PlayerObj : MonoBehaviour
         switch(_currentState)
         {
             case PlayerState.IDLE:
-            
+                
             break;
 
             case PlayerState.MOVE:
-            DoMove();
+            // DoMove();
             break;
         }
-        PlayStateAnimation(_currentState);
-
+        if (_prevState != _currentState || _currentState == PlayerState.IDLE) {
+            PlayStateAnimation(_currentState);
+        }
+        _prevState = _currentState;
     }
 
     void DoMove()
@@ -77,5 +81,9 @@ public class PlayerObj : MonoBehaviour
         isAction = false;
         _goalPos = pos;
         _currentState = PlayerState.MOVE;
+    }
+
+    public void SetState(PlayerState state) {
+        _currentState = state;
     }
 }

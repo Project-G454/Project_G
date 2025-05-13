@@ -6,6 +6,7 @@ using Effects;
 using Effects.Data;
 using Effects.Factories;
 using Entities;
+using Entities.Animations;
 using Events;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -76,6 +77,10 @@ namespace Core.Managers {
             allEffects.ForEach(effect => {
                 if (effect is IEventOn<T> typedEffect) {
                     typedEffect.On(evt);
+                    EntityAnimation.PlayAnimationOnce(EntityManager.Instance.GetEntityObject(entityId), PlayerState.DAMAGED);
+                    if (entity.IsDead()) {
+                        EntityAnimation.PlayAnimation(EntityManager.Instance.GetEntityObject(entityId), PlayerState.DEATH);
+                    }
                 }
             });
         }
