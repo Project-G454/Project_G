@@ -87,7 +87,7 @@ namespace Core.Managers {
             foreach (var effect in effects)
             {
                 var slot = Instantiate(effectSlotPrefab, slotContainer);
-                //slot.transform.Find("Icon").GetComponent<Image>().sprite = effect.icon;
+                slot.transform.Find("IconBackground/Icon").GetComponent<Image>().sprite = effect.icon;
                 slot.transform.Find("IconBackground/RoundText").GetComponent<TextMeshProUGUI>().text = effect.rounds.ToString();
                 slot.transform.Find("EffectName").GetComponent<TextMeshProUGUI>().text = effect.name;
             }
