@@ -29,7 +29,7 @@ public class Tile : MonoBehaviour {
     }
 
     public void SetHighlight(bool active) {
-        if (highlight != null){
+        if (highlight != null && Walkable == true){
             forceHighlight = active;
             highlight.SetActive(active);
         }

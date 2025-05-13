@@ -19,5 +19,6 @@ namespace Cards.Data {
         public int cost = 0;                                    // 出牌時需要消耗的點數
         public abstract CardTypes type { get; }                 // 卡片類型 (攻擊牌、魔法牌 ... 等)
         public int range = 0;                                   // 卡片範圍，0 代表只能用於自己
+        public CardAnimations partical = CardAnimations.Fire1;  // 使用卡片時作用在目標上的動畫
     }
 }

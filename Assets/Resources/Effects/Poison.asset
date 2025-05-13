@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   effectName: Poison
-  effectDesc: test
-  rounds: 3
-  damage: 10
+  effectDesc: Deal 1 damage for 5 rounds.
+  rounds: 5
+  damage: 1

@@ -5,6 +5,8 @@ using Entities;
 using Entities.Factories;
 using Core.Interfaces;
 using Effects;
+using Entities.Handlers;
+using Entities.Categories;
 
 namespace Core.Entities {
     /// <summary>
@@ -41,8 +43,23 @@ namespace Core.Entities {
             Entity entity = EntityFactory.MakeEntity(id, entityData);
 
             eb.Init(entity);
+
+            SetupCharacterVisual(newEntity, entityData.entityClass);
+
             RegisterEntity(entity, newEntity);
             return entity;
+        }
+
+        private void SetupCharacterVisual(GameObject entityObject, EntityClasses entityClass) {
+            // 嘗試獲取 CharacterVisualHandler 組件
+            CharacterVisualHandler visualHandler = entityObject.GetComponentInChildren<CharacterVisualHandler>();
+            
+            if (visualHandler != null) {
+                // 設置對應的外觀
+                visualHandler.SetVisual(entityClass);
+            } else {
+                Debug.LogWarning($"無法找到 CharacterVisualHandler 組件！Entity: {entityObject.name}, Class: {entityClass}");
+            }
         }
 
         public void RegisterEntity(Entity entity, GameObject entityObject) {

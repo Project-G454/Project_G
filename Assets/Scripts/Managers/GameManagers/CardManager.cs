@@ -109,6 +109,7 @@ namespace Core.Managers.Cards {
 
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
+            ParticalAnimation.PlayCardAnimation(targetObj, cb.card.partical);
             currentEntity.energyManager.Remove(cb.card.cost);
             return true;
         }
