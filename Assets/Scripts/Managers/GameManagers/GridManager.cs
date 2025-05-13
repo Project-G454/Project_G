@@ -205,7 +205,7 @@ namespace Core.Managers {
         private List<Vector3> ConvertToVector3(List<Vector2> positions) {
             List<Vector3> result = new List<Vector3>();
             foreach (Vector2 pos in positions) {
-                result.Add(new Vector3(pos.x, pos.y, 0));
+                result.Add(new Vector3(pos.x, pos.y, -1f));
             }
             return result;
         }
@@ -332,12 +332,12 @@ namespace Core.Managers {
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
                     Tile tileToUse = _obstacleTilePrefab != null ? _obstacleTilePrefab : _tilePrefab;
                     
-                    var spawnedTile = Instantiate(tileToUse, new Vector3(pos.x, pos.y, pos.y), Quaternion.identity, map);
+                    var spawnedTile = Instantiate(tileToUse, new Vector3(pos.x, pos.y, -0.5f), Quaternion.identity, map);
                     spawnedTile.name = $"Wall {pos.x} {pos.y}";
                     spawnedTile.Init(new Vector2(pos.x, pos.y));
                     spawnedTile.SetWalkable(false);
 
-                    var spawnedTileFloor = Instantiate(tileToUse, new Vector3(pos.x, pos.y, pos.y), Quaternion.identity, map);
+                    var spawnedTileFloor = Instantiate(tileToUse, new Vector3(pos.x, pos.y, 0), Quaternion.identity, map);
                     spawnedTileFloor.name = $"Wall {pos.x} {pos.y}";
                     spawnedTileFloor.Init(new Vector2(pos.x, pos.y));
                     spawnedTileFloor.SetWalkable(false);
@@ -349,7 +349,6 @@ namespace Core.Managers {
                         floorSR.sprite = floorSprite;
 
                         sr.sprite = wallSprite; // ✅ 改為拖入 sprite
-                        sr.sortingOrder = 1;
                         // sr.transform.position += new Vector3(0, -0.2f, -1f);
                         // sr.color = wallColor;   // ✅ 疊加顏色
                     }
