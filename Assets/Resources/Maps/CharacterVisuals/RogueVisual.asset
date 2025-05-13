@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RogueVisual
   m_EditorClassIdentifier: 
   characterClass: 3
-  characterSprite: {fileID: -8326429162330692030, guid: 1dea0739757de4f499dfb649af275efb,
+  characterPrefab: {fileID: 4027342679896061903, guid: a4696a02c7fa04918a30ca6051a8901e,
     type: 3}
   characterColor: {r: 1, g: 1, b: 1, a: 1}
   animatorController: {fileID: 0}

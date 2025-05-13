@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Entities.Handlers {
     public class CharacterVisualHandler : MonoBehaviour {
-        [SerializeField] private SpriteRenderer characterRenderer;
         [SerializeField] private Animator characterAnimator;
 
         // 用於編輯器中設置，也可以動態加載
@@ -36,10 +35,12 @@ namespace Entities.Handlers {
         }
 
         private void ApplyVisual(CharacterVisualSO visual) {
-            if (characterRenderer != null) {
-                characterRenderer.sprite = visual.characterSprite;
-                characterRenderer.color = visual.characterColor;
-            }
+            // if (characterRenderer != null) {
+            //     characterRenderer.sprite = visual.characterSprite;
+            //     characterRenderer.color = visual.characterColor;
+            // }
+            GameObject character = Instantiate(visual.characterPrefab, transform);
+            character.transform.position = gameObject.transform.position;
 
             if (characterAnimator != null && visual.animatorController != null) {
                 characterAnimator.runtimeAnimatorController = visual.animatorController;
