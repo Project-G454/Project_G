@@ -5,19 +5,17 @@ using Systems.Interactions;
 using UnityEngine;
 
 namespace Effects.Categories {
-    class PoisonEffect: Effect, IEventOn<BeforeTurnEvent> {
-        private int _damage;
-        public PoisonEffect(
-            PoisonEffectData effectData,
+    class StunEffect: Effect, IEventOn<BeforeTurnEvent> {
+        public StunEffect(
+            StunEffectData effectData,
             int behaviourId
         ): base(effectData, behaviourId) {
-            this._damage = effectData.damage;
+
         }
 
         public override void Trigger() {
             base.Trigger();
-            EffectPlayerInteraction.ApplyDamage(this.behaviourId, _damage);
-            Debug.Log($"PoisonEffect -> Entity_{this.behaviourId}");
+            Debug.Log($"StunEffect -> Entity_{this.behaviourId}");
         }
 
         void IEventOn<BeforeTurnEvent>.On(BeforeTurnEvent triggerEvent) {

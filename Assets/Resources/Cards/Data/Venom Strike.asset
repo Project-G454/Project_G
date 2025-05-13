@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   cardName: Venom Strike
-  description: Deal 10 damage, then apply Poison.
+  description: 'Deal 10 damage
+
+    then apply Poison'
   desctiptionIds: 01000000
   classes: 00000000
   rarity: 1

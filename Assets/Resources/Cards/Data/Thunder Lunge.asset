@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   cardName: Thunder Lunge
-  description: Deal 15 damage.
+  description: Deal 15 damage
   desctiptionIds: 
   classes: 00000000
   rarity: 2

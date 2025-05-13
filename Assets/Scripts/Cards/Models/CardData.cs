@@ -10,7 +10,7 @@ namespace Cards.Data {
     public abstract class CardData: ScriptableObject {
         public int id = 0;                                      // 卡片 ID
         public string cardName = "Unknown";                     // 卡片名稱 (標題)
-        public string description = "";                         // 卡片敘述
+        [TextArea] public string description = "";                         // 卡片敘述
         public int[] desctiptionIds = {};                       // 卡片敘述中特殊效果的描述 id
         public EntityClasses[] classes = new EntityClasses[] {  // 可使用此卡片的職業
             EntityClasses.UNSET 
