@@ -16,4 +16,5 @@ MonoBehaviour:
   effectName: Burn
   effectDesc: Deal 5 damage for 3 rounds.
   rounds: 3
+  icon: {fileID: 5597117985695365778, guid: 2c173aaa7f7620c4290c9cfba12ec7d8, type: 3}
   damage: 5
