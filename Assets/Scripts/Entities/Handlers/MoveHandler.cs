@@ -19,12 +19,14 @@ namespace Entities.Handlers {
         private bool _endMoving = true;
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
+        private PlayerObj _SPUMScript;
 
         void Init() {
             _gridManager = GridManager.Instance;
             _mapManager = MapManager.Instance;
             _globalUIManager = GlobalUIManager.Instance;
             _energyManager = gameObject.GetComponent<EnergyManager>();
+            _SPUMScript = GetComponentInChildren<PlayerObj>();
         }
 
         void Start() {
@@ -68,10 +70,13 @@ namespace Entities.Handlers {
                 }
             }
 
+            if (isMoving) _SPUMScript.SetState(PlayerState.MOVE);
+
             if (!_endMoving && (Vector2)transform.position == _nextPosition) {
                 // _mapManager.ClearAllHighlights();
                 Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
                 tile.SetHighlight(false, false);
+                _SPUMScript.SetState(PlayerState.IDLE);
                 _endMoving = true;
             }
         }
@@ -83,6 +88,19 @@ namespace Entities.Handlers {
             
             Vector2 targetPosition = targetTile.transform.position; //目標座標
             Vector2 currentPosition = transform.position; //目前座標
+
+            Vector2 _dirVec  = targetPosition - (Vector2)transform.position;
+            Vector2 _dirMVec = _dirVec.normalized;
+            if(_dirMVec.x > 0 ) {
+                Vector3 scale = transform.localScale;
+                scale.x = Math.Abs(scale.x) * -1;
+                transform.localScale = scale;
+            }
+            else if (_dirMVec.x < 0) {
+                Vector3 scale = transform.localScale;
+                scale.x = Math.Abs(scale.x); // 乘 -1 = 水平翻轉
+                transform.localScale = scale;
+            }
 
             // 清空當前路徑
             pathQueue.Clear();

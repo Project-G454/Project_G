@@ -12,7 +12,7 @@ namespace Cards.Animations {
             Animator animator = effect.GetComponentInChildren<Animator>();
             animator.runtimeAnimatorController = CardAnimationLoader.LoadCardAnimation(animationName);
             AnimationClip clip = animator.runtimeAnimatorController.animationClips[0];
-            // GameObject.Destroy(effect, clip.length + 0.2f);
+            GameObject.Destroy(effect, clip.length + 0.2f);
         }
     }
 }

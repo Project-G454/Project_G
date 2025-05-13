@@ -19,6 +19,7 @@ namespace Agents.Strategies {
 
             // choose a target
             List<int> targetIds = _GetReachableEntityIds(cardBehaviour.card.range);
+            Debug.Log(targetIds.ToString());
             if (targetIds.Count == 0) return;
             int targetIdx = Random.Range(0, targetIds.Count);
             int targetId = targetIds[targetIdx];

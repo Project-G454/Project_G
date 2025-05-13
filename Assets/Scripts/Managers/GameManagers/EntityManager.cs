@@ -19,6 +19,7 @@ namespace Core.Entities {
         private readonly Dictionary<int, Entity> entityDict = new();
         private readonly Dictionary<int, GameObject> entityObjectDict = new();
         private int nextEntityId = 1;
+        
         public void Init() { }
 
         private void Awake() {
