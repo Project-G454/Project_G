@@ -140,12 +140,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Poision
+  m_text: 'Poison
 
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fe8c0a3c80374749997ba7662e0eeef, type: 2}
-  m_sharedMaterial: {fileID: 2305368305355910866, guid: 0fe8c0a3c80374749997ba7662e0eeef,
+  m_sharedMaterial: {fileID: 6561693641756977767, guid: 0fe8c0a3c80374749997ba7662e0eeef,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fe8c0a3c80374749997ba7662e0eeef, type: 2}
-  m_sharedMaterial: {fileID: 2305368305355910866, guid: 0fe8c0a3c80374749997ba7662e0eeef,
+  m_sharedMaterial: {fileID: 6561693641756977767, guid: 0fe8c0a3c80374749997ba7662e0eeef,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
