@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Effects.Data {
     public abstract class EffectData: ScriptableObject {
@@ -6,6 +7,7 @@ namespace Effects.Data {
         public string effectName;
         public string effectDesc;
         public int rounds;
+        public Sprite icon;
         public abstract EffectType effectType { get; }
     }
 }
