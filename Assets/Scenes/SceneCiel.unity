@@ -3089,16 +3089,16 @@ MonoBehaviour:
   _obstacleTilePrefab: {fileID: 0}
   floorColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   wallColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
-  _iterations: 100
-  _walkLength: 50
+  _iterations: 10
+  _walkLength: 10
   _boundaryOffset: 1
   floorSpriteSet:
-  - {fileID: 21300000, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
+  - {fileID: 21300004, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
+  - {fileID: 21300004, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   - {fileID: 21300006, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300012, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
+  - {fileID: 21300010, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   - {fileID: 21300008, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300028, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300040, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
+  - {fileID: 21300058, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   wallSprite: {fileID: 21300064, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   map: {fileID: 270207623}
 --- !u!114 &1802369977
@@ -3221,6 +3221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077bba427cecf41a498213c00f956553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _minDistance: 2
+  _maxDistance: 5
 --- !u!1 &1808384829
 GameObject:
   m_ObjectHideFlags: 0
