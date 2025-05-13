@@ -49,6 +49,9 @@ namespace Core.Managers {
                         Vector2Int tilePos = origin + new Vector2Int(dx, dy);
                         Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
 
+                        Tile tile = GridManager.Instance.GetTileAtPosition(tilePos);
+                        if (tile == null) continue;
+
                         GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity);
                         highlight.transform.SetParent(highlightParent);
 
@@ -56,7 +59,7 @@ namespace Core.Managers {
                         SpriteRenderer sr = highlight.GetComponent<SpriteRenderer>();
                         if (sr != null)
                         {
-                            sr.sortingOrder = 10;
+                            // sr.sortingOrder = 10;
                         }
 
                         currentHighlights.Add(highlight);

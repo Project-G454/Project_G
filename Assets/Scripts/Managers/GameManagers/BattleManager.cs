@@ -176,6 +176,8 @@ namespace Core.Managers {
         }
 
         public void NextPlayer() {
+            DistanceManager.Instance.ClearHighlights();
+            
             int idx = _turn % _entityCount;
             currentEntity = _entityManager.GetEntity(_orderedIds[idx]);
             

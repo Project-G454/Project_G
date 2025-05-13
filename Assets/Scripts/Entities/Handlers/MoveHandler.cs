@@ -69,7 +69,9 @@ namespace Entities.Handlers {
             }
 
             if (!_endMoving && (Vector2)transform.position == _nextPosition) {
-                _mapManager.ClearAllHighlights();
+                // _mapManager.ClearAllHighlights();
+                Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
+                tile.SetHighlight(false, false);
                 _endMoving = true;
             }
         }
@@ -113,7 +115,7 @@ namespace Entities.Handlers {
                 }
 
                 Vector2 nextCell = pathQueue.Dequeue();
-                _nextPosition = new Vector3(nextCell.x, nextCell.y, 0);
+                _nextPosition = new Vector3(nextCell.x, nextCell.y, -1);
                 isMoving = true;
             }
         }
