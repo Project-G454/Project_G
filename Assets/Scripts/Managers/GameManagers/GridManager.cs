@@ -17,6 +17,9 @@ namespace Core.Managers {
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
 
+        [SerializeField] private List<Sprite> floorSpriteSet;
+        [SerializeField] private Sprite wallSprite;
+
         public Transform map;
         private Transform _cam;
 
@@ -309,36 +312,46 @@ namespace Core.Managers {
         }
 
         private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
-            // 創建在地板位置上的Tile
             foreach (var pos in floorPositions) {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector2(pos.x, pos.y), Quaternion.identity, map);
                 spawnedTile.name = $"Tile {pos.x} {pos.y}";
-                
                 spawnedTile.Init(new Vector2(pos.x, pos.y));
 
-                SpriteRenderer spriteRenderer = spawnedTile.GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null) {
-                    spriteRenderer.color = floorColor;
+                SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
+                if (sr != null) {
+                    Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
+                    sr.sprite = floorSprite; // ✅ 改為拖入 sprite
+                    // sr.color = floorColor;   // ✅ 疊加顏色
                 }
-                
+
                 tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
             }
-            
-            // 創建牆壁
+
             HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
             foreach (var pos in wallPositions) {
-                // 確保在網格範圍內
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
                     Tile tileToUse = _obstacleTilePrefab != null ? _obstacleTilePrefab : _tilePrefab;
-                    var spawnedTile = Instantiate(tileToUse, new Vector2(pos.x, pos.y), Quaternion.identity, map);
+                    
+                    var spawnedTile = Instantiate(tileToUse, new Vector3(pos.x, pos.y, pos.y), Quaternion.identity, map);
                     spawnedTile.name = $"Wall {pos.x} {pos.y}";
-                    
                     spawnedTile.Init(new Vector2(pos.x, pos.y));
-                    spawnedTile.SetWalkable(false); // 將牆壁設為不可走
-                    
-                    SpriteRenderer spriteRenderer = spawnedTile.GetComponent<SpriteRenderer>();
-                    if (spriteRenderer != null) {
-                        spriteRenderer.color = wallColor;
+                    spawnedTile.SetWalkable(false);
+
+                    var spawnedTileFloor = Instantiate(tileToUse, new Vector3(pos.x, pos.y, pos.y), Quaternion.identity, map);
+                    spawnedTileFloor.name = $"Wall {pos.x} {pos.y}";
+                    spawnedTileFloor.Init(new Vector2(pos.x, pos.y));
+                    spawnedTileFloor.SetWalkable(false);
+
+                    SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
+                    SpriteRenderer floorSR = spawnedTileFloor.GetComponent<SpriteRenderer>();
+                    if (sr != null) {
+                        Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
+                        floorSR.sprite = floorSprite;
+
+                        sr.sprite = wallSprite; // ✅ 改為拖入 sprite
+                        sr.sortingOrder = 1;
+                        sr.transform.position += new Vector3(0, -0.5f, -1f);
+                        // sr.color = wallColor;   // ✅ 疊加顏色
                     }
 
                     tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
