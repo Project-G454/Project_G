@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WizardVisual
   m_EditorClassIdentifier: 
   characterClass: 4
-  characterSprite: {fileID: 1336176942844201682, guid: a35cac6f0cdd94a7bb32f32a4ac2ad31,
+  characterPrefab: {fileID: 1532218796454169711, guid: ec58634b610c94022b27f39f0cee941e,
     type: 3}
   characterColor: {r: 1, g: 1, b: 1, a: 1}
   animatorController: {fileID: 0}

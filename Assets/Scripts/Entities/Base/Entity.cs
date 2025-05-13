@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Interfaces;
 using Core.Managers.Deck;
 using Core.Managers.Energy;
@@ -11,6 +12,9 @@ namespace Entities {
     /// 通用的遊戲實體類別，可為玩家或敵人。
     /// </summary>
     public class Entity {
+        public event Action OnHpChanged;
+        public event Action OnEffectsChanged;
+
         public int entityId;
         private int _currentHp;
         public int maxHp;
@@ -22,8 +26,6 @@ namespace Entities {
         public DeckManager deckManager;
         public EnergyManager energyManager;
         public Vector2 position;
-
-        public event Action OnHpChanged;
 
         public int currentHp {
             get => _currentHp;
@@ -57,9 +59,27 @@ namespace Entities {
 
         public bool IsDead() => currentHp <= 0;
 
-        public void AddEffect(Effect effect) {
-            effects.Add(effect);
-            if (effect is IEnergySource energySource) {
+        public void AddEffect(Effect newEffect) {
+            // effects.Add(newEffect);
+            // if (newEffect is IEnergySource energySource) {
+            //     energyManager.RegisterSource(energySource);
+            //     energyManager.UpdateEnergyRecover();
+            // }
+            var existing = effects.FirstOrDefault(e => e.id == newEffect.id);
+            if (existing != null) {
+                // 已有此效果 → 疊加回合
+                existing.rounds += newEffect.rounds;
+
+                // 如果效果有 UI 也要更新
+                OnEffectsChanged?.Invoke();
+            }
+            else {
+                // 全新效果 → 正常加入
+                effects.Add(newEffect);
+                OnEffectsChanged?.Invoke();
+            }
+
+            if (newEffect is IEnergySource energySource) {
                 energyManager.RegisterSource(energySource);
                 energyManager.UpdateEnergyRecover();
             }
@@ -67,6 +87,8 @@ namespace Entities {
 
         public void RemoveEffect(Effect effect) {
             effects.Remove(effect);
+            OnEffectsChanged?.Invoke();
+
             if (effect is IEnergySource energySource) {
                 energyManager.UnregisterSource(energySource);
                 energyManager.UpdateEnergyRecover();

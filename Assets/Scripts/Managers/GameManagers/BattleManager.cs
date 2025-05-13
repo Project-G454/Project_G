@@ -15,6 +15,8 @@ using Entities.Categories;
 using Entities.Handlers;
 using TMPro;
 using UnityEngine;
+using Agents;
+using Agents.Handlers;
 
 namespace Core.Managers {
     public class BattleManager: MonoBehaviour, IManager {
@@ -23,14 +25,13 @@ namespace Core.Managers {
         private CardManager _cardManager;
         private EffectManager _effectManager;
         private GridManager _gridManager;
-        private SpawnPositionManager _spawnPositionManager;
         private MapManager _mapManager;
         private CameraManager _cameraManager;
         private DescriptionManager _descriptionManager;
         private DiceManager _diceManager;
         private HoverUIManager _hoverUIManager;
         private DistanceManager _distanceManager;
-        private EnergyUIManager _energyUIManager;
+        private GlobalUIManager _globalUIManager;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -61,8 +62,18 @@ namespace Core.Managers {
             }
         }
 
+        public void BindAgents() {
+            GameObject enemy1 = _entityManager.GetEntityObject(1);
+            enemy1.AddComponent<EntityAgent>();
+            GameObject enemy2 = _entityManager.GetEntityObject(2);
+            enemy2.AddComponent<EntityAgent>();
+            GameObject enemy3 = _entityManager.GetEntityObject(4);
+            enemy3.AddComponent<EntityAgent>();
+        }
+
         private void Start() {
             Init();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -72,14 +83,13 @@ namespace Core.Managers {
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
             _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
             _gridManager = ManagerHelper.RequireManager(GridManager.Instance);
-            _spawnPositionManager = ManagerHelper.RequireManager(SpawnPositionManager.Instance);
             _mapManager = ManagerHelper.RequireManager(MapManager.Instance);
             _cameraManager = ManagerHelper.RequireManager(CameraManager.Instance);
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
             _diceManager = ManagerHelper.RequireManager(DiceManager.Instance);
             _distanceManager = ManagerHelper.RequireManager(DistanceManager.Instance);
             _hoverUIManager = ManagerHelper.RequireManager(HoverUIManager.Instance);
-            _energyUIManager = ManagerHelper.RequireManager(EnergyUIManager.Instance);
+            _globalUIManager = ManagerHelper.RequireManager(GlobalUIManager.Instance);
         }
 
         private void InitMap() {
@@ -108,11 +118,19 @@ namespace Core.Managers {
                 EntityClasses.ROGUE
             );
 
-            List<Vector3> spawnPositions = _spawnPositionManager.GetSpawnPositions(3);
-    
+            EntityData data4 = new EntityData(
+                100,
+                "Player4",
+                EntityTypes.PLAYER,
+                EntityClasses.WIZARD
+            );
+
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(4);
+
             _entityManager.CreateEntity(data1, spawnPositions[0]);
             _entityManager.CreateEntity(data2, spawnPositions[1]);
             _entityManager.CreateEntity(data3, spawnPositions[2]);
+            _entityManager.CreateEntity(data4, spawnPositions[3]);
         }
 
         private void InitDeckAndEnergy() {
@@ -122,12 +140,19 @@ namespace Core.Managers {
             }
         }
 
+        public void UnlockAgent() {
+            GameObject entityObj = _entityManager.GetEntityObject(currentEntity.entityId);
+            var agent = entityObj.GetComponent<AgentStateHandler>();
+            if (agent != null) agent.Unlock();
+        }
+
         public IEnumerator GameLoop() {
             while (true) {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
-                    yield return InitializeTurnOrder();
+                    currentEntity = null;
+                    // yield return InitializeTurnOrder();
                 }
 
                 NextPlayer();
@@ -138,6 +163,7 @@ namespace Core.Managers {
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
                 Debug.Log("Card Phase");
+                UnlockAgent();
                 _cardManager.StartTurn();
                 yield return new WaitUntil(() => _cardManager.isTurnFinished);
 
@@ -145,21 +171,26 @@ namespace Core.Managers {
                 _effectManager.AfterTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
-                _energyUIManager.UnBind(currentEntity.energyManager);
+                _globalUIManager.energyUI.UnBind(currentEntity.energyManager);
             }
         }
 
         public void NextPlayer() {
+            DistanceManager.Instance.ClearHighlights();
+            
             int idx = _turn % _entityCount;
             currentEntity = _entityManager.GetEntity(_orderedIds[idx]);
             
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraManager.SnapCameraTo(entityObject);
             
-            MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
-            moveHandler.step = 1;
+            HoverUIManager.Instance.Show(currentEntity);
 
-            _energyUIManager.Bind(currentEntity.energyManager);
+            MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
+            moveHandler.freestep += 1;
+            _globalUIManager.freestepUI.SetVisible(true);
+
+            _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
             Debug.Log(currentEntity.entityId);
             
@@ -167,7 +198,7 @@ namespace Core.Managers {
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
         }
 
-        public IEnumerator InitializeTurnOrder() {
+        public IEnumerator InitTurnOrder() {
             Dictionary<int, int> points = new();
             foreach (int id in _orderedIds) {
                 GameObject entityObj = _entityManager.GetEntityObject(id);

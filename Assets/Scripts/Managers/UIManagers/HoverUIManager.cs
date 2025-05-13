@@ -6,6 +6,7 @@ using Entities.Categories;
 using Effects;
 using System.Collections.Generic;
 using Core.Interfaces;
+using Unity.VisualScripting;
 
 namespace Core.Managers {
     public class HoverUIManager : MonoBehaviour, IManager
@@ -17,7 +18,8 @@ namespace Core.Managers {
         public Slider hpBar;
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI drawText;
-        //public Transform buffIconContainer;
+        public GameObject effectSlotPrefab;
+        public Transform slotContainer;
 
         private Entity currentEntity;
 
@@ -41,10 +43,12 @@ namespace Core.Managers {
             currentEntity = entity;
             panel.SetActive(true);
             entity.OnHpChanged += UpdateHp;
+            entity.OnEffectsChanged += UpdateEffects;
             entity.deckManager.draw.OnPileChanged += UpdateDraw;
             nameText.text = entity.entityName;
             UpdateHp();
             UpdateDraw();
+            UpdateEffects();
             //UpdateBuffIcons(entity.effects); // 待實作
         }
 
@@ -52,6 +56,7 @@ namespace Core.Managers {
         {
             if (currentEntity != null) {
                 currentEntity.OnHpChanged -= UpdateHp;
+                currentEntity.OnEffectsChanged -= UpdateEffects;
                 currentEntity.deckManager.draw.OnPileChanged -= UpdateDraw;
                 currentEntity = null;
             }
@@ -68,6 +73,24 @@ namespace Core.Managers {
         private void UpdateDraw()
         {
             drawText.text = currentEntity.deckManager.draw.Count.ToString();
+        }
+
+        public void UpdateEffects()
+        {
+            List<Effect> effects = currentEntity.effects;
+
+            // 清除現有的
+            foreach (Transform child in slotContainer)
+                Destroy(child.gameObject);
+
+            // 重新生成
+            foreach (var effect in effects)
+            {
+                var slot = Instantiate(effectSlotPrefab, slotContainer);
+                //slot.transform.Find("Icon").GetComponent<Image>().sprite = effect.icon;
+                slot.transform.Find("IconBackground/RoundText").GetComponent<TextMeshProUGUI>().text = effect.rounds.ToString();
+                slot.transform.Find("EffectName").GetComponent<TextMeshProUGUI>().text = effect.name;
+            }
         }
 
         // private void UpdateBuffIcons(List<Effect> effects)

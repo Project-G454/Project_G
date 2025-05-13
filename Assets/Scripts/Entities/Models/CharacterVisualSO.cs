@@ -6,7 +6,7 @@ namespace Entities.Models {
     [CreateAssetMenu(fileName = "CharacterVisual", menuName = "Game/Character Visual")]
     public class CharacterVisualSO : ScriptableObject {
         public EntityClasses characterClass;
-        public Sprite characterSprite;
+        public GameObject characterPrefab;
         public Color characterColor = Color.white;
         public RuntimeAnimatorController animatorController;
     }

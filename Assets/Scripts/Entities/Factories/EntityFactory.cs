@@ -20,7 +20,7 @@ namespace Entities.Factories
             { EntityClasses.WARRIOR, new List<int> { 1, 2, 3, 4, 5 } },
             { EntityClasses.RANGER, new List<int> { 6, 7, 8, 9, 10 } },
             { EntityClasses.ROGUE, new List<int> { 11, 12, 13, 14, 15 } },
-            { EntityClasses.WIZARD, new List<int> { 16, 17, 18, 19, 20 } }
+            { EntityClasses.WIZARD, new List<int> { 16 } }
         };
 
         public static List<int> GetClassDeck(EntityClasses entityClass)
