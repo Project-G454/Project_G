@@ -18,6 +18,7 @@ namespace Cards {
         public int cost { get; set; }                                       // 出牌時需要消耗的點數
         public CardTypes type { get; set; }                                 // 卡片類型 (攻擊牌、魔法牌 ... 等)
         public int range {get => _cardData.range; }                         // 卡片範圍，0 代表只能用於自己
+        public CardAnimations partical {get => _cardData.partical; }        // 使用卡片時作用在目標上的動畫
 
         /// <param name="data">卡片資料 <see cref="CardData"/></param>
         public Card(
