@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Flame
+  m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
+  m_Name: Minor Heal
   m_EditorClassIdentifier: 
-  id: 1
-  cardName: Flame
-  description: "Deal 20 damage \nthen apply Burn"
-  desctiptionIds: 02000000
+  id: 16
+  cardName: Minor Heal
+  description: Restore 10 HP
+  desctiptionIds: 
   classes: 00000000
   rarity: 1
   cost: 1
-  range: 3
+  range: 0
   partical: 0
-  damage: 20
-  effectId: 2
-  attackTimes: 1
+  healingAmount: 10

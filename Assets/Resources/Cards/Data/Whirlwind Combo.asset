@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   cardName: Whirlwind Combo
-  description: Deal 8 damage x3 hits.
+  description: 'Deal 8 damage
+
+    x3 hits'
   desctiptionIds: 
   classes: 00000000
   rarity: 3

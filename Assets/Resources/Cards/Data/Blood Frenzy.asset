@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   cardName: Blood Frenzy
-  description: Deal 30 damage.
+  description: Deal 30 damage
   desctiptionIds: 
   classes: 00000000
   rarity: 2

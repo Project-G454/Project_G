@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Magic Card 5
+  m_Script: {fileID: 11500000, guid: 30d9c05c265aa8141875fc263ac5e45b, type: 3}
+  m_Name: Stun
   m_EditorClassIdentifier: 
-  id: 10
-  cardName: Magic 5
-  description: Magic Card Test
-  desctiptionIds: 0200000003000000
-  classes: 00000000
-  rarity: 2
-  cost: 0
-  effectId: 1
+  id: 3
+  effectName: Stun
+  effectDesc: Skip turn
+  rounds: 2
+  icon: {fileID: 1617454413, guid: 4456c19872d0e7f478b0f55590799c2b, type: 3}

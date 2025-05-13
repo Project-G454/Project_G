@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Magic Card 2
+  m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
+  m_Name: Pulse Flow
   m_EditorClassIdentifier: 
-  id: 7
-  cardName: Magic 2
-  description: Magic Card Test
+  id: 12
+  cardName: Pulse Flow
+  description: Restore 2 energy
   desctiptionIds: 0100000002000000
   classes: 00000000
-  rarity: 2
+  rarity: 1
   cost: 0
-  effectId: 1
+  range: 0
+  partical: 0
+  step: 2

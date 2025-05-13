@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cards.Data;
 using Core.Managers;
 using Systems.Interactions;
@@ -5,19 +6,21 @@ using UnityEngine;
 
 namespace Cards.Categories {
     public class MagicCard: Card {
-        public int effectId;
+        public List<int> effectIds;
 
         public MagicCard(
             MagicCardData data
         ) : base(data) {
-            this.effectId = data.effectId;
+            this.effectIds = data.effectIds;
         }
 
         public override void Use(int sourceId, int targetId) {
             base.Use(sourceId, targetId);
             
-            Debug.Log("Player_" + sourceId.ToString() + " used Magic_" + this.effectId.ToString() + ".");
-            CardPlayerInteraction.ApplyEffect(targetId, this.effectId);
+            foreach (int effectId in this.effectIds) {
+                Debug.Log("Player_" + sourceId.ToString() + " used Magic_" + effectId.ToString() + ".");
+                CardPlayerInteraction.ApplyEffect(targetId, effectId);
+            }
         }
     }
 }

@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
-  m_Name: Move Card 1
+  m_Name: Spark
   m_EditorClassIdentifier: 
   id: 11
-  cardName: Move 1
-  description: Move Card Test
+  cardName: Spark
+  description: Restore 1 energy
   desctiptionIds: 01000000
   classes: 00000000
   rarity: 1
   cost: 0
-  step: 0
+  range: 0
+  partical: 0
+  step: 1

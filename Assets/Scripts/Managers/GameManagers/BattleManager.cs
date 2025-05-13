@@ -74,7 +74,7 @@ namespace Core.Managers {
 
         private void Start() {
             Init();
-            BindAgents();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -165,10 +165,12 @@ namespace Core.Managers {
 
                 if (currentEntity.IsDead()) continue;
 
-                Debug.Log("Card Phase");
-                UnlockAgent();
-                _cardManager.StartTurn();
-                yield return new WaitUntil(() => _cardManager.isTurnFinished);
+                if (!currentEntity.IsStunned()) {
+                    Debug.Log("Card Phase");
+                    UnlockAgent();
+                    _cardManager.StartTurn();
+                    yield return new WaitUntil(() => _cardManager.isTurnFinished);
+                }
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();

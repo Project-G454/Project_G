@@ -53,6 +53,13 @@ namespace Entities {
             Debug.Log(String.Format("{0}.{1} : {2}/{3}", entityId, entityName, currentHp, maxHp));
         }
 
+        public bool IsStunned() {
+            foreach (Effect effect in effects) {
+                if (effect.effectType == Effects.Data.EffectType.STUN) return true;
+            }
+            return false;
+        }
+
         public void Heal(int amount) {
             currentHp += amount;
         }

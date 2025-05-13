@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Magic Card 1
+  m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
+  m_Name: Healing Touch
   m_EditorClassIdentifier: 
-  id: 6
-  cardName: Magic 1
-  description: Deal 10 damage. Burn for 2 turns.
-  desctiptionIds: 01000000
+  id: 17
+  cardName: Healing Touch
+  description: Restore 20 HP
+  desctiptionIds: 
   classes: 00000000
   rarity: 1
-  cost: 0
+  cost: 1
   range: 0
   partical: 0
-  effectId: 1
+  healingAmount: 20
