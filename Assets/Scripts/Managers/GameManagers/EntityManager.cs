@@ -1,0 +1,109 @@
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Entities;
+using Entities.Factories;
+using Core.Interfaces;
+using Effects;
+using Entities.Handlers;
+using Entities.Categories;
+
+namespace Core.Entities {
+    /// <summary>
+    /// 管理所有場上的 Entity（玩家與敵人）。
+    /// </summary>
+    public class EntityManager: MonoBehaviour, IManager {
+        public GameObject dummy;
+        public Transform entities;
+        public static EntityManager Instance { get; private set; }
+        private readonly Dictionary<int, Entity> entityDict = new();
+        private readonly Dictionary<int, GameObject> entityObjectDict = new();
+        private int nextEntityId = 1;
+        
+        public void Init() { }
+
+        private void Awake() {
+            if (Instance != null && Instance != this) {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        public Entity CreateEntity(EntityData entityData, Vector3 position) {
+            GameObject newEntity = Instantiate(dummy, entities);
+            Transform rectTransform = newEntity.GetComponent<Transform>();
+            if (rectTransform != null) {
+                rectTransform.position = position;
+            }
+
+            EntityBehaviour eb = newEntity.GetComponent<EntityBehaviour>();
+            int id = nextEntityId++;
+            Entity entity = EntityFactory.MakeEntity(id, entityData);
+            entity.position = position;
+
+            eb.Init(entity);
+
+            SetupCharacterVisual(newEntity, entityData.entityClass);
+
+            RegisterEntity(entity, newEntity);
+            return entity;
+        }
+
+        private void SetupCharacterVisual(GameObject entityObject, EntityClasses entityClass) {
+            // 嘗試獲取 CharacterVisualHandler 組件
+            CharacterVisualHandler visualHandler = entityObject.GetComponentInChildren<CharacterVisualHandler>();
+            
+            if (visualHandler != null) {
+                // 設置對應的外觀
+                visualHandler.SetVisual(entityClass);
+            } else {
+                Debug.LogWarning($"無法找到 CharacterVisualHandler 組件！Entity: {entityObject.name}, Class: {entityClass}");
+            }
+        }
+
+        public void RegisterEntity(Entity entity, GameObject entityObject) {
+            if (!entityDict.ContainsKey(entity.entityId)) {
+                entityDict.Add(entity.entityId, entity);
+                entityObjectDict.Add(entity.entityId, entityObject);
+            }
+        }
+
+        public void UnregisterEntity(int entityId) {
+            if (entityDict.ContainsKey(entityId)) {
+                entityDict.Remove(entityId);
+
+                if (entityObjectDict.TryGetValue(entityId, out var obj)) {
+                    Destroy(obj);
+                    entityObjectDict.Remove(entityId);
+                }
+            }
+        }
+
+        public Entity GetEntity(int entityId) {
+            entityDict.TryGetValue(entityId, out var entity);
+            return entity;
+        }
+
+        public GameObject GetEntityObject(int entityId) {
+            entityObjectDict.TryGetValue(entityId, out var entity);
+            return entity;
+        }
+
+        public List<Entity> GetEntityList() {
+            return new List<Entity>(entityDict.Values);
+        }
+
+        public List<Entity> GetEntitiesByType(EntityTypes type) {
+            return entityDict.Values.Where(e => e.type == type).ToList();
+        }
+
+        public void ClearAllEntities() {
+            foreach (var entityId in entityDict.Keys.ToList()) {
+                UnregisterEntity(entityId);
+            }
+        }
+    }
+}
