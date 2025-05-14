@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
-  m_Name: Move Card 1
+  m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
+  m_Name: Inferno
   m_EditorClassIdentifier: 
-  id: 11
-  cardName: Move 1
-  description: Move Card Test
-  desctiptionIds: 01000000
+  id: 6
+  cardName: Inferno
+  description: Burn for 3 turns
+  desctiptionIds: 02000000
   classes: 00000000
   rarity: 1
-  cost: 0
-  step: 0
+  cost: 1
+  range: 3
+  partical: 0
+  effectIds: 02000000

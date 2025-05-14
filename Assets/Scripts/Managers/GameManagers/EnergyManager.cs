@@ -16,8 +16,6 @@ namespace Core.Managers.Energy {
             set {
                 if (value < 0)
                     _energy = 0;
-                else if (value > maxEnergy)
-                    _energy = maxEnergy;
                 else
                     _energy = value;
                 
@@ -46,7 +44,7 @@ namespace Core.Managers.Energy {
         /// </summary>
         public void RecoverEnergy() {
             if (recover < 0) return;
-            energy += recover;
+            energy = Math.Min(maxEnergy, energy + recover);
         }
 
         public void UpdateEnergyRecover() {

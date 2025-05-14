@@ -153,7 +153,7 @@ namespace Core.Managers {
                     Debug.Log("Dice Phase");
                     _round++;
                     currentEntity = null;
-                    // yield return InitializeTurnOrder();
+                    yield return InitTurnOrder();
                 }
 
                 NextPlayer();
@@ -165,10 +165,12 @@ namespace Core.Managers {
 
                 if (currentEntity.IsDead()) continue;
 
-                Debug.Log("Card Phase");
-                UnlockAgent();
-                _cardManager.StartTurn();
-                yield return new WaitUntil(() => _cardManager.isTurnFinished);
+                if (!currentEntity.IsStunned()) {
+                    Debug.Log("Card Phase");
+                    UnlockAgent();
+                    _cardManager.StartTurn();
+                    yield return new WaitUntil(() => _cardManager.isTurnFinished);
+                }
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();

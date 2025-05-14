@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Magic Card 1
+  m_Name: Corrosive Touch
   m_EditorClassIdentifier: 
-  id: 6
-  cardName: Magic 1
-  description: Deal 10 damage. Burn for 2 turns.
+  id: 7
+  cardName: Corrosive Touch
+  description: Apply Poison for 5 turns
   desctiptionIds: 01000000
   classes: 00000000
-  rarity: 1
-  cost: 0
-  range: 0
+  rarity: 2
+  cost: 1
+  range: 3
   partical: 0
-  effectId: 1
+  effectIds: 01000000

@@ -22,7 +22,10 @@ namespace Systems.Interactions
             target.Heal(healingAmount);
         }
 
-        public static void ApplyMove(int targetId, int step) {}
+        public static void ApplyMove(int targetId, int step) {
+            Entity target = EntityManager.Instance.GetEntity(targetId);
+            target.energyManager.Add(step);
+        }
         
     }
 }

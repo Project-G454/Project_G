@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
-  m_Name: Move Card 2
+  m_Name: Mana Infusion
   m_EditorClassIdentifier: 
-  id: 12
-  cardName: Move 2
-  description: Move Card Test
-  desctiptionIds: 0100000002000000
+  id: 13
+  cardName: Mana Infusion
+  description: Restore 3 energy
+  desctiptionIds: 
   classes: 00000000
   rarity: 2
   cost: 0
-  step: 0
+  range: 0
+  partical: 0
+  step: 3

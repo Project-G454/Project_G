@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   cardName: Flame
-  description: Deal 20 damage, then apply Burn.
+  description: "Deal 20 damage \nthen apply Burn"
   desctiptionIds: 02000000
   classes: 00000000
   rarity: 1

@@ -15,7 +15,6 @@ namespace Effects.Categories {
         }
 
         public override void Trigger() {
-            if (this.rounds <= 0) return;
             base.Trigger();
             EffectPlayerInteraction.ApplyDamage(this.behaviourId, _damage);
             Debug.Log($"PoisonEffect -> Entity_{this.behaviourId}");

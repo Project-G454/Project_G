@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
-  m_Name: Heal Card 1
+  m_Name: Healing Touch
   m_EditorClassIdentifier: 
-  id: 16
-  cardName: Heal 1
-  description: Heal Card Test
+  id: 17
+  cardName: Healing Touch
+  description: Restore 20 HP
   desctiptionIds: 
   classes: 00000000
-  rarity: 3
+  rarity: 1
   cost: 1
   range: 0
-  healingAmount: 10
+  partical: 0
+  healingAmount: 20

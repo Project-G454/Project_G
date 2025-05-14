@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Magic Card 4
+  m_Name: Hellblight Toxin
   m_EditorClassIdentifier: 
-  id: 9
-  cardName: Magic 4
-  description: Magic Card Test
-  desctiptionIds: 0100000003000000
+  id: 8
+  cardName: Hellblight Toxin
+  description: Apply Poison and Burn
+  desctiptionIds: 0100000002000000
   classes: 00000000
-  rarity: 1
+  rarity: 3
   cost: 0
-  effectId: 1
+  range: 3
+  partical: 0
+  effectIds: 0100000002000000
