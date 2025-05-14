@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 12
   cardName: Pulse Flow
   description: Restore 2 energy
-  desctiptionIds: 0100000002000000
+  desctiptionIds: 
   classes: 00000000
   rarity: 1
   cost: 0

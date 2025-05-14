@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 13
   cardName: Mana Infusion
   description: Restore 3 energy
-  desctiptionIds: 010000000200000003000000
+  desctiptionIds: 
   classes: 00000000
   rarity: 2
   cost: 0

@@ -219,7 +219,7 @@ MonoBehaviour:
   moveSpeed: 5
   freestep: 0
   movePoint: {fileID: 3825765803543626584}
-  isMoving: 0
+  isMoving: 1
 --- !u!65 &2328070728321297548
 BoxCollider:
   m_ObjectHideFlags: 0

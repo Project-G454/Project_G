@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 15
   cardName: Overcharge
   description: Restore 5 energy
-  desctiptionIds: 0200000003000000
+  desctiptionIds: 
   classes: 00000000
   rarity: 3
   cost: 0

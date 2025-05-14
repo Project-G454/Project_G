@@ -19,6 +19,6 @@ MonoBehaviour:
   classes: 00000000
   rarity: 2
   cost: 0
-  range: 0
+  range: 3
   partical: 0
   effectIds: 0100000003000000

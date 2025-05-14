@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 14
   cardName: Arcane Torrent
   description: Restore 4 energy
-  desctiptionIds: 0100000003000000
+  desctiptionIds: 
   classes: 00000000
   rarity: 2
   cost: 0
