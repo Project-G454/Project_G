@@ -35,7 +35,7 @@ public class PlayerObj : MonoBehaviour
     public void SetStateAnimationIndex(PlayerState state, int index = 0){
         IndexPair[state] = index;
     }
-    public void PlayStateAnimation(PlayerState state){
+    public void PlayStateAnimation(PlayerState state){ // 單次Animation
         _prefabs.PlayAnimation(state, IndexPair[state]);
     }
     void Update()
@@ -83,7 +83,7 @@ public class PlayerObj : MonoBehaviour
         _currentState = PlayerState.MOVE;
     }
 
-    public void SetState(PlayerState state) {
+    public void SetState(PlayerState state) { // 持續Animation
         _currentState = state;
     }
 }
