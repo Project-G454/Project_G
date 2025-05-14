@@ -62,5 +62,5 @@
         "editor.foldBackground": "#0b0b0b40"
     },
     "editor.detectIndentation": false,
-    "csharp.referencesCodeLens.enabled": true
+    "dotnet.codeLens.enableReferencesCodeLens": true
 }
