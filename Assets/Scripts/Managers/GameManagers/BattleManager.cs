@@ -74,7 +74,7 @@ namespace Core.Managers {
 
         private void Start() {
             Init();
-            // BindAgents();
+            BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -153,7 +153,7 @@ namespace Core.Managers {
                     Debug.Log("Dice Phase");
                     _round++;
                     currentEntity = null;
-                    // yield return InitializeTurnOrder();
+                    yield return InitTurnOrder();
                 }
 
                 NextPlayer();
