@@ -23,7 +23,7 @@ namespace Cards.Factories {
                 case CardTypes.MOVE:
                     card = new MoveCard(cardData as MoveCardData);
                     break;
-                case CardTypes.Heal:
+                case CardTypes.HEAL:
                     card = new HealCard(cardData as HealCardData);
                     break;
                 default:
