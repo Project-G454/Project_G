@@ -82,7 +82,6 @@ namespace Core.Handlers {
 
             if (_IsMovingEnd() && _IsCardAnimationEnd()) {
                 Debug.Log("End Action");
-                if (_actionState == AgentAction.End) _EndAction();
                 ChangeState(AgentState.Waiting);
                 _acting = false;
             }
@@ -105,14 +104,6 @@ namespace Core.Handlers {
                 _agent.strategy != null &&
                 _agent.strategy.isCardAnimationEnd
             );
-        }
-
-        private void _EndAction() {
-            if (!CardManager.Instance.isTurnFinished) {
-                _agent.ResetState();
-                CardManager.Instance.EndTurn();
-                Lock();
-            }
         }
     }
 }

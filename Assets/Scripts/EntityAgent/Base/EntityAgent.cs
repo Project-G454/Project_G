@@ -17,6 +17,7 @@ namespace Core {
     public class EntityAgent: MonoBehaviour {
         public Entity entity;
         public AgentStrategy strategy;
+        public AgentStateHandler stateHandler;
         private bool _isBinded = false;
         public bool canMove = true;
 
@@ -27,6 +28,7 @@ namespace Core {
         public void Bind() {
             if (_isBinded) return;
             EntityBehaviour entityBehaviour = GetComponent<EntityBehaviour>();
+            this.stateHandler = GetComponent<AgentStateHandler>();
 
             this.entity = entityBehaviour.entity;
             this.entity.type = EntityTypes.ENEMY;
