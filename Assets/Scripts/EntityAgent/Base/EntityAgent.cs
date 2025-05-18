@@ -28,10 +28,13 @@ namespace Core {
         public void Bind() {
             if (_isBinded) return;
             EntityBehaviour entityBehaviour = GetComponent<EntityBehaviour>();
-            this.stateHandler = GetComponent<AgentStateHandler>();
+            stateHandler = GetComponent<AgentStateHandler>();
+            if (stateHandler == null) {
+                stateHandler = gameObject.AddComponent<AgentStateHandler>();
+            }
 
-            this.entity = entityBehaviour.entity;
-            this.entity.type = EntityTypes.ENEMY;
+            entity = entityBehaviour.entity;
+            entity.type = EntityTypes.ENEMY;
 
             Debug.Log($"Bind Agent to Entity_{entity.entityId}");
             _isBinded = true;
@@ -67,7 +70,6 @@ namespace Core {
         }
 
         public void ExecuteStrategy(AgentAction action) {
-            AgentStrategy strategy = null;
             switch (action) {
                 case AgentAction.Move:
                     strategy = new StrategyMove();

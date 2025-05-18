@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Core.Handlers {
     public class AgentStateHandler : MonoBehaviour {
         private AgentState _currentState = AgentState.Waiting;
-        private AgentAction _actionState = AgentAction.End;
+        private AgentAction _agentAction = AgentAction.End;
         private EntityAgent _agent;
         private bool _active = false;
         private bool _acting = false;
@@ -26,7 +26,6 @@ namespace Core.Handlers {
         }
 
         void Update() {
-            Debug.Log($"Agent State: {_actionState}");
             if (!this._active) return;
             switch (_currentState) {
                 case AgentState.Waiting:
@@ -43,52 +42,46 @@ namespace Core.Handlers {
 
         public void Lock() {
             this._active = false;
+            CardManager.Instance.Unlock();
         }
 
         public void Unlock() {
             this._active = true;
+            CardManager.Instance.Lock();
         }
 
-        private void ChangeState(AgentState newState) {
-            // Debug.Log($"Agent state: {_currentState} → {newState}");
+        private void _ChangeState(AgentState newState) {
             _currentState = newState;
         }
 
         private void _HandleWaiting() {
             // 等到輪到自己行動
-            if (_agent.IsTurnToAgent()) ChangeState(AgentState.Planning);
+            if (_agent.IsTurnToAgent()) _ChangeState(AgentState.Planning);
         }
 
         private void _HandlePlanning() {
-            _actionState = _agent.DecisionStrategy();
-            Debug.Log($"Agent Select Action: {_actionState}");
+            _agentAction = _agent.DecisionStrategy();
 
-            if (!_agent.CanUseStrategy(_actionState)) {
-                Debug.Log($"Action {_actionState} error");
-                _actionState = AgentAction.End;
+            if (!_agent.CanUseStrategy(_agentAction)) {
+                _agentAction = AgentAction.End;
             }
-            ChangeState(AgentState.Acting);
+            _ChangeState(AgentState.Acting);
         }
 
         private void _HandleActing() {
             if (!_acting) {
-                Debug.Log($"Agent Action: {_actionState}");
-                _agent.ExecuteStrategy(_actionState);
+                _agent.ExecuteStrategy(_agentAction);
                 _acting = true;
             }
 
-            if (!_IsMovingEnd()) Debug.Log("Moving...");
-            if (!_IsCardAnimationEnd()) Debug.Log("Using Card...");
-
             if (_IsMovingEnd() && _IsCardAnimationEnd()) {
-                Debug.Log("End Action");
-                ChangeState(AgentState.Waiting);
+                _ChangeState(AgentState.Waiting);
                 _acting = false;
             }
         }
 
         private bool _IsMovingEnd() {
-            if (!Enumerable.Contains(_actionsWithMove, _actionState)) return true;
+            if (!Enumerable.Contains(_actionsWithMove, _agentAction)) return true;
             MoveHandler moveHandler = GetComponent<MoveHandler>();
             return (
                 moveHandler != null &&
@@ -98,7 +91,7 @@ namespace Core.Handlers {
         }
 
         private bool _IsCardAnimationEnd() {
-            if (!Enumerable.Contains(_actionsWithCardAnimation, _actionState)) return true;
+            if (!Enumerable.Contains(_actionsWithCardAnimation, _agentAction)) return true;
             return (
                 _agent != null &&
                 _agent.strategy != null &&

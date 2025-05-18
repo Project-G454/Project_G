@@ -5,6 +5,7 @@ using Cards;
 using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
+using Cards.Handlers;
 using Cards.Helpers;
 using Core.Entities;
 using Core.Helpers;
@@ -37,7 +38,7 @@ namespace Core.Managers.Cards {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        
+
         public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
@@ -117,7 +118,7 @@ namespace Core.Managers.Cards {
                 Debug.Log("Out of card range!");
                 return false;
             }
-            
+
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
             ParticalAnimation.PlayCardAnimation(
@@ -137,7 +138,7 @@ namespace Core.Managers.Cards {
 
         public void SetNewCardPosition() {
             List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
-            for (int i=0; i<cardList.Count(); i++) {
+            for (int i = 0; i < cardList.Count(); i++) {
                 CardView view = cardList[i].GetComponent<CardView>();
                 view.SetInitialState(cardsPos[i], view.GetInitialScale(), view.GetInitialSiblingIdx());
             }
@@ -152,6 +153,20 @@ namespace Core.Managers.Cards {
 
         public void RemoveCard(GameObject cardObject) {
             cardList.Remove(cardObject);
+        }
+
+        public void Unlock() {
+            foreach (GameObject cardObj in cardList) {
+                CardEventHandler handler = cardObj.GetComponent<CardEventHandler>();
+                handler.Unlock();
+            }
+        }
+
+        public void Lock() {
+            foreach (GameObject cardObj in cardList) {
+                CardEventHandler handler = cardObj.GetComponent<CardEventHandler>();
+                handler.Lock();
+            }
         }
     }
 }
