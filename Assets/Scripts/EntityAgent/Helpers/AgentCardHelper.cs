@@ -1,7 +1,7 @@
 using Cards;
 using Cards.Data;
 
-namespace Agents.Helpers {
+namespace Core.Helpers {
     class AgentCardHelper {
         public static bool IsAttackCard(Card card) {
             return card.type == CardTypes.ATTACK || card.type == CardTypes.MAGIC;

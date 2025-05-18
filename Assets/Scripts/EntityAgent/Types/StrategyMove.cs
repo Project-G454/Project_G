@@ -4,7 +4,7 @@ using Core.Managers;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategies {
+namespace Core.Strategies {
     class StrategyMove: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);

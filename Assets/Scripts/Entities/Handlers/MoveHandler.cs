@@ -15,8 +15,8 @@ namespace Entities.Handlers {
         private EnergyManager _energyManager;
 
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
-        public bool isMoving = false;
-        private bool _endMoving = true;
+        public bool isMoving = false;   // 是否還在移動
+        public bool endMoving = true;   // 是否已抵達終點
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
         private PlayerObj _SPUMScript;
@@ -39,23 +39,21 @@ namespace Entities.Handlers {
         }
 
         void Update() {
-            if ((Vector2)transform.position == _nextPosition) {
-                return;
-            }
+            if ((Vector2)transform.position == _nextPosition) return;
 
-            _endMoving = false;
+            endMoving = false;
             transform.position = Vector3.MoveTowards(transform.position, _nextPosition, moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _nextPosition) <= 0.05f) {
                 // 更新當前網格位置
                 Vector2 newGridPos = _gridManager.WorldToGridPosition(transform.position);
-                
+
                 // 只有在網格位置實際變化時才更新可行走狀態
                 if (newGridPos != _currentGridPosition) {
                     _gridManager.SetTileWalkable(_currentGridPosition, true);
-                    
+
                     _currentGridPosition = newGridPos;
-                    
+
                     _gridManager.SetTileWalkable(_currentGridPosition, false);
                 }
 
@@ -72,12 +70,12 @@ namespace Entities.Handlers {
 
             if (isMoving) _SPUMScript.SetState(PlayerState.MOVE);
 
-            if (!_endMoving && (Vector2)transform.position == _nextPosition) {
+            if (!endMoving && (Vector2)transform.position == _nextPosition) {
                 // _mapManager.ClearAllHighlights();
                 Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
                 tile.SetHighlight(false, false);
                 _SPUMScript.SetState(PlayerState.IDLE);
-                _endMoving = true;
+                endMoving = true;
             }
         }
 
@@ -85,7 +83,8 @@ namespace Entities.Handlers {
         public void MoveToTile(Tile targetTile) {
             if (targetTile == null || !targetTile.Walkable)
                 return;
-            
+
+            endMoving = false;
             Vector2 targetPosition = targetTile.transform.position; //目標座標
             Vector2 currentPosition = transform.position; //目前座標
 

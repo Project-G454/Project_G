@@ -1,4 +1,4 @@
-namespace Agents.Data {
+namespace Core.Data {
     public enum AgentState {
         Waiting,
         Planning,

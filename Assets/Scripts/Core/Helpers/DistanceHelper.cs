@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Agents.Helpers {
+namespace Core.Helpers {
     class DistanceHelper {
         public static bool InRange(Vector2 from, Vector2 to, int distance) {
             return ManhattanDistance(from, to) <= distance;

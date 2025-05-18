@@ -7,6 +7,7 @@ using Cards.Data;
 using Cards.Factories;
 using Cards.Helpers;
 using Core.Entities;
+using Core.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
@@ -97,7 +98,7 @@ namespace Core.Managers.Cards {
             ResetCardObjects();
         }
 
-        public bool UseCard(CardBehaviour cb, int targetId) {
+        public bool UseCard(CardBehaviour cb, int targetId, Action onComplete = null) {
             if (isTurnFinished) return false;
 
             Entity currentEntity = _battleManager.currentEntity;
@@ -112,15 +113,21 @@ namespace Core.Managers.Cards {
                 Debug.Log("No energy!");
                 return false;
             }
-            Vector2 dv = currObj.transform.position - targetObj.transform.position;
-            if (Math.Abs(dv.x) + Math.Abs(dv.y) > cb.card.range) {
+            if (DistanceHelper.ManhattanDistance(currObj.transform.position, targetObj.transform.position) > cb.card.range) {
                 Debug.Log("Out of card range!");
                 return false;
             }
             
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
-            ParticalAnimation.PlayCardAnimation(targetObj, cb.card.partical);
+            ParticalAnimation.PlayCardAnimation(
+                targetObj,
+                cb.card.partical,
+                () => {
+                    onComplete?.Invoke();
+                    Debug.Log("Card animation end");
+                }
+            );
             EntityAnimation.PlayAnimationOnce(currObj, PlayerState.ATTACK);
             EntityAnimation.PlayAnimationOnce(targetObj, PlayerState.DAMAGED);
             if (targetEntity.IsDead()) EntityAnimation.PlayAnimation(targetObj, PlayerState.DEATH);

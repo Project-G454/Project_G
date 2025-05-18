@@ -15,8 +15,8 @@ using Entities.Categories;
 using Entities.Handlers;
 using TMPro;
 using UnityEngine;
-using Agents;
-using Agents.Handlers;
+using Core;
+using Core.Handlers;
 using Entities.Animations;
 
 namespace Core.Managers {
@@ -153,7 +153,7 @@ namespace Core.Managers {
                     Debug.Log("Dice Phase");
                     _round++;
                     currentEntity = null;
-                    yield return InitTurnOrder();
+                    // yield return InitTurnOrder();
                 }
 
                 NextPlayer();

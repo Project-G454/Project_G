@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Agents.Data;
-using Agents.Handlers;
-using Agents.Helpers;
-using Agents.Strategies;
+using Core.Data;
+using Core.Handlers;
+using Core.Helpers;
+using Core.Strategies;
 using Cards;
 using Cards.Data;
 using Core.Entities;
@@ -13,11 +13,10 @@ using Entities;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Agents {
+namespace Core {
     public class EntityAgent: MonoBehaviour {
         public Entity entity;
         public AgentStrategy strategy;
-        private AgentStateHandler _agentStateHandler;
         private bool _isBinded = false;
         public bool canMove = true;
 
@@ -28,11 +27,9 @@ namespace Agents {
         public void Bind() {
             if (_isBinded) return;
             EntityBehaviour entityBehaviour = GetComponent<EntityBehaviour>();
-            this._agentStateHandler = GetComponent<AgentStateHandler>();
 
             this.entity = entityBehaviour.entity;
             this.entity.type = EntityTypes.ENEMY;
-            this._agentStateHandler = gameObject.AddComponent<AgentStateHandler>();
 
             Debug.Log($"Bind Agent to Entity_{entity.entityId}");
             _isBinded = true;
@@ -84,6 +81,7 @@ namespace Agents {
                     break;
                 case AgentAction.End:
                 default:
+                    strategy = new StrategyEnd();
                     break;
             }
             strategy?.Execute(this);

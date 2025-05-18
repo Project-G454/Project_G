@@ -1,7 +1,7 @@
 using Core.Managers;
 using Entities;
 
-namespace Agents.Handlers {
+namespace Core.Handlers {
     public class AgentEventHandler {
         
     }

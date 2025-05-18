@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Agents.Data;
-using Agents.Handlers;
-using Agents.Helpers;
+using Core.Data;
+using Core.Handlers;
+using Core.Helpers;
 using Core.Entities;
 using Core.Managers;
 using Entities;
 using UnityEngine;
 
-namespace Agents.Strategies {
+namespace Core.Strategies {
     class StrategyEscape: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
