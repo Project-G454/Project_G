@@ -12,10 +12,13 @@ namespace Core.Handlers {
         private EntityAgent _agent;
         private bool _active = false;
         private bool _acting = false;
-
         private static readonly AgentAction[] _actionsWithCardAnimation = {
             AgentAction.Attack,
             AgentAction.Heal
+        };
+        private static readonly AgentAction[] _actionsWithMove = {
+            AgentAction.Move,
+            AgentAction.Escape
         };
 
         void Start() {
@@ -86,6 +89,7 @@ namespace Core.Handlers {
         }
 
         private bool _IsMovingEnd() {
+            if (!Enumerable.Contains(_actionsWithMove, _actionState)) return true;
             MoveHandler moveHandler = GetComponent<MoveHandler>();
             return (
                 moveHandler != null &&
