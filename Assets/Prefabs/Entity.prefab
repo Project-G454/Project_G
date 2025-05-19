@@ -217,9 +217,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  freestep: 0
+  freestep: 1
   movePoint: {fileID: 3825765803543626584}
   isMoving: 1
+  endMoving: 1
 --- !u!65 &2328070728321297548
 BoxCollider:
   m_ObjectHideFlags: 0

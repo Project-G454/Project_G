@@ -64,8 +64,14 @@ namespace Cards.Animations {
 
             cardTransform.DOMove(position, duration);
         }
+        
+        public static void LocalMoveTo(RectTransform rt, Vector3 position, float duration=0.1f) {
+            if (rt == null) return;
 
-        public static void MoveToPointer(GameObject cardObj, PointerEventData eventData, float duration=0.1f) {
+            rt.DOAnchorPos(position, duration);
+        }
+
+        public static void MoveToPointer(GameObject cardObj, PointerEventData eventData, float duration = 0.1f) {
             Canvas canvas = cardObj.GetComponent<Canvas>();
             RectTransform rt = cardObj.GetComponent<RectTransform>();
 

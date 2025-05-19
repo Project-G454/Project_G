@@ -43,12 +43,17 @@ namespace Core.Managers {
             return effectDict.GetValueOrDefault(id);
         }
 
-        public void Apply(int targetId, int effectId) {
+        public void Apply(int targetId, Effect effect) {
+            Effect newEffect = EffectFactory.MakeEffect(effect, targetId);
             Entity entity = _entityManager.GetEntity(targetId);
-            EffectData effectData = GetEffectbyId(effectId);
-            Effect effect = EffectFactory.MakeEffect(effectData, targetId);
-            Debug.Log($"Apply Effect_{effect.id} -> Entity_{entity.entityId}");
-            entity.AddEffect(effect);
+            Debug.Log($"Apply Effect_{newEffect.id} -> Entity_{entity.entityId}");
+            entity.AddEffect(newEffect);
+        }
+
+        public void RegisterEffect(Effect effect) {
+            if (effect is IEventOn<BeforeTurnEvent> eventOn) {
+                // EventBus.Register<IEventOn<BeforeTurnEvent>>(eventOn);
+            }
         }
 
         public void BeforeTurn() {
@@ -56,7 +61,7 @@ namespace Core.Managers {
             isTurnFinished = false;
 
             _Trigger(entityId, new BeforeTurnEvent());
-            
+
             isTurnFinished = true;
         }
 
@@ -65,7 +70,7 @@ namespace Core.Managers {
             isTurnFinished = false;
 
             _Trigger(entityId, new AfterTurnEvent());
-            _ReduceEffect(entityId);
+            // _ReduceEffect(entityId);
 
             isTurnFinished = true;
         }
@@ -74,15 +79,23 @@ namespace Core.Managers {
             Entity entity = EntityManager.Instance.GetEntity(entityId);
             List<Effect> allEffects = entity.GetEffectList();
 
-            allEffects.ForEach(effect => {
+            foreach (Effect effect in allEffects) {
                 if (effect is IEventOn<T> typedEffect) {
                     typedEffect.On(evt);
-                    EntityAnimation.PlayAnimationOnce(EntityManager.Instance.GetEntityObject(entityId), PlayerState.DAMAGED);
+
+                    var entityObj = EntityManager.Instance.GetEntityObject(entityId);
+                    EntityAnimation.PlayAnimationOnce(entityObj, PlayerState.DAMAGED);
+
                     if (entity.IsDead()) {
-                        EntityAnimation.PlayAnimation(EntityManager.Instance.GetEntityObject(entityId), PlayerState.DEATH);
+                        EntityAnimation.PlayAnimation(entityObj, PlayerState.DEATH);
                     }
                 }
-            });
+                else {
+                    Debug.Log($"Effect {effect.GetType().Name} does NOT implement IEventOn<{typeof(T).Name}>");
+                }
+            }
+            
+            _ReduceEffect(entityId);
         }
 
         private void _ReduceEffect(int entityId) {
@@ -91,7 +104,6 @@ namespace Core.Managers {
             List<Effect> expiredEffects = new();
 
             allEffects.ForEach(effect => {
-                effect.rounds--;
                 if (effect.rounds <= 0) expiredEffects.Add(effect);
             });
 

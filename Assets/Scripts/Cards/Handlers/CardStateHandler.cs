@@ -12,6 +12,7 @@ namespace Cards.Handlers {
         [SerializeField] private float _zoomInScale = 1.2f;
         [SerializeField] private float _transformY = 140f;
         [SerializeField] private float _dodgeGap = 40f;
+        [SerializeField] private RectTransform _effectList;
         
         // --- Classes ---
         private CardEventHandler _eventHandler;
@@ -110,6 +111,8 @@ namespace Cards.Handlers {
             CardAnimation.ResetSibling(gameObject);
             CardAnimation.SetAlpha(gameObject, 1f);
 
+            CardAnimation.LocalMoveTo(_effectList, new Vector2(-10f, 0f), 0.2f);
+
             if (_eventHandler.IsPointerEnter()) SetState(CardState.Hover);
             else if (_eventHandler.IsAnyCardHovering()) SetState(CardState.Dodge);
         }
@@ -120,6 +123,8 @@ namespace Cards.Handlers {
             CardAnimation.ZoomIn(gameObject, _zoomInScale);
             CardAnimation.MoveTo(gameObject, _view.GetInitialPosition() + new Vector3(0f, _transformY, 0f));
             CardAnimation.SendToFront(gameObject);
+
+            CardAnimation.LocalMoveTo(_effectList, new Vector2(65f, 0f), 0.2f);
             
             Card card = _cardBehaviour.card;
             _descriptionManager.ShowOnly(card.desctiptionIds);

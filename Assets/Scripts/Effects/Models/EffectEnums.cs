@@ -2,7 +2,8 @@ namespace Effects.Data {
     public enum EffectType {
         UNSET,
         POISON,
-        STUN
+        STUN,
+        BURN
     }
 
     public enum EffectTiming {

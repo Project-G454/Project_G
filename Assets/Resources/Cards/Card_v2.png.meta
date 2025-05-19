@@ -1,0 +1,882 @@
+fileFormatVersion: 2
+guid: fd4fcfb1b44ed224487a332cace8030c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8991024310809843077
+    second: Card_v2_0
+  - first:
+      213: 6199450426007415185
+    second: Card_v2_1
+  - first:
+      213: 443460707861364869
+    second: Card_v2_2
+  - first:
+      213: 3038807142080290218
+    second: Card_v2_3
+  - first:
+      213: 787352238350293139
+    second: Card_v2_4
+  - first:
+      213: -2124271132083624463
+    second: Card_v2_5
+  - first:
+      213: 8215498860625527172
+    second: Card_v2_6
+  - first:
+      213: 3545049723744193222
+    second: Card_v2_7
+  - first:
+      213: 3637769780100922035
+    second: Card_v2_8
+  - first:
+      213: 8338388881306387431
+    second: Card_v2_9
+  - first:
+      213: 6872884301282743717
+    second: Card_v2_10
+  - first:
+      213: 3383589025805362970
+    second: Card_v2_11
+  - first:
+      213: 6735293946393369305
+    second: Card_v2_12
+  - first:
+      213: 5697429616296070228
+    second: Card_v2_13
+  - first:
+      213: 666221605053658967
+    second: Card_v2_14
+  - first:
+      213: 101408439579449729
+    second: Card_v2_15
+  - first:
+      213: 8851444058174398076
+    second: Card_v2_16
+  - first:
+      213: -5285248616987970448
+    second: Card_v2_17
+  - first:
+      213: 7384995424839811941
+    second: Card_v2_18
+  - first:
+      213: -5625688473215986
+    second: Card_v2_19
+  - first:
+      213: -1655953118036269112
+    second: Card_v2_20
+  - first:
+      213: -2392269555029354149
+    second: Card_v2_21
+  - first:
+      213: -5293453480912043689
+    second: Card_v2_22
+  - first:
+      213: 7318001906869883724
+    second: Card_v2_23
+  - first:
+      213: -4694420541966434438
+    second: Card_v2_24
+  - first:
+      213: 5625922421627775019
+    second: Card_v2_25
+  - first:
+      213: 545302675475725178
+    second: Card_v2_26
+  - first:
+      213: -2110100596437076782
+    second: Card_v2_27
+  - first:
+      213: -3828641510387796460
+    second: Card_v2_28
+  - first:
+      213: -3534400240274287841
+    second: Card_v2_29
+  - first:
+      213: -2603065340603995998
+    second: Card_v2_30
+  - first:
+      213: 4731176949829377301
+    second: Card_v2_31
+  - first:
+      213: 6895998225977416663
+    second: Card_v2_32
+  - first:
+      213: 4152251684820527196
+    second: Card_v2_33
+  - first:
+      213: -9011182781326641231
+    second: Card_v2_34
+  - first:
+      213: 1953721378746805389
+    second: Card_v2_35
+  - first:
+      213: 5154493556068969791
+    second: Card_v2_36
+  - first:
+      213: 2864986229479269337
+    second: Card_v2_37
+  - first:
+      213: -2845441432898039289
+    second: Card_v2_38
+  - first:
+      213: 776055959038234870
+    second: Card_v2_39
+  - first:
+      213: 3433186929901630744
+    second: Card_v2_40
+  - first:
+      213: -319544550468913929
+    second: Card_v2_41
+  - first:
+      213: -7817498812180435570
+    second: Card_v2_42
+  - first:
+      213: -1429186162117983129
+    second: Card_v2_43
+  - first:
+      213: 1956215322988945499
+    second: Card_v2_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Card_Type_Red
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 656
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 199e0dcf05fd80650800000000000000
+      internalID: 6199450426007415185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Type_Blue
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 656
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5808beb0a2d772600800000000000000
+      internalID: 443460707861364869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Type_Yellow
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 512
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9da9d9cb822987d50800000000000000
+      internalID: 6735293946393369305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Type_Green
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 512
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45c0e1cbc06511f40800000000000000
+      internalID: 5697429616296070228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Type_Purple
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 512
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 757f9ee1505ee3900800000000000000
+      internalID: 666221605053658967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_18
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 464
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56346752636cc7660800000000000000
+      internalID: 7384995424839811941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_19
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 464
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0cdfe457730ceff0800000000000000
+      internalID: -5625688473215986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_20
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 464
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c76fbaa96fd409e0800000000000000
+      internalID: -1655953118036269112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_26
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 416
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7bfccae4ed419700800000000000000
+      internalID: 545302675475725178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_27
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 416
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d43705ffaa67b2e0800000000000000
+      internalID: -2110100596437076782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_28
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 416
+        width: 88
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4163501d4deeddac0800000000000000
+      internalID: -3828641510387796460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_30
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 385
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a8ea264ddd00ebd0800000000000000
+      internalID: -2603065340603995998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_31
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 385
+        width: 26
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51d98187e5488a140800000000000000
+      internalID: 4731176949829377301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_32
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 385
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7db9b1799d183bf50800000000000000
+      internalID: 6895998225977416663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_33
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 373
+        width: 12
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c58aeb368e2cf9930800000000000000
+      internalID: 4152251684820527196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_34
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 388
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b7b8e0f009d1f280800000000000000
+      internalID: -9011182781326641231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_35
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 388
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8c2a422e330d1b10800000000000000
+      internalID: 1953721378746805389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_36
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 369
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3de78e5490788740800000000000000
+      internalID: 5154493556068969791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_37
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 372
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d36f7edbc972c720800000000000000
+      internalID: 2864986229479269337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_v2_38
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 372
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7021fe2b716f288d0800000000000000
+      internalID: -2845441432898039289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Purple
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 336
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f09c4478ca15ca00800000000000000
+      internalID: 776055959038234870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Orange
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 336
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 815fc4ca25125af20800000000000000
+      internalID: 3433186929901630744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Red
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 336
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f47363acefb09bf0800000000000000
+      internalID: -319544550468913929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Gray
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 288
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8d62fbcf3aa28390800000000000000
+      internalID: -7817498812180435570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Green
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 288
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 764cd09f1c28a2ce0800000000000000
+      internalID: -1429186162117983129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Card_Title_Blue
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 288
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b50aee6c87fd52b10800000000000000
+      internalID: 1956215322988945499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 411259c58bebde848907efaf09eca424
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Card_Title_Blue: 1956215322988945499
+      Card_Title_Gray: -7817498812180435570
+      Card_Title_Green: -1429186162117983129
+      Card_Title_Orange: 3433186929901630744
+      Card_Title_Purple: 776055959038234870
+      Card_Title_Red: -319544550468913929
+      Card_Type_Blue: 443460707861364869
+      Card_Type_Green: 5697429616296070228
+      Card_Type_Purple: 666221605053658967
+      Card_Type_Red: 6199450426007415185
+      Card_Type_Yellow: 6735293946393369305
+      Card_v2_0: -8991024310809843077
+      Card_v2_10: 6872884301282743717
+      Card_v2_11: 3383589025805362970
+      Card_v2_15: 101408439579449729
+      Card_v2_16: 8851444058174398076
+      Card_v2_17: -5285248616987970448
+      Card_v2_18: 7384995424839811941
+      Card_v2_19: -5625688473215986
+      Card_v2_20: -1655953118036269112
+      Card_v2_21: -2392269555029354149
+      Card_v2_22: -5293453480912043689
+      Card_v2_23: 7318001906869883724
+      Card_v2_24: -4694420541966434438
+      Card_v2_25: 5625922421627775019
+      Card_v2_26: 545302675475725178
+      Card_v2_27: -2110100596437076782
+      Card_v2_28: -3828641510387796460
+      Card_v2_29: -3534400240274287841
+      Card_v2_3: 3038807142080290218
+      Card_v2_30: -2603065340603995998
+      Card_v2_31: 4731176949829377301
+      Card_v2_32: 6895998225977416663
+      Card_v2_33: 4152251684820527196
+      Card_v2_34: -9011182781326641231
+      Card_v2_35: 1953721378746805389
+      Card_v2_36: 5154493556068969791
+      Card_v2_37: 2864986229479269337
+      Card_v2_38: -2845441432898039289
+      Card_v2_4: 787352238350293139
+      Card_v2_5: -2124271132083624463
+      Card_v2_6: 8215498860625527172
+      Card_v2_7: 3545049723744193222
+      Card_v2_8: 3637769780100922035
+      Card_v2_9: 8338388881306387431
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

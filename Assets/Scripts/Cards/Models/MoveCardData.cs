@@ -1,12 +1,12 @@
 using UnityEngine;
 
 namespace Cards.Data {
-    [CreateAssetMenu(fileName = "New Move Card", menuName = "Cards/Move")]
+    [CreateAssetMenu(fileName = "New Energy Card", menuName = "Cards/Energy")]
     /// <summary>
     /// Represents the data required to create a card.
     /// </summary>
-    public class MoveCardData: CardData {
+    public class EnergyCardData: CardData {
         public int step;
-        public override CardTypes type => CardTypes.MOVE;
+        public override CardTypes type => CardTypes.ENERGY;
     }
 }

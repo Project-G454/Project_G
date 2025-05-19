@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cards.Data;
+using Core.Loaders.Cards;
 using Entities;
 using UnityEngine;
 
@@ -17,8 +18,9 @@ namespace Cards {
         public CardRarity rarity { get => _cardData.rarity; }               // 卡片稀有度
         public int cost { get; set; }                                       // 出牌時需要消耗的點數
         public CardTypes type { get; set; }                                 // 卡片類型 (攻擊牌、魔法牌 ... 等)
-        public int range {get => _cardData.range; }                         // 卡片範圍，0 代表只能用於自己
-        public CardAnimations partical {get => _cardData.partical; }        // 使用卡片時作用在目標上的動畫
+        public int range { get => _cardData.range; }                         // 卡片範圍，0 代表只能用於自己
+        public CardAnimations partical { get => _cardData.partical; }        // 使用卡片時作用在目標上的動畫
+        // public List<int> effectIds { get => _cardData.}
 
         /// <param name="data">卡片資料 <see cref="CardData"/></param>
         public Card(
@@ -37,6 +39,15 @@ namespace Cards {
         // 棄牌動作
         public virtual void Drop() {
 
+        }
+
+        public virtual void ApplyView(CardView view) {
+            view.title.text = cardName;
+            view.cost.text = cost.ToString();
+
+            view.background.sprite = CardDataLoader.LoadBackground(id);
+            view.frame.sprite = CardDataLoader.LoadFrame(type);
+            view.titleBackground.sprite = CardDataLoader.LoadTitleBG(rarity);
         }
     }
 }

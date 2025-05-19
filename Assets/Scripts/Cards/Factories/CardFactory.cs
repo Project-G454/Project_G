@@ -20,8 +20,8 @@ namespace Cards.Factories {
                 case CardTypes.MAGIC:
                     card = new MagicCard(cardData as MagicCardData);
                     break;
-                case CardTypes.MOVE:
-                    card = new MoveCard(cardData as MoveCardData);
+                case CardTypes.ENERGY:
+                    card = new EnergyCard(cardData as EnergyCardData);
                     break;
                 case CardTypes.HEAL:
                     card = new HealCard(cardData as HealCardData);

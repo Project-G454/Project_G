@@ -22,5 +22,7 @@ MonoBehaviour:
   range: 3
   partical: 0
   damage: 20
-  effectId: 2
+  effects:
+  - effectData: {fileID: 11400000, guid: b277e731c6f47c448b7a02ac32741c9b, type: 2}
+    rounds: 1
   attackTimes: 1

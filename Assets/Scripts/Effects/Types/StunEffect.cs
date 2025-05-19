@@ -8,8 +8,9 @@ namespace Effects.Categories {
     class StunEffect: Effect, IEventOn<BeforeTurnEvent> {
         public StunEffect(
             StunEffectData effectData,
-            int behaviourId
-        ): base(effectData, behaviourId) {
+            int behaviourId,
+            int rounds
+        ) : base(effectData, behaviourId, rounds) {
 
         }
 
@@ -20,6 +21,10 @@ namespace Effects.Categories {
 
         void IEventOn<BeforeTurnEvent>.On(BeforeTurnEvent triggerEvent) {
             Trigger();
+        }
+
+        public override Effect Copy() {
+            return new StunEffect((StunEffectData)effectData, behaviourId, rounds);
         }
     }
 }

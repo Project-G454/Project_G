@@ -1,4 +1,5 @@
 using Cards.Data;
+using Core.Loaders.Cards;
 using Systems.Interactions;
 using UnityEngine;
 
@@ -16,6 +17,12 @@ namespace Cards.Categories {
             base.Use(sourceId, targetId);
             Debug.Log("Player_" + targetId.ToString() + " heal " + this.healingAmount.ToString() + " HP.");
             CardPlayerInteraction.ApplyHeal(targetId, this.healingAmount);
+        }
+
+        public override void ApplyView(CardView view) {
+            base.ApplyView(view);
+            Sprite icon = CardDataLoader.LoadHealIcon();
+            view.CreateEffectDisplay(icon, healingAmount);
         }
     }
 }

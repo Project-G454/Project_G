@@ -17,8 +17,40 @@ namespace Core.Loaders.Cards {
             return Resources.Load<Sprite>("Cards/Backgrounds/Card_Background_" + id.ToString());
         }
 
-        public static Sprite LoadFrame(int id) {
-            return Resources.Load<Sprite>("Cards/Frames/Card_Frame_" + id.ToString());
+        public static Sprite LoadFrame(CardTypes type) {
+            string color = type switch {
+                CardTypes.ATTACK => "Red",
+                CardTypes.MAGIC => "Purple",
+                CardTypes.ENERGY => "Blue",
+                CardTypes.HEAL => "Green",
+                CardTypes.DEFENCE => "Yellow",
+                _ => "Red" // 預設值
+            };
+            return Resources.LoadAll<Sprite>("Cards/Card_v2").FirstOrDefault(e => e.name == $"Card_Type_{color}");
+        }
+
+        public static Sprite LoadTitleBG(CardRarity rarity) {
+            string color = rarity switch {
+                CardRarity.COMMON => "Gray",
+                CardRarity.UNCOMMON => "Green",
+                CardRarity.RARE => "Blue",
+                CardRarity.EPIC => "Purple",
+                CardRarity.LEGENDARY => "Orange",
+                _ => "Gray" // 預設值
+            };
+            return Resources.LoadAll<Sprite>("Cards/Card_v2").FirstOrDefault(e => e.name == $"Card_Title_{color}");
+        }
+
+        public static Sprite LoadAttackIcon() {
+            return LoadAssets().FirstOrDefault(e => e.name == $"Card_Type_ATTACK");
+        }
+
+        public static Sprite LoadHealIcon() {
+            return LoadAssets().FirstOrDefault(e => e.name == $"Card_Type_HEAL");
+        }
+
+        public static Sprite LoadEnergyIcon() {
+            return LoadAssets().FirstOrDefault(e => e.name == $"CardAssets_17");
         }
     }
 }

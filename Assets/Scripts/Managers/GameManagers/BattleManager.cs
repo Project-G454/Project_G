@@ -194,7 +194,8 @@ namespace Core.Managers {
             HoverUIManager.Instance.Show(currentEntity);
 
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
-            moveHandler.freestep += 1;
+
+            moveHandler.freestep = Math.Min(moveHandler.freestep + 1, 1);
             _globalUIManager.freestepUI.SetVisible(true);
 
             _globalUIManager.energyUI.Bind(currentEntity.energyManager);

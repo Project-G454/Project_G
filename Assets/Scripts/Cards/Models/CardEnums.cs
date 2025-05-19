@@ -3,7 +3,7 @@ namespace Cards.Data {
         UNSET,
         ATTACK,
         MAGIC,
-        MOVE,
+        ENERGY,
         DEFENCE,
         HEAL
     }

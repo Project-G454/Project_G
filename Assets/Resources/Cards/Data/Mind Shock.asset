@@ -21,4 +21,6 @@ MonoBehaviour:
   cost: 1
   range: 3
   partical: 0
-  effectIds: 03000000
+  effects:
+  - effectData: {fileID: 11400000, guid: c55a4471cfe1b8e4a806b4898b0ad37e, type: 2}
+    rounds: 2

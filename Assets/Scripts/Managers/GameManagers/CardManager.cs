@@ -78,9 +78,21 @@ namespace Core.Managers.Cards {
                 _deckManager = player.deckManager;
                 _deckManager.DrawCards(5);
 
+                List<CardData> cards = new();
                 foreach (int id in _deckManager.hand.GetAllCards()) {
                     CardData cardData = GetCardById(id);
-                    Add(cardData);
+                    cards.Add(cardData);
+                }
+
+                // 先根據 Type 排序，相同的再根據 Cost 排序
+                cards.Sort((a, b) => {
+                    int result = a.type.CompareTo(b.type);
+                    if (result == 0) result = a.cost.CompareTo(b.cost);
+                    return result;
+                });
+
+                foreach (CardData card in cards) {
+                    Add(card);
                 }
 
                 CardAnimation.Deal(cardParent, cardList);

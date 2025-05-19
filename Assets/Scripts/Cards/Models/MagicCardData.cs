@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Effects;
+using Effects.Data;
 using UnityEngine;
 
 namespace Cards.Data {
@@ -7,7 +9,7 @@ namespace Cards.Data {
     /// Represents the data required to create a card.
     /// </summary>
     public class MagicCardData: CardData {
-        public List<int> effectIds;
+        public List<Effect> effects;
         public override CardTypes type => CardTypes.MAGIC;
     }
 }

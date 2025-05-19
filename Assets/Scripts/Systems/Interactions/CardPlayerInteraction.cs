@@ -1,14 +1,15 @@
 using Core.Entities;
 using Core.Managers;
+using Effects;
 using Entities;
 
 namespace Systems.Interactions
 {
     public class CardPlayerInteraction
     {
-        public static void ApplyEffect(int targetId, int effectId) {
+        public static void ApplyEffect(int targetId, Effect effect) {
             EffectManager effectManager = EffectManager.Instance;
-            effectManager.Apply(targetId, effectId);
+            effectManager.Apply(targetId, effect);
         }
 
         public static void ApplyDamage(int targetId, int damage) {

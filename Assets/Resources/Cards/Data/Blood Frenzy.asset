@@ -22,5 +22,5 @@ MonoBehaviour:
   range: 3
   partical: 0
   damage: 30
-  effectId: 0
+  effects: []
   attackTimes: 1

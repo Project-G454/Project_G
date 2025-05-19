@@ -6,7 +6,6 @@ namespace Effects.Data {
         public int id;
         public string effectName;
         public string effectDesc;
-        public int rounds;
         public Sprite icon;
         public abstract EffectType effectType { get; }
     }

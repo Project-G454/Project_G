@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Effects;
+using Effects.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ namespace Cards.Data {
     /// </summary>
     public class AttackCardData: CardData {
         public int damage;
-        public int effectId = -1;
+        public List<Effect> effects;
         public int attackTimes = 1;
         public override CardTypes type => CardTypes.ATTACK; 
     }
