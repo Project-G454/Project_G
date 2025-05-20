@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   effectName: Burn
-  effectDesc: Deal 5 damage.
+  effectDesc: Takes 5 damage at the start of each turn.
   icon: {fileID: 5597117985695365778, guid: 2c173aaa7f7620c4290c9cfba12ec7d8, type: 3}
   damage: 5

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   effectName: Poison
-  effectDesc: Deal 1 damage for 5 rounds.
-  rounds: 5
+  effectDesc: "Takes damage equal to (stacks \xD7 1) at the start of each turn."
   icon: {fileID: 6026827351891979943, guid: 57bf385b242ac0743a5583019c8cdb3f, type: 3}
   damage: 1
