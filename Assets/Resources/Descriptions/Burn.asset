@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   title: Burn
-  description: Deal 5 damage for 3 rounds.
+  description: Takes 5 damage at the start of each turn.

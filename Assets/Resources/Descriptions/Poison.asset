@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   title: Poison
-  description: Deal 1 damage for 5 rounds.
+  description: "Takes damage equal to (stacks \xD7 1) at the start of each turn."

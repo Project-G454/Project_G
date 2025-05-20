@@ -40,6 +40,7 @@ namespace Core.Managers {
 
         public void Show(Entity entity)
         {
+            if (entity == null) return;
             currentEntity = entity;
             panel.SetActive(true);
             entity.OnHpChanged += UpdateHp;
@@ -65,6 +66,7 @@ namespace Core.Managers {
 
         private void UpdateHp()
         {
+            if (currentEntity == null) return;
             hpBar.maxValue = currentEntity.maxHp;
             hpBar.value = currentEntity.currentHp;
             hpText.text = $"{currentEntity.currentHp}/{currentEntity.maxHp}";
@@ -72,11 +74,13 @@ namespace Core.Managers {
 
         private void UpdateDraw()
         {
+            if (currentEntity == null) return;
             drawText.text = currentEntity.deckManager.draw.Count.ToString();
         }
 
         public void UpdateEffects()
         {
+            if (currentEntity == null) return;
             List<Effect> effects = currentEntity.effects;
 
             // 清除現有的
