@@ -155,7 +155,8 @@ namespace Core.Managers {
                     Debug.Log("Dice Phase");
                     _round++;
                     currentEntity = null;
-                    // yield return InitTurnOrder();
+                    _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
+                    yield return InitTurnOrder();
                 }
 
                 NextPlayer();

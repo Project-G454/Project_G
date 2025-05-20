@@ -9,7 +9,6 @@ namespace Core.UI {
     public class TurnPanelUI: MonoBehaviour {
         [SerializeField] private GameObject _turnSlotPrefab;
         [SerializeField] private Transform _turnPanelContainer;
-        public List<GameObject> turnslots;
 
         public void UpdateTurnOrder(List<int> orderIds, int currentIndex) {
             List<Entity> entities = new();
@@ -22,11 +21,8 @@ namespace Core.UI {
             foreach (Transform child in _turnPanelContainer)
                 Destroy(child.gameObject);
 
-            turnslots.Clear();
-
             foreach (var entity in entities) {
                 var slot = Instantiate(_turnSlotPrefab, _turnPanelContainer);
-                slot.transform.Find("Avatar").GetComponent<Image>().sprite = entity.avatar;
 
                 var turnSlotUI = slot.transform.GetComponent<TurnSlotUI>();
                 turnSlotUI.Init(entity);
