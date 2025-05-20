@@ -12,5 +12,10 @@ namespace Descriptions {
             this.title = data.title;
             this.description = data.description;
         }
+
+        public Description(string title, string description) {
+            this.title = title;
+            this.description = description;
+        }
     }
 }

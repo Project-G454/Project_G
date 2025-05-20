@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   effectName: Stun
-  effectDesc: Skip turn
-  rounds: 2
+  effectDesc: Cannot act while stunned.
   icon: {fileID: 1617454413, guid: 4456c19872d0e7f478b0f55590799c2b, type: 3}

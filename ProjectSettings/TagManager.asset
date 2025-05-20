@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bouncing Wall
   - Card Receiver
+  - Card Active UI
   layers:
   - Default
   - TransparentFX

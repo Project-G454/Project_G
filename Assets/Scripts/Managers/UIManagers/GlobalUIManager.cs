@@ -15,6 +15,7 @@ namespace Core.Managers {
         public EnergyUI energyUI;
         public FreeStepUI freestepUI;
         public TurnPanelUI turnPanelUI;
+        public CardActiveUI cardActiveUI;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
