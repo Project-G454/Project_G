@@ -26,6 +26,7 @@ namespace Entities {
         public DeckManager deckManager;
         public EnergyManager energyManager;
         public Vector2 position;
+        public Sprite avatar;
 
         public int currentHp {
             get => _currentHp;

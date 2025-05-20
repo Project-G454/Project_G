@@ -123,8 +123,8 @@ namespace Core.Managers {
 
             EntityData data4 = new EntityData(
                 100,
-                "Player4",
-                EntityTypes.PLAYER,
+                "Enemy1",
+                EntityTypes.ENEMY,
                 EntityClasses.WIZARD
             );
 
@@ -187,6 +187,7 @@ namespace Core.Managers {
             
             int idx = _turn % _entityCount;
             currentEntity = _entityManager.GetEntity(_orderedIds[idx]);
+            _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
             
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraManager.SnapCameraTo(entityObject);

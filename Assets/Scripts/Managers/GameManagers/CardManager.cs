@@ -74,33 +74,32 @@ namespace Core.Managers.Cards {
         public void StartTurn() {
             this.isTurnFinished = false;
 
-            if (_battleManager.currentEntity is Player player) {
-                _deckManager = player.deckManager;
-                _deckManager.DrawCards(5);
+            Entity currentEntity = _battleManager.currentEntity;
+            _deckManager = currentEntity.deckManager;
+            _deckManager.DrawCards(5);
 
-                List<CardData> cards = new();
-                foreach (int id in _deckManager.hand.GetAllCards()) {
-                    CardData cardData = GetCardById(id);
-                    cards.Add(cardData);
-                }
+            List<CardData> cards = new();
+            foreach (int id in _deckManager.hand.GetAllCards()) {
+                CardData cardData = GetCardById(id);
+                cards.Add(cardData);
+            }
 
-                // 先根據 Type 排序，相同的再根據 Cost 排序
-                cards.Sort((a, b) => {
-                    int result = a.type.CompareTo(b.type);
-                    if (result == 0) result = a.cost.CompareTo(b.cost);
-                    return result;
-                });
+            // 先根據 Type 排序，相同的再根據 Cost 排序
+            cards.Sort((a, b) => {
+                int result = a.type.CompareTo(b.type);
+                if (result == 0) result = a.cost.CompareTo(b.cost);
+                return result;
+            });
 
-                foreach (CardData card in cards) {
-                    Add(card);
-                }
+            foreach (CardData card in cards) {
+                Add(card);
+            }
 
-                CardAnimation.Deal(cardParent, cardList);
+            CardAnimation.Deal(cardParent, cardList);
 
-                foreach (GameObject cardObj in cardList) {
-                    CardView view = cardObj.GetComponent<CardView>();
-                    view.RecordInitialState();
-                }
+            foreach (GameObject cardObj in cardList) {
+                CardView view = cardObj.GetComponent<CardView>();
+                view.RecordInitialState();
             }
         }
 

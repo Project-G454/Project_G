@@ -7,6 +7,7 @@ using Core.Interfaces;
 using Effects;
 using Entities.Handlers;
 using Entities.Categories;
+using Entities.Models;
 
 namespace Core.Entities {
     /// <summary>
@@ -19,7 +20,7 @@ namespace Core.Entities {
         private readonly Dictionary<int, Entity> entityDict = new();
         private readonly Dictionary<int, GameObject> entityObjectDict = new();
         private int nextEntityId = 1;
-        
+
         public void Init() { }
 
         private void Awake() {
@@ -48,6 +49,8 @@ namespace Core.Entities {
 
             SetupCharacterVisual(newEntity, entityData.entityClass);
 
+            entity.avatar = CaptureHeadSetFromEntity(newEntity);
+
             RegisterEntity(entity, newEntity);
             return entity;
         }
@@ -55,13 +58,16 @@ namespace Core.Entities {
         private void SetupCharacterVisual(GameObject entityObject, EntityClasses entityClass) {
             // 嘗試獲取 CharacterVisualHandler 組件
             CharacterVisualHandler visualHandler = entityObject.GetComponentInChildren<CharacterVisualHandler>();
-            
+
             if (visualHandler != null) {
                 // 設置對應的外觀
                 visualHandler.SetVisual(entityClass);
-            } else {
+            }
+            else {
                 Debug.LogWarning($"無法找到 CharacterVisualHandler 組件！Entity: {entityObject.name}, Class: {entityClass}");
             }
+
+            CharacterVisualSO visual = visualHandler.GetVisual(entityClass);
         }
 
         public void RegisterEntity(Entity entity, GameObject entityObject) {
@@ -104,6 +110,112 @@ namespace Core.Entities {
             foreach (var entityId in entityDict.Keys.ToList()) {
                 UnregisterEntity(entityId);
             }
+        }
+
+        public Sprite CaptureHeadSetFromEntity(GameObject entityObject, int resolution = 128) {
+            // 1. 找到 HeadSet
+            Transform headSet = FindHeadSetFromEntity(entityObject);
+
+            if (headSet == null) {
+                Debug.LogWarning("找不到 HeadSet");
+                return null;
+            }
+
+            // 2. 建立 RenderTexture
+            RenderTexture rt = new RenderTexture(resolution, resolution, 24);
+            Camera cam = new GameObject("TempHeadCam").AddComponent<Camera>();
+            cam.orthographic = true;
+            cam.clearFlags = CameraClearFlags.Color;
+            cam.backgroundColor = new Color(0, 0, 0, 0); // 透明
+            cam.targetTexture = rt;
+            cam.cullingMask = LayerMask.GetMask("HeadCapture");
+
+            // 3. 將 HeadSet 下所有子物件設成專用 Layer
+            var headCaptureLayer = LayerMask.NameToLayer("HeadCapture");
+
+            var allChildren = headSet.GetComponentsInChildren<Transform>(true);
+            var originalLayers = new Dictionary<GameObject, int>();
+
+            foreach (var child in allChildren) {
+                originalLayers[child.gameObject] = child.gameObject.layer;
+                child.gameObject.layer = headCaptureLayer;
+            }
+
+            // 4. 調整相機位置與尺寸（你可以依需要調整）
+            cam.transform.position = headSet.position + new Vector3(0, 0, -10);
+            cam.orthographicSize = 0.8f;
+
+            // 5. 拍照
+            cam.Render();
+            RenderTexture.active = rt;
+
+            Texture2D tex = new Texture2D(resolution, resolution, TextureFormat.RGBA32, false);
+            tex.ReadPixels(new Rect(0, 0, resolution, resolution), 0, 0);
+            tex.Apply();
+
+            Texture2D trimmed = TrimTransparent(tex);
+
+            // 6. 還原 Layer
+            foreach (var kvp in originalLayers) {
+                kvp.Key.layer = kvp.Value;
+            }
+
+            // 7. 清除
+            RenderTexture.active = null;
+            cam.targetTexture = null;
+            GameObject.Destroy(rt);
+            GameObject.Destroy(cam.gameObject);
+
+            // 8. 轉成 Sprite
+            return Sprite.Create(trimmed, new Rect(0, 0, trimmed.width, trimmed.height), new Vector2(0.5f, 0.5f));
+        }
+
+        public static Texture2D TrimTransparent(Texture2D sourceTex)
+        {
+            int width = sourceTex.width;
+            int height = sourceTex.height;
+            Color32[] pixels = sourceTex.GetPixels32();
+
+            int minX = width, maxX = 0, minY = height, maxY = 0;
+            bool hasPixel = false;
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    Color32 c = pixels[y * width + x];
+                    if (c.a > 0) {
+                        hasPixel = true;
+                        minX = Mathf.Min(minX, x);
+                        maxX = Mathf.Max(maxX, x);
+                        minY = Mathf.Min(minY, y);
+                        maxY = Mathf.Max(maxY, y);
+                    }
+                }
+            }
+
+            if (!hasPixel)
+                return sourceTex; // 全透明，直接回傳
+
+            int croppedWidth = maxX - minX + 1;
+            int croppedHeight = maxY - minY + 1;
+
+            Texture2D trimmed = new Texture2D(croppedWidth, croppedHeight, TextureFormat.RGBA32, false);
+            trimmed.SetPixels(sourceTex.GetPixels(minX, minY, croppedWidth, croppedHeight));
+            trimmed.Apply();
+
+            return trimmed;
+        }
+
+        public Transform FindHeadSetFromEntity(GameObject character) {
+            // 先找出所有子物件中名為 HeadSet 的 Transform
+            var allChildren = character.GetComponentsInChildren<Transform>(true);
+
+            foreach (var child in allChildren) {
+                if (child.name == "HeadSet")
+                    return child;
+            }
+
+            Debug.LogWarning("找不到 HeadSet");
+            return null;
         }
     }
 }

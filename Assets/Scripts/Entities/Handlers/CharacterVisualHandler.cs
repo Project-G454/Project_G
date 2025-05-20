@@ -34,6 +34,16 @@ namespace Entities.Handlers {
                 Debug.LogWarning($"No visual found for character class: {characterClass}");
             }
         }
+        
+        public CharacterVisualSO GetVisual(EntityClasses characterClass) {
+            if (_visualsMap.TryGetValue(characterClass, out CharacterVisualSO visual)) {
+                return visual;
+            }
+            else {
+                Debug.LogWarning($"No visual found for character class: {characterClass}");
+                return null;
+            }
+        }
 
         private void ApplyVisual(CharacterVisualSO visual) {
             // if (characterRenderer != null) {
@@ -45,7 +55,7 @@ namespace Entities.Handlers {
 
             PlayerObj SPUMScript = GetComponent<PlayerObj>();
             SPUM_Prefabs prefabScript = character.GetComponent<SPUM_Prefabs>();
-            if(!prefabScript.allListsHaveItemsExist()){
+            if (!prefabScript.allListsHaveItemsExist()) {
                 prefabScript.PopulateAnimationLists();
             }
 

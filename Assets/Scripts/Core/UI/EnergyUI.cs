@@ -4,7 +4,7 @@ using Core.Managers.Energy;
 
 namespace Core.UI {
     public class EnergyUI : MonoBehaviour {
-        [SerializeField] private TextMeshProUGUI energyText;
+        [SerializeField] private TextMeshProUGUI _energyText;
 
         public void Bind(EnergyManager energyManager) {
             energyManager.OnEnergyChanged += UpdateText;
@@ -15,7 +15,7 @@ namespace Core.UI {
         }
 
         private void UpdateText(int energy, int maxEnergy) {
-            energyText.text = $"{energy}/{maxEnergy}";
+            _energyText.text = $"{energy}/{maxEnergy}";
         }
     }
 }
