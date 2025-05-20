@@ -32,6 +32,7 @@ namespace Core.UI {
             _SetCardView(card);
             _SetCardDescription(card);
             _SetEffectView(card);
+            hint.alpha = 1f;
             hint.DOFade(0f, 1f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
             gameObject.SetActive(true);
             _isShow = true;
@@ -40,6 +41,7 @@ namespace Core.UI {
         public void Hide() {
             gameObject.SetActive(false);
             _ResetEffectView();
+            hint.DOKill();
             _isShow = false;
         }
 
