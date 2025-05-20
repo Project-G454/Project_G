@@ -1,3 +1,4 @@
+using Core.Handlers;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Descriptions {
         public void SetView(Description descData) {
             title.text = descData.title;
             description.text = descData.description;
+            GetComponent<ForceUpdateFitter>().Fit();
         }
 
         public void Show() {

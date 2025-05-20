@@ -11,13 +11,14 @@ public class CardDetailSizeController : MonoBehaviour
 
     private RectTransform _rectTransform;
 
-    void OnEnable()
-    {
+    void OnEnable() {
         _rectTransform = GetComponent<RectTransform>();
-        if (Application.isPlaying)
-            StartCoroutine(DelayedUpdateSize());
-        else
-            UpdateSize();
+        // if (Application.isPlaying)
+        //     StartCoroutine(DelayedUpdateSize());
+        // else
+        //     UpdateSize();
+        UpdateSize();
+        Canvas.ForceUpdateCanvases();
     }
 
     void Update()

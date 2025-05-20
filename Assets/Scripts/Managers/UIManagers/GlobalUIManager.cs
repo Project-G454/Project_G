@@ -9,6 +9,7 @@ namespace Core.Managers {
 
         public EnergyUI energyUI;
         public FreeStepUI freestepUI;
+        public CardActiveUI cardActiveUI;
 
 
         private void Awake()

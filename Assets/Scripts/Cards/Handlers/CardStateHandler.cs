@@ -3,6 +3,7 @@ using Cards.Animations;
 using Cards.Data;
 using Core.Managers;
 using Core.Managers.Cards;
+using Core.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -134,7 +135,7 @@ namespace Cards.Handlers {
             else if (_eventHandler.IsClicked()) SetState(CardState.Active);
         }
 
-        private void _HandleActive() { 
+        private void _HandleActive() {
             /* 檢查拖曳 → Dragging, 點擊 → Idle */
             CardAnimation.StopAllAnimation(gameObject);
             CardAnimation.ZoomIn(gameObject, _zoomInScale);
@@ -144,8 +145,12 @@ namespace Cards.Handlers {
             Card card = _cardBehaviour.card;
             _descriptionManager.ShowOnly(card.desctiptionIds);
 
-            if (_eventHandler.IsClicked()) SetState(CardState.Idle);
-            else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
+            GlobalUIManager _ui = GlobalUIManager.Instance;
+            if (_ui != null && _ui.cardActiveUI != null) _ui.cardActiveUI.Show(card);
+
+            SetState(CardState.Idle);
+            // if (_eventHandler.IsClicked()) SetState(CardState.Idle);
+            // else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
         }
 
         private void _HandleDragging() { 
