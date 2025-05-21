@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeName: Recover
   nodeType: 2
-  icon: {fileID: 21300070, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  icon: {fileID: 1334809201, guid: 1bf7f2786631d55489af6a130540e0ed, type: 3}
   description: Recover
