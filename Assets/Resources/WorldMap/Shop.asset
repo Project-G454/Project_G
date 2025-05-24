@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeName: Shop
   nodeType: 0
-  icon: {fileID: 1980170364, guid: 72f0f2ff1ed5a804799415789ea7ad65, type: 3}
+  icon: {fileID: 863885934272679723, guid: c5658ade30cca054cb4baa9f69fbdda6, type: 3}
   description: Shop
