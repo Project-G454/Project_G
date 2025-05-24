@@ -16,16 +16,22 @@ namespace WorldMap {
             {NodeType.Recover, 0.02f}
         };
 
-        public static List<MapNode> Generate(int width, int height) {
-            var grid = GenerateGrid(width, height, 0.7f);
-            Vector2Int startPos = PickStartNode(grid);
-            var map = GeneratePath(startPos, grid);
-            var typedMap = AssignTypes(grid);
-            List<MapNode> nodes = CombineMapInfo(startPos, grid, map, typedMap);
+        public static List<MapNode> Generate(int width, int height, int genTimes=6) {
+            var grid = InitGrid(width, height);
+            HashSet<LimitedNode> map = new();
+            for (int i = 0; i < genTimes; i++) {
+                Vector2Int startPos = PickStartNode(grid);
+                HashSet<LimitedNode> newMap = DisitionNode(grid, startPos);
+                map = CombineMap(newMap, map);
+            }
+
+            var typedMap = AssignTypes(map);
+            // var map = GeneratePath(startPos, grid);
+            // List<MapNode> nodes = CombineMapInfo(startPos, grid, map, typedMap);
             return nodes;
         }
 
-        public static List<List<bool>> GenerateGrid(int width, int height, float chance = 0.5f) {
+        public static List<List<bool>> InitGrid(int width, int height) {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("Width and height must be > 0");
 
@@ -33,12 +39,60 @@ namespace WorldMap {
             for (int i = 0; i < height; i++) {
                 List<bool> row = new List<bool>(width);
                 for (int j = 0; j < width; j++) {
-                    float rng = UnityEngine.Random.Range(0f, 1f);
-                    row.Add(rng < chance);
+                    row.Add(false);
                 }
                 map.Add(row);
             }
             return map;
+        }
+
+        public static HashSet<LimitedNode> DisitionNode(List<List<bool>> grid, Vector2Int startPos) {
+            int height = grid.Count;
+            int width = grid[0].Count;
+
+            HashSet<LimitedNode> nodes = new();
+
+            LimitedNode curr = new LimitedNode(startPos.x, startPos.y);
+            LimitedNode prev;
+            for (int i = 0; i < height - 1; i++) {
+                int pick = UnityEngine.Random.Range(
+                    Math.Max(0, curr.position.x - 1),
+                    Math.Min(curr.position.x + 2, width)
+                );
+                grid[i][pick] = true;
+                prev = curr;
+                curr = new LimitedNode(pick, i);
+                prev.Connect(curr);
+                nodes.Add(prev);
+            }
+            nodes.Add(curr);
+            return nodes;
+        }
+
+        public static HashSet<LimitedNode> CombineMap(HashSet<LimitedNode> newMap, HashSet<LimitedNode> oldMap) {
+            Dictionary<Vector2Int, LimitedNode> positionMap = new();
+
+            // 先加入舊節點
+            foreach (var node in oldMap) {
+                positionMap[node.position] = node;
+            }
+
+            // 加入新節點，如果位置重複，就合併連線
+            foreach (var node in newMap) {
+                if (positionMap.TryGetValue(node.position, out var existing)) {
+                    // 合併連線
+                    foreach (var connected in node.connections) {
+                        if (positionMap.TryGetValue(connected.position, out var connectedOld)) {
+                            existing.Connect(connectedOld);
+                        } else {
+                            existing.Connect(connected); // 可能是新節點
+                        }
+                    }
+                }
+                else positionMap[node.position] = node;
+            }
+
+            return positionMap.Values.ToHashSet();
         }
 
         public static Vector2Int PickStartNode(List<List<bool>> grid) {
