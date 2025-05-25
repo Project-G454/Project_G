@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Loaders.WorldMap;
+using NUnit.Framework;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using WorldMap.Models;
 
@@ -28,8 +30,11 @@ namespace WorldMap {
                 map = CombineMap(newMap, map);
             }
 
+            map = RemoveNoHeadNode(map);
+
             var typedMap = AssignTypes(map);
             var nodeMap = RemoveCrossedPath(typedMap, height);
+            nodeMap = RemoveNoHeadNode(nodeMap);
             return nodeMap;
         }
 
@@ -74,7 +79,6 @@ namespace WorldMap {
         public static HashSet<LimitedNode> CombineMap(HashSet<LimitedNode> newMap, HashSet<LimitedNode> oldMap) {
             Dictionary<Vector2Int, LimitedNode> positionMap = new();
 
-            // 第一步：建立所有節點，以 position 為 key 去重
             foreach (var node in oldMap.Concat(newMap)) {
                 if (!positionMap.TryGetValue(node.position, out var existing)) {
                     positionMap[node.position] = node;
@@ -117,57 +121,72 @@ namespace WorldMap {
             return map;
         }
 
-        public static HashSet<LimitedNode> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
-            HashSet<LimitedNode> heads = new();
-            HashSet<LimitedNode> temp = new();
-            foreach (LimitedNode node in map) {
-                if (node.position.y == 0) temp.Add(node);
+        public static HashSet<LimitedNode> RemoveNoHeadNode(HashSet<LimitedNode> map) {
+            HashSet<LimitedNode> removal = new();
+            foreach (var node in map) {
+                if (node.prevConntions.Count == 0 && node.position.y > 0) {
+                    removal.Add(node);
+                }
+
+                if (node.position.y == 0 && node.connections.Count == 0) {
+                    removal.Add(node);
+                }
             }
 
-            Dictionary<int, List<int>> visitedX = new();
+            foreach (var node in removal) {
+                map.Remove(node);
+            }
+
+            return map;
+        }
+
+        public static HashSet<LimitedNode> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
+            Dictionary<Vector2Int, LimitedNode> heads = new();
+            Dictionary<Vector2Int, LimitedNode> temp = new();
+            foreach (LimitedNode node in map) {
+                if (node.position.y == 0) temp.Add(node.position, node);
+            }
+
+            
+
+            HashSet<LimitedNode> visiteds = new();
             HashSet<LimitedNode> crossedNodes = new();
-            for (int i = 1; i < height; i++) {
+
+            while (temp.Count > 0) {
                 heads.Clear();
-                crossedNodes.Clear();
-                heads.UnionWith(temp);
-                temp.Clear();
-                visitedX.Clear();
-                Debug.Log($"Column {i} Count: {temp.Count}");
-                foreach (LimitedNode head in heads) {
-                    crossedNodes.Clear();
-                    foreach (LimitedNode node in head.connections) {
-                        List<int> fromX = new();
-                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
-                            visitedX.Add(node.position.x, new List<int> { head.position.x });
-                            temp.Add(node);
-                        }
-                        else {
-                            fromX.Add(head.position.x);
-                            visitedX[node.position.x] = fromX;
-                        }
-
-                        if (!visitedX.TryGetValue(head.position.x, out fromX)) {
-                            // 如果下一排的該節點未被檢查過
-                            visitedX.Add(head.position.x, new List<int> { head.position.x });
-                        }
-                        else {
-                            // 如果已經確定下一排的節點至少有一條 path
-                            if (head.position.x > fromX.Min() && head.position.x > node.position.x)
-                                crossedNodes.Add(node); // 與左邊的節點交叉
-                            else if (head.position.x < fromX.Max() && head.position.x > node.position.x)
-                                crossedNodes.Add(node); // 與右邊的節點交叉
-                            else {
-                                fromX.Add(head.position.x);
-                                visitedX[head.position.x] = fromX;
-                            }
-                        }
-
-
-                    }
-                    foreach (LimitedNode node in crossedNodes) {
-                        head.connections.Remove(node);
-                    }
+                foreach (var kvp in temp) {
+                    heads[kvp.Key] = kvp.Value;
                 }
+                temp.Clear();
+                Debug.Log($"Head x{heads.Count}");
+                foreach (var head in heads.Values) {
+                    Debug.Log(head.connections.Count);
+                    foreach (var target in head.connections) {
+                        if (!temp.Keys.Contains(target.position)) {
+                            temp.Add(target.position, target);
+                        }
+
+                        // connect to left
+                        if (
+                            target.position.x < head.position.x &&
+                            heads.TryGetValue(head.position + Vector2Int.left, out var _) &&
+                            temp.TryGetValue(target.position + Vector2Int.right, out var _)
+                        ) crossedNodes.Add(target);
+
+                        // connect to right
+                        if (
+                            target.position.x > head.position.x &&
+                            heads.TryGetValue(head.position + Vector2Int.right, out var _) &&
+                            temp.TryGetValue(target.position + Vector2Int.left, out var _)
+                        ) crossedNodes.Add(target);
+                    }
+
+                    foreach (var crossed in crossedNodes) {
+                        head.Disconnect(crossed);
+                    }
+                    crossedNodes.Clear();
+                }
+                Debug.Log($"Column x{temp.Count}");
             }
             return map;
         }
