@@ -56,7 +56,7 @@ namespace WorldMap {
 
             LimitedNode curr = new LimitedNode(startPos.x, startPos.y);
             LimitedNode prev;
-            for (int i = 0; i < height - 1; i++) {
+            for (int i = 1; i < height; i++) {
                 int pick = UnityEngine.Random.Range(
                     Math.Max(0, curr.position.x - 1),
                     Math.Min(curr.position.x + 2, width)
@@ -74,28 +74,33 @@ namespace WorldMap {
         public static HashSet<LimitedNode> CombineMap(HashSet<LimitedNode> newMap, HashSet<LimitedNode> oldMap) {
             Dictionary<Vector2Int, LimitedNode> positionMap = new();
 
-            // 先加入舊節點
-            foreach (var node in oldMap) {
-                positionMap[node.position] = node;
-            }
-
-            // 加入新節點，如果位置重複，就合併連線
-            foreach (var node in newMap) {
-                if (positionMap.TryGetValue(node.position, out var existing)) {
-                    // 合併連線
-                    foreach (var connected in node.connections) {
-                        if (positionMap.TryGetValue(connected.position, out var connectedOld)) {
-                            existing.Connect(connectedOld);
-                        } else {
-                            existing.Connect(connected); // 可能是新節點
-                        }
+            // 第一步：建立所有節點，以 position 為 key 去重
+            foreach (var node in oldMap.Concat(newMap)) {
+                if (!positionMap.TryGetValue(node.position, out var existing)) {
+                    positionMap[node.position] = node;
+                } else {
+                    // 合併連線進 existing
+                    foreach (var c in node.connections) {
+                        var target = positionMap.TryGetValue(c.position, out var merged) ? merged : c;
+                        existing.connections.Add(target);
                     }
                 }
-                else positionMap[node.position] = node;
+            }
+
+            // 第二步：統一所有 connection 指向 positionMap 中的實體
+            foreach (var node in positionMap.Values) {
+                var newConnections = new HashSet<LimitedNode>();
+                foreach (var c in node.connections) {
+                    var unified = positionMap.TryGetValue(c.position, out var merged) ? merged : c;
+                    newConnections.Add(unified);
+                }
+                node.connections = newConnections;
             }
 
             return positionMap.Values.ToHashSet();
         }
+
+
 
         public static Vector2Int PickStartNode(int width) {
             int rng = UnityEngine.Random.Range(0, width);
@@ -135,14 +140,23 @@ namespace WorldMap {
                             // 如果下一排的該節點未被檢查過
                             visitedX.Add(head.position.x, new List<int> { head.position.x });
                             temp.Add(node);
-                            continue;
+                        }
+                        else {
+                            // 如果已經確定下一排的節點至少有一條 path
+                            if (head.position.x > fromX.Min() && head.position.x > node.position.x)
+                                crossedNodes.Add(node); // 與左邊的節點交叉
+                            else if (head.position.x < fromX.Max() && head.position.x > node.position.x)
+                                crossedNodes.Add(node); // 與右邊的節點交叉
+                            else {
+                                fromX.Add(head.position.x);
+                                visitedX[head.position.x] = fromX;
+                            }
                         }
 
-                        // 如果已經確定下一排的節點至少有一條 path
-                        if (head.position.x > fromX.Min() && head.position.x > node.position.x)
-                            crossedNodes.Add(node); // 與左邊的節點交叉
-                        else if (head.position.x < fromX.Max() && head.position.x > node.position.x)
-                            crossedNodes.Add(node); // 與右邊的節點交叉
+
+                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
+                            visitedX.Add(node.position.x, new List<int> { node.position.x });
+                        }
                         else {
                             fromX.Add(head.position.x);
                             visitedX[node.position.x] = fromX;

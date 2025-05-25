@@ -32,7 +32,7 @@ namespace Core.Managers.WorldMap {
         }
 
         public void GenerateMap() {
-            HashSet<LimitedNode> nodes = MapGenerator.Generate(7, 15);
+            HashSet<LimitedNode> nodes = MapGenerator.Generate(7, 15, 6);
             HashSet<MapNode> map = new HashSet<MapNode>();
             Dictionary<LimitedNode, MapNode> relation = new Dictionary<LimitedNode, MapNode>();
 
@@ -42,7 +42,7 @@ namespace Core.Managers.WorldMap {
                 MapNodeData data = MapNodeFactory.GetNodeData(node.type);
                 MapNode newNode = newNodeObj.GetComponent<MapNode>();
                 newNode.Init(id++, data, node);
-                newNodeObj.transform.localPosition = newNode.position * 2;
+                newNodeObj.transform.localPosition = newNode.position * 2 + Vector2.left * 9;
                 map.Add(newNode);
                 relation.Add(node, newNode);
             }
@@ -61,7 +61,7 @@ namespace Core.Managers.WorldMap {
         public void DrawLines(HashSet<MapNode> map) {
             foreach (MapNode node in map) {
                 foreach (MapNode next in node.connectedNodes) {
-                    Debug.DrawLine(node.position * 2, next.position * 2, Color.red, 60f);
+                    Debug.DrawLine(node.position * 2 + Vector2.left * 9, next.position * 2 + Vector2.left * 9, Color.red, 60f);
                 }
             }
         }
