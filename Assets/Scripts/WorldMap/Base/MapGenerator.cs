@@ -131,9 +131,9 @@ namespace WorldMap {
                     crossedNodes.Clear();
                     foreach (LimitedNode node in head.connections) {
                         List<int> fromX = new();
-                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
+                        if (!visitedX.TryGetValue(head.position.x, out fromX)) {
                             // 如果下一排的該節點未被檢查過
-                            visitedX.Add(node.position.x, new List<int> { head.position.x });
+                            visitedX.Add(head.position.x, new List<int> { head.position.x });
                             temp.Add(node);
                             continue;
                         }
