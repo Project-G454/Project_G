@@ -126,20 +126,29 @@ namespace WorldMap {
 
             Dictionary<int, List<int>> visitedX = new();
             HashSet<LimitedNode> crossedNodes = new();
-            for (int i = 0; i < height - 1; i++) {
+            for (int i = 1; i < height; i++) {
                 heads.Clear();
                 crossedNodes.Clear();
                 heads.UnionWith(temp);
                 temp.Clear();
                 visitedX.Clear();
+                Debug.Log($"Column {i} Count: {temp.Count}");
                 foreach (LimitedNode head in heads) {
                     crossedNodes.Clear();
                     foreach (LimitedNode node in head.connections) {
                         List<int> fromX = new();
+                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
+                            visitedX.Add(node.position.x, new List<int> { head.position.x });
+                            temp.Add(node);
+                        }
+                        else {
+                            fromX.Add(head.position.x);
+                            visitedX[node.position.x] = fromX;
+                        }
+
                         if (!visitedX.TryGetValue(head.position.x, out fromX)) {
                             // 如果下一排的該節點未被檢查過
                             visitedX.Add(head.position.x, new List<int> { head.position.x });
-                            temp.Add(node);
                         }
                         else {
                             // 如果已經確定下一排的節點至少有一條 path
@@ -154,13 +163,6 @@ namespace WorldMap {
                         }
 
 
-                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
-                            visitedX.Add(node.position.x, new List<int> { node.position.x });
-                        }
-                        else {
-                            fromX.Add(head.position.x);
-                            visitedX[node.position.x] = fromX;
-                        }
                     }
                     foreach (LimitedNode node in crossedNodes) {
                         head.connections.Remove(node);
