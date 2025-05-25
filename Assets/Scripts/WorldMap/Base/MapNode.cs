@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 using WorldMap.Models;
 
@@ -18,17 +19,12 @@ namespace WorldMap {
             this.position = pos;
         }
 
-        public void CopyValues(MapNode node) {
-            this.data = node.data;
-            this.id = node.id;
+        public void Init(int id, MapNodeData data, LimitedNode node) {
+            this.data = data;
+            this.id = id;
             this.position = node.position;
-            this.connectedNodes = node.connectedNodes;
-            this.isLocked = node.isLocked;
-            this.isVisited = node.isVisited;
-        }
-
-        public void Init(MapNode node) {
-            CopyValues(node);
+            this.isLocked = node.position.y > 0;
+            this.isVisited = node.position.y == 0;
             this.view = GetComponent<MapNodeView>();
             if (data != null) view.SetView(data.icon);
         }

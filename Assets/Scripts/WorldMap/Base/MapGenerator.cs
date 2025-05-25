@@ -23,13 +23,14 @@ namespace WorldMap {
             var grid = InitGrid(width, height);
             HashSet<LimitedNode> map = new();
             for (int i = 0; i < genTimes; i++) {
-                Vector2Int startPos = PickStartNode(grid);
+                Vector2Int startPos = PickStartNode(width);
                 HashSet<LimitedNode> newMap = DisitionNode(grid, startPos);
                 map = CombineMap(newMap, map);
             }
 
             var typedMap = AssignTypes(map);
-            return typedMap;
+            var nodeMap = RemoveCrossedPath(typedMap, height);
+            return nodeMap;
         }
 
         public static List<List<bool>> InitGrid(int width, int height) {
@@ -96,18 +97,9 @@ namespace WorldMap {
             return positionMap.Values.ToHashSet();
         }
 
-        public static Vector2Int PickStartNode(List<List<bool>> grid) {
-            List<bool> firstRow = grid[0];
-            List<int> nodes = new();
-            for (int i = 0; i < firstRow.Count; i++) {
-                if (firstRow[i]) nodes.Add(i);
-            }
-
-            if (nodes.Count == 0)
-                throw new Exception("Length of first row must be > 0");
-
-            int rng = UnityEngine.Random.Range(0, nodes.Count);
-            return new Vector2Int(nodes[rng], 0);
+        public static Vector2Int PickStartNode(int width) {
+            int rng = UnityEngine.Random.Range(0, width);
+            return new Vector2Int(rng, 0);
         }
 
         public static HashSet<LimitedNode> AssignTypes(HashSet<LimitedNode> map) {
@@ -120,10 +112,48 @@ namespace WorldMap {
             return map;
         }
 
-        public static List<Vector2Int> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
-            for (int i = 0; i < height - 1; i++) {
-                // var row = map.TryGetValue(i, out)
+        public static HashSet<LimitedNode> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
+            HashSet<LimitedNode> heads = new();
+            HashSet<LimitedNode> temp = new();
+            foreach (LimitedNode node in map) {
+                if (node.position.y == 0) temp.Add(node);
             }
+
+            Dictionary<int, List<int>> visitedX = new();
+            HashSet<LimitedNode> crossedNodes = new();
+            for (int i = 0; i < height - 1; i++) {
+                heads.Clear();
+                crossedNodes.Clear();
+                heads.UnionWith(temp);
+                temp.Clear();
+                visitedX.Clear();
+                foreach (LimitedNode head in heads) {
+                    crossedNodes.Clear();
+                    foreach (LimitedNode node in head.connections) {
+                        List<int> fromX = new();
+                        if (!visitedX.TryGetValue(node.position.x, out fromX)) {
+                            // 如果下一排的該節點未被檢查過
+                            visitedX.Add(node.position.x, new List<int> { head.position.x });
+                            temp.Add(node);
+                            continue;
+                        }
+
+                        // 如果已經確定下一排的節點至少有一條 path
+                        if (head.position.x > fromX.Min() && head.position.x > node.position.x)
+                            crossedNodes.Add(node); // 與左邊的節點交叉
+                        else if (head.position.x < fromX.Max() && head.position.x > node.position.x)
+                            crossedNodes.Add(node); // 與右邊的節點交叉
+                        else {
+                            fromX.Add(head.position.x);
+                            visitedX[node.position.x] = fromX;
+                        }
+                    }
+                    foreach (LimitedNode node in crossedNodes) {
+                        head.connections.Remove(node);
+                    }
+                }
+            }
+            return map;
         }
 
         private static NodeType GetRandomType() {

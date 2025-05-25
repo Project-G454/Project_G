@@ -32,22 +32,42 @@ namespace Core.Managers.WorldMap {
         }
 
         public void GenerateMap() {
-            List<MapNode> nodes = MapGenerator.Generate(7, 15);
-            foreach (MapNode node in nodes) {
+            HashSet<LimitedNode> nodes = MapGenerator.Generate(7, 15);
+            HashSet<MapNode> map = new HashSet<MapNode>();
+            Dictionary<LimitedNode, MapNode> relation = new Dictionary<LimitedNode, MapNode>();
+
+            int id = 0;
+            foreach (LimitedNode node in nodes) {
                 GameObject newNodeObj = Instantiate(nodePrefab, nodeParent);
+                MapNodeData data = MapNodeFactory.GetNodeData(node.type);
                 MapNode newNode = newNodeObj.GetComponent<MapNode>();
-                newNode.Init(node);
+                newNode.Init(id++, data, node);
                 newNodeObj.transform.localPosition = newNode.position * 2;
+                map.Add(newNode);
+                relation.Add(node, newNode);
             }
-            DrawLines(nodes);
+
+            foreach ((var k, var v) in relation) {
+                foreach (var c in k.connections) {
+                    if (relation.TryGetValue(c, out var node)) {
+                        v.Connect(node);
+                    }
+                }
+            }
+
+            DrawLines(map);
         }
 
-        public void DrawLines(List<MapNode> nodes) {
-            foreach (MapNode node in nodes) {
+        public void DrawLines(HashSet<MapNode> map) {
+            foreach (MapNode node in map) {
                 foreach (MapNode next in node.connectedNodes) {
                     Debug.DrawLine(node.position * 2, next.position * 2, Color.red, 60f);
                 }
             }
+        }
+
+        private void _Copy_Connections() {
+
         }
 
         void IManager.Init() {
