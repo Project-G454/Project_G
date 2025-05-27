@@ -24,14 +24,10 @@ namespace Core.Entities {
         public void Init() { }
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public Entity CreateEntity(EntityData entityData, Vector3 position) {
             GameObject newEntity = Instantiate(dummy, entities);

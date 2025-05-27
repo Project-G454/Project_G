@@ -28,15 +28,11 @@ namespace Core.Managers {
         public int width => _width;
         public int height => _height;
 
-        void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void Init() {
             this._cam = Camera.main.transform;

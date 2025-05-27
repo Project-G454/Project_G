@@ -7,14 +7,10 @@ namespace Core.Managers {
         private Camera _camera;
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void Init() {
             _camera = Camera.main;

@@ -10,6 +10,8 @@ namespace Core.Managers.Energy {
     /// </summary>
     public class EnergyManager: MonoBehaviour, IManager {
         private int _energy;
+
+        public void Reset() {}
         
         public int energy {
             get { return _energy; }
@@ -18,7 +20,7 @@ namespace Core.Managers.Energy {
                     _energy = 0;
                 else
                     _energy = value;
-                
+
                 OnEnergyChanged?.Invoke(energy, maxEnergy); // 通知 UI
             }
         }

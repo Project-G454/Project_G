@@ -23,20 +23,13 @@ namespace Core.Managers {
 
         private Entity currentEntity;
 
-        private void Awake()
-        {   
-            Hide();
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);       
         }
 
-        public void Init() {
-        }
+        public void Reset() {}
+
+        public void Init() {}
 
         public void Show(Entity entity)
         {

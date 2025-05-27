@@ -25,15 +25,11 @@ namespace Core.Managers {
             warningText?.gameObject.SetActive(false);
         }
 
-        void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void ShowReachableTiles(Vector2Int origin)
         {

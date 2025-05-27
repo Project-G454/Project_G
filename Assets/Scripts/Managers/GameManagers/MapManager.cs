@@ -14,15 +14,11 @@ namespace Core.Managers {
 
         private Camera _mainCamera;
 
-        void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void Init() {
             _gridManager = GridManager.Instance;

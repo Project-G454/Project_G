@@ -22,14 +22,10 @@ namespace Core.Managers {
         private Coroutine _clearCoroutine;
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void Init() {
             if (_is_initialized) return;

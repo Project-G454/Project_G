@@ -15,6 +15,8 @@ namespace Core.Managers.Deck {
 
         public void Init() { }
 
+        public void Reset() {}
+
         public void InitializeDeck() {
             draw.Clear();
             hand.Clear();

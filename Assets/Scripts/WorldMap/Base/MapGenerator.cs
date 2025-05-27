@@ -30,11 +30,11 @@ namespace WorldMap {
                 map = CombineMap(newMap, map);
             }
 
-            map = RemoveNoHeadNode(map);
+            // map = RemoveNoHeadNode(map, height);
 
             var typedMap = AssignTypes(map);
             var nodeMap = RemoveCrossedPath(typedMap, height);
-            nodeMap = RemoveNoHeadNode(nodeMap);
+            nodeMap = RemoveNoHeadNode(nodeMap, height);
             return nodeMap;
         }
 
@@ -82,12 +82,24 @@ namespace WorldMap {
             foreach (var node in oldMap.Concat(newMap)) {
                 if (!positionMap.TryGetValue(node.position, out var existing)) {
                     positionMap[node.position] = node;
-                } else {
-                    // 合併連線進 existing
-                    foreach (var c in node.connections) {
-                        var target = positionMap.TryGetValue(c.position, out var merged) ? merged : c;
-                        existing.connections.Add(target);
+                    continue;
+                }
+
+                // 合併連線進 existing
+                List<LimitedNode> disconnects = new();
+                foreach (var c in node.connections) {
+                    if (positionMap.TryGetValue(c.position, out var merged)) {
+                        existing.Connect(merged);
+                        disconnects.Add(merged);
                     }
+                    else {
+                        existing.Connect(c);
+                        disconnects.Add(c);
+                    }
+                }
+
+                foreach (var dis in disconnects) {
+                    node.Disconnect(dis);
                 }
             }
 
@@ -98,13 +110,14 @@ namespace WorldMap {
                     var unified = positionMap.TryGetValue(c.position, out var merged) ? merged : c;
                     newConnections.Add(unified);
                 }
-                node.connections = newConnections;
+                node.connections.Clear();
+                foreach (var c in newConnections) {
+                    node.Connect(c);
+                }
             }
 
             return positionMap.Values.ToHashSet();
         }
-
-
 
         public static Vector2Int PickStartNode(int width) {
             int rng = UnityEngine.Random.Range(0, width);
@@ -121,24 +134,81 @@ namespace WorldMap {
             return map;
         }
 
-        public static HashSet<LimitedNode> RemoveNoHeadNode(HashSet<LimitedNode> map) {
+        public static HashSet<LimitedNode> RemoveNoHeadNode(HashSet<LimitedNode> map, int height) {
+            HashSet<LimitedNode> bottomToTop = new();
+            HashSet<LimitedNode> topToBottom = new();
+            HashSet<LimitedNode> visited = new();
+            Queue<LimitedNode> queue = new();
+            Debug.Log($"Before: {map.Count}");
+            // Find heads
+            foreach (var node in map) {
+                if (node.position.y == 0 && node.connections.Count > 0) {
+                    visited.Add(node);
+                    queue.Enqueue(node);
+                }
+            }
+
+            // bottom to top
+            while (queue.Count > 0) {
+                LimitedNode curr = queue.Dequeue();
+                foreach (var node in curr.connections) {
+                    if (!visited.Contains(node)) {
+                        visited.Add(node);
+                        queue.Enqueue(node);
+                    }
+                }
+                bottomToTop.Add(curr);
+            }
+
+            visited.Clear();
+            queue.Clear();
+
+            // Find tails
+            foreach (var node in bottomToTop) {
+                if (node.position.y == height - 1 && node.prevConnections.Count > 0) {
+                    visited.Add(node);
+                    queue.Enqueue(node);
+                }
+            }
+
+            while (queue.Count > 0) {
+                LimitedNode curr = queue.Dequeue();
+                foreach (var node in curr.prevConnections) {
+                    if (!visited.Contains(node)) {
+                        visited.Add(node);
+                        queue.Enqueue(node);
+                    }
+                }
+                topToBottom.Add(curr);
+            }
+
             HashSet<LimitedNode> removal = new();
             foreach (var node in map) {
-                if (node.prevConntions.Count == 0 && node.position.y > 0) {
-                    removal.Add(node);
-                }
-
-                if (node.position.y == 0 && node.connections.Count == 0) {
+                if (!bottomToTop.Contains(node) || !topToBottom.Contains(node)) {
                     removal.Add(node);
                 }
             }
 
+            List<List<LimitedNode>> removalPairs = new();
             foreach (var node in removal) {
                 map.Remove(node);
+                foreach (var prev in node.prevConnections) {
+                    removalPairs.Add(new List<LimitedNode>{prev, node});
+                }
+
+                foreach (var next in node.connections) {
+                    removalPairs.Add(new List<LimitedNode>{node, next});
+                }
+            }
+
+            foreach (var pair in removalPairs) {
+                pair[0].Disconnect(pair[1]);
             }
 
             return map;
         }
+
+
 
         public static HashSet<LimitedNode> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
             Dictionary<Vector2Int, LimitedNode> heads = new();
@@ -146,8 +216,6 @@ namespace WorldMap {
             foreach (LimitedNode node in map) {
                 if (node.position.y == 0) temp.Add(node.position, node);
             }
-
-            
 
             HashSet<LimitedNode> visiteds = new();
             HashSet<LimitedNode> crossedNodes = new();

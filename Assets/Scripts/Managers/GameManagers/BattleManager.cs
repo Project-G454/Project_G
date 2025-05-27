@@ -5,22 +5,15 @@ using System.Linq;
 using Core.Entities;
 using Core.Helpers;
 using Core.Interfaces;
-using Core.Loaders.Cards;
 using Core.Managers.Cards;
-using Core.Managers.Energy;
 using Core.Managers.Dices;
-using Dices;
 using Entities;
-using Entities.Categories;
 using Entities.Handlers;
-using TMPro;
 using UnityEngine;
-using Core;
 using Core.Handlers;
-using Entities.Animations;
 
 namespace Core.Managers {
-    public class BattleManager: MonoBehaviour, IManager {
+    public class BattleManager: MonoBehaviour, IManager, IEntryManager {
         public static BattleManager Instance { get; private set; }
         private EntityManager _entityManager;
         private CardManager _cardManager;
@@ -38,21 +31,32 @@ namespace Core.Managers {
         private int _round;
         private int _entityCount;
         private List<int> _orderedIds = new();
+        private bool _initLock = false;
+        private bool _bindingAgentLock = false;
+        private bool _isBattleEnd = false;
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+        }
+
+        public void Reset() {
+            Instance = null;
+        }
+
+        public void ResetAll() {
+            _cardManager.Reset();
+
+            Reset();
+        }
+
+        public void Entry() {
+            // StartBattle();
         }
 
         public void Init() {
-            InitManagers();
-            InitMap();
-            InitEntities();
+            _InitManagers();
+            _InitMap();
+            _InitEntities();
             InitDeckAndEnergy();
             this._entityCount = _entityManager.GetEntityList().Count;
             _turn = 0;
@@ -61,6 +65,7 @@ namespace Core.Managers {
             foreach (Entity entity in _entityManager.GetEntityList()) {
                 _orderedIds.Add(entity.entityId);
             }
+            _initLock = true;
         }
 
         public void BindAgents() {
@@ -72,15 +77,20 @@ namespace Core.Managers {
             // enemy3.AddComponent<EntityAgent>();
             GameObject enemy4 = _entityManager.GetEntityObject(4);
             enemy4.AddComponent<EntityAgent>();
+            _bindingAgentLock = true;
         }
 
         private void Start() {
+            StartBattle();
+        }
+
+        public void StartBattle() {
             Init();
             BindAgents();
             StartCoroutine(GameLoop());
         }
 
-        private void InitManagers() {
+        private void _InitManagers() {
             _cardManager = ManagerHelper.RequireManager(CardManager.Instance);
             _entityManager = ManagerHelper.RequireManager(EntityManager.Instance);
             _effectManager = ManagerHelper.RequireManager(EffectManager.Instance);
@@ -95,11 +105,11 @@ namespace Core.Managers {
             _globalUIManager = ManagerHelper.RequireManager(GlobalUIManager.Instance);
         }
 
-        private void InitMap() {
+        private void _InitMap() {
             _gridManager.GenerateGrid();
         }
 
-        private void InitEntities() {
+        private void _InitEntities() {
             EntityData data1 = new EntityData(
                 80,
                 "Player1",
@@ -150,13 +160,14 @@ namespace Core.Managers {
         }
 
         public IEnumerator GameLoop() {
-            while (true) {
+            yield return new WaitUntil(() => _initLock && _bindingAgentLock);
+            while (!_isBattleEnd) {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
                     _round++;
                     currentEntity = null;
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
-                    yield return InitTurnOrder();
+                    // yield return InitTurnOrder();
                 }
 
                 NextPlayer();
@@ -181,6 +192,10 @@ namespace Core.Managers {
 
                 _globalUIManager.energyUI.UnBind(currentEntity.energyManager);
             }
+
+            ResetAll();
+            SceneTransitionHelper.LoadWorldMapScene();
+            yield break;
         }
 
         public void NextPlayer() {

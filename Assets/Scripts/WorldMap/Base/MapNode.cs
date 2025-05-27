@@ -34,16 +34,7 @@ namespace WorldMap {
         }
 
         public void OnMouseUp() {
-            switch (data.nodeType) {
-                case NodeType.Shop:
-                    Debug.Log("Shop");
-                    break;
-                case NodeType.Battle:
-                    Debug.Log("Battle");
-                    break;
-                case NodeType.Recover:
-                    break;
-            }
+            EntryManagerDispatcher.Enter(this.data.nodeType);
         }
     }
 }

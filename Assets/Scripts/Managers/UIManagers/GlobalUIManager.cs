@@ -18,16 +18,11 @@ namespace Core.Managers {
         public CardActiveUI cardActiveUI;
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
-        public void Init() {
-        }
+        public void Reset() {}
+
+        public void Init() {}
     }
 }

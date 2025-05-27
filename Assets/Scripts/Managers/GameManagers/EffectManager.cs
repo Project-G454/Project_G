@@ -19,15 +19,11 @@ namespace Core.Managers {
         private BattleManager _battleManager;
         public Dictionary<int, EffectData> effectDict = new();
 
-        void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         public void Init() {
             _entityManager = EntityManager.Instance;

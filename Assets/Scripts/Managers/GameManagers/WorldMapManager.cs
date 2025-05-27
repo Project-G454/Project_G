@@ -8,11 +8,12 @@ using WorldMap;
 using WorldMap.Models;
 
 namespace Core.Managers.WorldMap {
-    class WorldMapManager: MonoBehaviour, IManager {
+    class WorldMapManager: MonoBehaviour, IManager, IEntryManager {
         public static WorldMapManager Instance { get; private set; }
         public GameObject nodePrefab;
         public Transform nodeParent;
         public bool isInit = false;
+        public HashSet<LimitedNode> nodes;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -24,15 +25,23 @@ namespace Core.Managers.WorldMap {
             DontDestroyOnLoad(gameObject);
         }
 
+        public void Reset() {}
+
         void Start() {
-            if (isInit) return;
-            // GenerateNode();
-            GenerateMap();
+            Entry();
+        }
+
+        public void Entry() {
+            if (!isInit) {
+                nodes = MapGenerator.Generate(7, 15, 6);
+            }
+            HashSet<MapNode> map = GenerateMap(nodes);
+            DrawLines(map);
             isInit = true;
         }
 
-        public void GenerateMap() {
-            HashSet<LimitedNode> nodes = MapGenerator.Generate(7, 15, 6);
+        public HashSet<MapNode> GenerateMap(HashSet<LimitedNode> nodes) {
+            
             HashSet<MapNode> map = new HashSet<MapNode>();
             Dictionary<LimitedNode, MapNode> relation = new Dictionary<LimitedNode, MapNode>();
 
@@ -55,7 +64,7 @@ namespace Core.Managers.WorldMap {
                 }
             }
 
-            DrawLines(map);
+            return map;
         }
 
         public void DrawLines(HashSet<MapNode> map) {

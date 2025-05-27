@@ -30,13 +30,14 @@ namespace Core.Managers.Cards {
         public bool isTurnFinished = true;
 
         private void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+        }
+
+        public void Reset() {
+            Instance = null;
+            _cardDict.Clear();
+            cardList.Clear();
+            cardAssets.Clear();   
         }
 
         public void Init() {

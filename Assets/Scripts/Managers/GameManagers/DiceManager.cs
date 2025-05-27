@@ -21,16 +21,12 @@ namespace Core.Managers.Dices {
         public int animationEndCount = 0;
 
         void IManager.Init() {}
-
-        void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
+        
+        private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
+
+        public void Reset() {}
 
         /// <summary>
         /// 擲出骰子，返回對應的點數清單。
