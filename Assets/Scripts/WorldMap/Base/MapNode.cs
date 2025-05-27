@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Core.Helpers;
 using UnityEngine;
 using WorldMap.Models;
 
@@ -34,7 +35,9 @@ namespace WorldMap {
         }
 
         public void OnMouseUp() {
-            EntryManagerDispatcher.Enter(this.data.nodeType);
+            if (this.data.nodeType == NodeType.Battle) {
+                SceneTransitionHelper.LoadBattleScene();
+            }
         }
     }
 }
