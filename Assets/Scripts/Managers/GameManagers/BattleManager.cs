@@ -74,7 +74,7 @@ namespace Core.Managers {
 
         private void Start() {
             Init();
-            BindAgents();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -182,13 +182,13 @@ namespace Core.Managers {
 
         public void NextPlayer() {
             DistanceManager.Instance.ClearHighlights();
-            
+
             int idx = _turn % _entityCount;
             currentEntity = _entityManager.GetEntity(_orderedIds[idx]);
-            
+
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraManager.SnapCameraTo(entityObject);
-            
+
             HoverUIManager.Instance.Show(currentEntity);
 
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
@@ -198,7 +198,7 @@ namespace Core.Managers {
             _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
             Debug.Log(currentEntity.entityId);
-            
+
             _turn++;
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
         }
@@ -221,7 +221,7 @@ namespace Core.Managers {
 
                 string displayPoints = string.Join("+", dicePoints);
                 Debug.Log($"Entity {id}: {displayPoints}={point}");
-                
+
                 yield return new WaitUntil(() => _diceManager.IsAllAnimationStopped());
             }
             _orderedIds = points.OrderByDescending(e => e.Value)

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Core.Managers {
-    public class MapManager : MonoBehaviour, IManager {
+    public class MapManager: MonoBehaviour, IManager {
         public static MapManager Instance;
         private GridManager _gridManager;
         private BattleManager _battleManager;
@@ -42,49 +42,54 @@ namespace Core.Managers {
 
         public void MoveTo(Vector2 targetPos) {
             Vector2 clickPosition = new Vector2(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
-                Tile selectedTile = _gridManager.GetTileAtPosition(clickPosition);
+            var selectedTileData = _gridManager.GetTileAtPosition(clickPosition);
 
-                if (selectedTile != null) {
-                    ClearAllHighlights(); // 清除 tile 高亮（不是綠色範圍）
-                    selectedTile.SetHighlight(true);
+            if (selectedTileData != null) {
+                ClearAllHighlights(); // 清除 tile 高亮（不是綠色範圍）
+                _gridManager.SetTileHighlight(clickPosition, true); // 設置高亮
 
-                    int playerId = _battleManager.currentEntity.entityId;
-                    GameObject player = _entityManager.GetEntityObject(playerId);
-                    MoveHandler moveHandler = player.GetComponent<MoveHandler>();
+                int playerId = _battleManager.currentEntity.entityId;
+                GameObject player = _entityManager.GetEntityObject(playerId);
+                MoveHandler moveHandler = player.GetComponent<MoveHandler>();
 
-                    Vector2Int playerPos = Vector2Int.RoundToInt(player.transform.position);
-                    Vector2Int clickedPos = Vector2Int.RoundToInt(selectedTile.transform.position);
+                Vector2Int playerPos = Vector2Int.RoundToInt(player.transform.position);
+                Vector2Int clickedPos = Vector2Int.RoundToInt(clickPosition); // 直接使用 clickPosition
 
-                    // 點到自己顯示範圍
-                    if (playerPos == clickedPos) {
-                        DistanceManager.Instance.ClearHighlights();
-                        DistanceManager.Instance.ShowReachableTiles(playerPos);
-                        return;
-                    }
-
-                    // 點其他格子：檢查範圍
-                    if (DistanceManager.Instance.IsTileInRange(playerPos, clickedPos)) {
-                        moveHandler.MoveToTile(selectedTile);
-                        Entity entity = _entityManager.GetEntity(playerId);
-                        entity.position = selectedTile.transform.position;
-                        Debug.Log($"Entity_{entity.entityId} Move to {entity.position}");
-                        DistanceManager.Instance.ClearHighlights(); // ✅ 移動後清除綠格
-                    } else {
-                        DistanceManager.Instance.ShowOutOfRangeWarning();
-                    }
+                // 點到自己顯示範圍
+                if (playerPos == clickedPos) {
+                    DistanceManager.Instance.ClearHighlights();
+                    DistanceManager.Instance.ShowReachableTiles(playerPos);
+                    return;
                 }
+
+                if (DistanceManager.Instance.IsTileInRange(playerPos, clickedPos)) {
+                    moveHandler.MoveToPosition(clickPosition);
+                    Entity entity = _entityManager.GetEntity(playerId);
+
+                    // 簡化版本 - 直接指派
+                    entity.position = clickPosition;
+
+                    Debug.Log($"Entity_{entity.entityId} Move to {entity.position}");
+                    DistanceManager.Instance.ClearHighlights();
+                }
+                else {
+                    DistanceManager.Instance.ShowOutOfRangeWarning();
+                }
+            }
         }
 
         public void ClearAllHighlights() {
+            // 使用 GridManager 的統一高亮清除方法
+            _gridManager.ClearAllHighlights();
+
+            // 如果需要更細緻的控制，可以用這種方式：
+            /*
             for (int x = 0; x < _gridManager.width; x++) {
                 for (int y = 0; y < _gridManager.height; y++) {
-                    Tile tile = _gridManager.GetTileAtPosition(new Vector2(x, y));
-                    if (tile != null) {
-                        tile.SetHighlight(false);
-                    }
+                    _gridManager.SetTileHighlight(new Vector2(x, y), false);
                 }
             }
-            // 不清除範圍格（已在移動後處理）
+            */
         }
     }
 }
