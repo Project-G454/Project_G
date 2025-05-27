@@ -12,6 +12,8 @@ namespace Core.Managers.WorldMap {
         public static WorldMapManager Instance { get; private set; }
         public GameObject nodePrefab;
         public Transform nodeParent;
+        public GameObject linePrefab;
+        public Transform lineParent;
         public bool isInit = false;
         public HashSet<LimitedNode> nodes;
 
@@ -36,7 +38,7 @@ namespace Core.Managers.WorldMap {
                 nodes = MapGenerator.Generate(7, 15, 6);
             }
             HashSet<MapNode> map = GenerateMap(nodes);
-            DrawLines(map);
+            DrawMap(map);
             isInit = true;
         }
 
@@ -51,7 +53,7 @@ namespace Core.Managers.WorldMap {
                 MapNodeData data = MapNodeFactory.GetNodeData(node.type);
                 MapNode newNode = newNodeObj.GetComponent<MapNode>();
                 newNode.Init(id++, data, node);
-                newNodeObj.transform.localPosition = newNode.position * 2 + Vector2.left * 9;
+                newNodeObj.transform.position = newNode.position * 2;
                 map.Add(newNode);
                 relation.Add(node, newNode);
             }
@@ -75,8 +77,22 @@ namespace Core.Managers.WorldMap {
             }
         }
 
-        private void _Copy_Connections() {
+        public void DrawMap(HashSet<MapNode> map) {
+            foreach (MapNode node in map) {
+                foreach (MapNode next in node.connectedNodes) {
+                    CreateLine(node.position * 2, next.position * 2);
+                }
+            }
+        }
 
+        public void CreateLine(Vector2 from, Vector2 to) {
+            GameObject newLine = Instantiate(linePrefab, lineParent);
+            LineRenderer lr = newLine.GetComponent<LineRenderer>();
+            if (lr != null) {
+                lr.positionCount = 2;
+                lr.SetPosition(0, from);
+                lr.SetPosition(1, to);
+            }
         }
 
         void IManager.Init() {
