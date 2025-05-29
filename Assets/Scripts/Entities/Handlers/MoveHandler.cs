@@ -15,8 +15,8 @@ namespace Entities.Handlers {
         private EnergyManager _energyManager;
 
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
-        public bool isMoving = false;   // 是否還在移動
-        public bool endMoving = true;   // 是否已抵達終點
+        public bool isMoving = false;
+        private bool _endMoving = true;
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
         private PlayerObj _SPUMScript;
@@ -33,15 +33,17 @@ namespace Entities.Handlers {
             Init();
             _nextPosition = transform.position;
             _currentGridPosition = _gridManager.WorldToGridPosition(transform.position);
-    
+
             // 初始化時將位置設為不可行走
             _gridManager.SetTileWalkable(_currentGridPosition, false);
         }
 
         void Update() {
-            if ((Vector2)transform.position == _nextPosition) return;
+            if ((Vector2)transform.position == _nextPosition) {
+                return;
+            }
 
-            endMoving = false;
+            _endMoving = false;
             transform.position = Vector3.MoveTowards(transform.position, _nextPosition, moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _nextPosition) <= 0.05f) {
@@ -70,27 +72,27 @@ namespace Entities.Handlers {
 
             if (isMoving) _SPUMScript.SetState(PlayerState.MOVE);
 
-            if (!endMoving && (Vector2)transform.position == _nextPosition) {
+            if (!_endMoving && (Vector2)transform.position == _nextPosition) {
                 // _mapManager.ClearAllHighlights();
-                Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
-                tile.SetHighlight(false, false);
+                // Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
+                _gridManager.SetTileHighlight(_nextPosition, false, false);
+                // tile.SetHighlight(false, false);
                 _SPUMScript.SetState(PlayerState.IDLE);
-                endMoving = true;
+                _endMoving = true;
             }
         }
 
         // 移動到指定格子（使用改進的曼哈頓算法）
-        public void MoveToTile(Tile targetTile) {
-            if (targetTile == null || !targetTile.Walkable)
+        public void MoveToPosition(Vector2 targetPosition) {
+            // 檢查目標位置是否可行走
+            if (!_gridManager.GetTileWalkable(targetPosition))
                 return;
 
-            endMoving = false;
-            Vector2 targetPosition = targetTile.transform.position; //目標座標
             Vector2 currentPosition = transform.position; //目前座標
 
-            Vector2 _dirVec  = targetPosition - (Vector2)transform.position;
+            Vector2 _dirVec = targetPosition - (Vector2)transform.position;
             Vector2 _dirMVec = _dirVec.normalized;
-            if(_dirMVec.x > 0 ) {
+            if (_dirMVec.x > 0) {
                 Vector3 scale = transform.localScale;
                 scale.x = Math.Abs(scale.x) * -1;
                 transform.localScale = scale;
@@ -125,7 +127,8 @@ namespace Entities.Handlers {
                     else {
                         return;
                     }
-                } else {
+                }
+                else {
                     Debug.Log(string.Format("step: {0}, energy: {1}", freestep, _energyManager.energy));
                     freestep -= 1;
                     if (freestep == 0) _globalUIManager.freestepUI.SetVisible(false);
@@ -136,6 +139,15 @@ namespace Entities.Handlers {
                 isMoving = true;
             }
         }
+
+        // 保留舊方法以向後相容（如果需要）
+        // public void MoveToTile(Tile targetTile) {
+        //     if (targetTile == null || !targetTile.Walkable)
+        //         return;
+
+        //     Vector2 targetPosition = targetTile.transform.position;
+        //     MoveToPosition(targetPosition);
+        // }
 
         private List<Vector2> FindPathBFS(Vector2 start, Vector2 goal) {
             if (start == goal)
@@ -174,7 +186,8 @@ namespace Entities.Handlers {
                     // 如果這個點還沒被訪問過
                     if (!cameFrom.ContainsKey(next)) {
                         // 檢查這個點是否有效且可行走
-                        Tile nextTile = _gridManager.GetTileAtPosition(next);
+                        var nextTile = _gridManager.GetTileAtPosition(next);
+                        // Tile nextTile = _gridManager.GetTileAtPosition(next);
                         if (nextTile != null && nextTile.Walkable) {
                             frontier.Enqueue(next);
                             cameFrom[next] = current;
