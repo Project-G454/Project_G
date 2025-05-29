@@ -140,15 +140,6 @@ namespace Entities.Handlers {
             }
         }
 
-        // 保留舊方法以向後相容（如果需要）
-        // public void MoveToTile(Tile targetTile) {
-        //     if (targetTile == null || !targetTile.Walkable)
-        //         return;
-
-        //     Vector2 targetPosition = targetTile.transform.position;
-        //     MoveToPosition(targetPosition);
-        // }
-
         private List<Vector2> FindPathBFS(Vector2 start, Vector2 goal) {
             if (start == goal)
                 return new List<Vector2> { start };

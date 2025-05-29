@@ -18,7 +18,7 @@ namespace Core.Managers {
             Instance = this;
         }
 
-        public void Reset() {}
+        public void Reset() { }
 
         public void Init() {
             _gridManager = GridManager.Instance;
@@ -77,15 +77,6 @@ namespace Core.Managers {
         public void ClearAllHighlights() {
             // 使用 GridManager 的統一高亮清除方法
             _gridManager.ClearAllHighlights();
-
-            // 如果需要更細緻的控制，可以用這種方式：
-            /*
-            for (int x = 0; x < _gridManager.width; x++) {
-                for (int y = 0; y < _gridManager.height; y++) {
-                    _gridManager.SetTileHighlight(new Vector2(x, y), false);
-                }
-            }
-            */
         }
     }
 }

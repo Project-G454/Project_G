@@ -39,7 +39,7 @@ namespace Core.Managers {
             Instance = this;
         }
 
-        public void Reset() {}
+        public void Reset() { }
 
         public void Init() {
             this._cam = Camera.main.transform;
@@ -326,18 +326,6 @@ namespace Core.Managers {
                 floorTilemap.SetTile(tilePos, selectedFloorTile);
 
                 walkableData[new Vector2(pos.x, pos.y)] = true;
-
-                // var spawnedTile = Instantiate(_tilePrefab, new Vector2(pos.x, pos.y), Quaternion.identity, map);
-                // spawnedTile.name = $"Tile {pos.x} {pos.y}";
-                // spawnedTile.Init(new Vector2(pos.x, pos.y));
-
-                // SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-                // if (sr != null) {
-                //     Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
-                //     sr.sprite = floorSprite; // ✅ 改為拖入 sprite
-                // }
-
-                // tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
             }
 
             HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
@@ -351,29 +339,6 @@ namespace Core.Managers {
                     wallTilemap.SetTile(tilePos, wallTile);
 
                     walkableData[new Vector2(pos.x, pos.y)] = false;
-                    // Tile tileToUse = _obstacleTilePrefab != null ? _obstacleTilePrefab : _tilePrefab;
-
-                    // var spawnedTile = Instantiate(tileToUse, new Vector3(pos.x, pos.y, -0.5f), Quaternion.identity, map);
-                    // spawnedTile.name = $"Wall {pos.x} {pos.y}";
-                    // spawnedTile.Init(new Vector2(pos.x, pos.y));
-                    // spawnedTile.SetWalkable(false);
-
-                    // var spawnedTileFloor = Instantiate(tileToUse, new Vector3(pos.x, pos.y, 0), Quaternion.identity, map);
-                    // spawnedTileFloor.name = $"Wall {pos.x} {pos.y}";
-                    // spawnedTileFloor.Init(new Vector2(pos.x, pos.y));
-                    // spawnedTileFloor.SetWalkable(false);
-
-                    // SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-                    // SpriteRenderer floorSR = spawnedTileFloor.GetComponent<SpriteRenderer>();
-                    // if (sr != null) {
-                    //     Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
-                    //     floorSR.sprite = floorSprite;
-
-                    //     sr.sprite = wallSprite; // ✅ 改為拖入 sprite
-                    //     // sr.transform.position += new Vector3(0, -0.2f, -1f);
-                    // }
-
-                    // tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
                 }
             }
         }
@@ -433,7 +398,7 @@ namespace Core.Managers {
             if (walkableData.TryGetValue(pos, out bool walkable)) {
                 return new TileData(pos, walkable);
             }
-            return null; // 沒有 Tile 時回傳 null，和原本行為一致
+            return null;
         }
 
         // public bool GetTileAtPosition(Vector2 pos) {
@@ -448,27 +413,6 @@ namespace Core.Managers {
         //     var tile = GetTileAtPosition(pos);
         //     if (tile != null) {
         //         tile.SetWalkable(walkable);
-        //     }
-        // }
-
-        // public void SetWallTile(Vector2 pos, bool isWall) {
-        //     Vector3Int tilePos = new Vector3Int((int)pos.x, (int)pos.y, 0);
-
-        //     if (isWall) {
-        //         // 建造牆壁
-        //         wallTilemap.SetTile(tilePos, wallTile);
-        //         permanentWalls.Add(pos);
-        //         walkableData[pos] = false;
-        //     }
-        //     else {
-        //         // 破壞牆壁
-        //         wallTilemap.SetTile(tilePos, null);
-        //         permanentWalls.Remove(pos);
-
-        //         // 檢查這個位置是否有角色，如果沒有就設為可行走
-        //         if (!IsCharacterAtPosition(pos)) {
-        //             walkableData[pos] = true;
-        //         }
         //     }
         // }
 

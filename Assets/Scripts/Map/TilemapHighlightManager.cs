@@ -6,8 +6,8 @@ using Core.Managers;
 public class TilemapHighlightManager: MonoBehaviour {
     [Header("Highlight Settings")]
     [SerializeField] private Tilemap highlightTilemap;
-    [SerializeField] private TileBase hoverHighlightTile;    // 滑鼠懸停的高亮 Tile
-    [SerializeField] private TileBase forceHighlightTile;    // 強制高亮的 Tile
+    [SerializeField] private TileBase hoverHighlightTile;
+    [SerializeField] private TileBase forceHighlightTile;
 
     private GridManager _gridManager;
     private Camera _camera;
@@ -77,7 +77,6 @@ public class TilemapHighlightManager: MonoBehaviour {
         }
     }
 
-    // 清除所有高亮
     public void ClearAllHighlights() {
         highlightTilemap.SetTilesBlock(
             new BoundsInt(0, 0, 0, _gridManager.width, _gridManager.height, 1),

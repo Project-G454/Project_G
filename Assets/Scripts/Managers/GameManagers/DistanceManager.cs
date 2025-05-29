@@ -10,15 +10,7 @@ namespace Core.Managers {
         [Header("Settings")]
         public int maxDistance = 5;
 
-        [Header("References")]
-        // 移除不需要的 GameObject 相關欄位
-        // public GameObject highlightTilePrefab;
-        // public Transform highlightParent;
         public Text warningText;
-
-        // 移除不需要的偏移設定
-        // [Header("Optional")]
-        // public Vector3 highlightOffset = Vector3.zero;
 
         // 追蹤高亮的位置，用於清除
         private List<Vector2> currentHighlightPositions = new List<Vector2>();
