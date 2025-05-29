@@ -27,6 +27,17 @@ namespace Core.Managers {
             warningText?.gameObject.SetActive(false);
         }
 
+        void IManager.Reset() {
+            // 清除所有高亮
+            ClearHighlights();
+
+            // 隱藏警告文字
+            warningText?.gameObject.SetActive(false);
+
+            // 取消所有延遲調用（如果有正在等待的 HideWarning）
+            CancelInvoke();
+        }
+
         void Awake() {
             if (Instance != null && Instance != this) {
                 Destroy(gameObject);

@@ -16,7 +16,7 @@ namespace Entities.Handlers {
 
         private Queue<Vector2> pathQueue = new Queue<Vector2>();
         public bool isMoving = false;
-        private bool _endMoving = true;
+        public bool endMoving = true;
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
         private PlayerObj _SPUMScript;
@@ -43,7 +43,7 @@ namespace Entities.Handlers {
                 return;
             }
 
-            _endMoving = false;
+            endMoving = false;
             transform.position = Vector3.MoveTowards(transform.position, _nextPosition, moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _nextPosition) <= 0.05f) {
@@ -72,13 +72,13 @@ namespace Entities.Handlers {
 
             if (isMoving) _SPUMScript.SetState(PlayerState.MOVE);
 
-            if (!_endMoving && (Vector2)transform.position == _nextPosition) {
+            if (!endMoving && (Vector2)transform.position == _nextPosition) {
                 // _mapManager.ClearAllHighlights();
                 // Tile tile = _gridManager.GetTileAtPosition(_nextPosition);
                 _gridManager.SetTileHighlight(_nextPosition, false, false);
                 // tile.SetHighlight(false, false);
                 _SPUMScript.SetState(PlayerState.IDLE);
-                _endMoving = true;
+                endMoving = true;
             }
         }
 
