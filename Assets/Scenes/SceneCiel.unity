@@ -2983,7 +2983,7 @@ GameObject:
   - component: {fileID: 1802369971}
   - component: {fileID: 1802369970}
   - component: {fileID: 1802369975}
-  - component: {fileID: 1802369976}
+  - component: {fileID: 1802369985}
   - component: {fileID: 1802369984}
   - component: {fileID: 1802369977}
   - component: {fileID: 1802369978}
@@ -3070,37 +3070,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTurnFinished: 1
---- !u!114 &1802369976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802369968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89ea9371d7ec64b2aa1ea308fe2d3bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _width: 40
-  _height: 30
-  _tilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
-    type: 3}
-  _obstacleTilePrefab: {fileID: 0}
-  floorColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
-  wallColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
-  _iterations: 100
-  _walkLength: 50
-  _boundaryOffset: 1
-  floorSpriteSet:
-  - {fileID: 21300004, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300004, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300006, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300010, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300008, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  - {fileID: 21300058, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  wallSprite: {fileID: 21300064, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
-  map: {fileID: 270207623}
 --- !u!114 &1802369977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3221,6 +3190,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077bba427cecf41a498213c00f956553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1802369985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802369968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89ea9371d7ec64b2aa1ea308fe2d3bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _width: 40
+  _height: 30
+  _tilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
+    type: 3}
+  _obstacleTilePrefab: {fileID: 1078341062805889293, guid: 70f37a1c605ee4b84a242fd9bfcfefba,
+    type: 3}
+  floorColor: {r: 0, g: 0, b: 0, a: 0}
+  wallColor: {r: 0, g: 0, b: 0, a: 0}
+  _iterations: 100
+  _walkLength: 50
+  _boundaryOffset: 1
+  floorSpriteSet:
+  - {fileID: -1286146143, guid: 1bf7f2786631d55489af6a130540e0ed, type: 3}
+  wallSprite: {fileID: 2058548983, guid: 1bf7f2786631d55489af6a130540e0ed, type: 3}
+  obstacleSprite: {fileID: -1830807748, guid: 1bf7f2786631d55489af6a130540e0ed, type: 3}
+  map: {fileID: 270207623}
 --- !u!1 &1808384829
 GameObject:
   m_ObjectHideFlags: 0
