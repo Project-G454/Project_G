@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Core.Helpers;
 using Core.Managers;
+using Core.Managers.WorldMap;
 using UnityEngine;
 using WorldMap.Animations;
 using WorldMap.Models;
@@ -67,13 +68,22 @@ namespace WorldMap {
         }
 
         public void OnMouseUp() {
-            if (this.isLocked) {
+            if (this.isLocked || this.isVisited) {
                 if (this.animator) {
                     animator.Shake();
-                    animator.Blink(view.lockedColor, 1f);
+                    animator.Blink(
+                        isLocked ? view.lockedColor : view.resolvedColor,
+                        1f
+                    );
                 }
                 return;
             }
+
+            WorldMapManager.Instance.currentNodeId = this.id;
+            WorldMapManager.Instance.currentStage = this.stage;
+            Debug.Log($"Current node set to {this.id} at {this.stage}");
+
+            WorldMapManager.Instance.SaveCameraState();
 
             switch (this.data.nodeType) {
                 case NodeType.Boss:
@@ -101,9 +111,21 @@ namespace WorldMap {
             _UnlockChildren();
         }
 
+        public void Lock() {
+            this.isLocked = true;
+            this.isVisited = false;
+            this.view.Lock();
+        }
+
         private void _UnlockChildren() {
             foreach (var node in connectedNodes) {
                 node.Unlock();
+            }
+        }
+        
+        public void LockChildren() {
+            foreach (var node in connectedNodes) {
+                node.Lock();
             }
         }
     }

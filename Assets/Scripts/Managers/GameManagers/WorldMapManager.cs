@@ -19,6 +19,12 @@ namespace Core.Managers.WorldMap {
         public HashSet<LimitedNode> nodes;
         public HashSet<MapNode> map;
         public int level = 1;
+        public int currentStage = -1;
+        public int currentNodeId = -1;
+        public HashSet<int> resovedNodeIds = new();
+        private List<int> _disabledNodeIds = new();
+        private Vector3 _cameraPosition;
+        private float _cameraZoom = -1;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -29,7 +35,7 @@ namespace Core.Managers.WorldMap {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        
+
         public void Init() { }
 
         public void Reset() { }
@@ -40,6 +46,8 @@ namespace Core.Managers.WorldMap {
 
         public void Entry() {
             if (!isInit) nodes = MapGenerator.Generate(7, 15, 6);
+            if (currentNodeId > 0) resovedNodeIds.Add(currentNodeId);
+            LoadCameraState();
             map = GenerateMap(nodes);
             DrawMap(map);
             isInit = true;
@@ -50,6 +58,8 @@ namespace Core.Managers.WorldMap {
             Dictionary<LimitedNode, MapNode> relation = new Dictionary<LimitedNode, MapNode>();
             List<MapNode> startNodes = new();
             List<MapNode> endNodes = new();
+            List<MapNode> resovedNodes = new();
+            List<MapNode> _disabledNodes = new();
 
             int id = 0;
             foreach (LimitedNode node in nodes) {
@@ -58,6 +68,16 @@ namespace Core.Managers.WorldMap {
                 relation.Add(node, newNode);
                 if (newNode.data.nodeType == NodeType.Start) startNodes.Add(newNode);
                 if (newNode.isTail) endNodes.Add(newNode);
+                if (resovedNodeIds.Contains(newNode.id)) resovedNodes.Add(newNode);
+                if (
+                    newNode.stage == currentStage &&
+                    newNode.id != currentNodeId ||
+                    _disabledNodeIds.Contains(newNode.id)
+                ) {
+                    Debug.Log($"ID: {newNode.id}, {newNode.stage} == {currentStage}, {newNode.id} != {currentNodeId}");
+                    _disabledNodeIds.Add(newNode.id);
+                    _disabledNodes.Add(newNode);
+                }
             }
 
             float avgX = 0;
@@ -82,6 +102,15 @@ namespace Core.Managers.WorldMap {
 
             foreach (var node in startNodes) {
                 node.Resolve();
+            }
+
+            foreach (var node in resovedNodes) {
+                node.Resolve();
+            }
+
+            Debug.Log($"Disabling {_disabledNodes.Count} nodes");
+            foreach (var node in _disabledNodes) {
+                node.Lock();
             }
 
             foreach (var node in endNodes) {
@@ -135,6 +164,17 @@ namespace Core.Managers.WorldMap {
                 lr.SetPosition(0, from);
                 lr.SetPosition(1, to);
             }
+        }
+
+        public void SaveCameraState() {
+            _cameraPosition = Camera.main.transform.position;
+            _cameraZoom = Camera.main.orthographicSize;
+        }
+
+        public void LoadCameraState() {
+            if (_cameraPosition == null || _cameraZoom < 0) return;
+            Camera.main.transform.position = _cameraPosition;
+            Camera.main.orthographicSize = _cameraZoom;
         }
     }
 }

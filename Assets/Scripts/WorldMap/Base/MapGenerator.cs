@@ -17,6 +17,8 @@ namespace WorldMap {
 
         private static readonly Dictionary<int, NodeType> forceFloorsType = new Dictionary<int, NodeType> {
             {0, NodeType.Start},
+            {1, NodeType.Shop},
+            {2, NodeType.Shop},
             {7, NodeType.Shop},
             {14, NodeType.Recover},
         };
