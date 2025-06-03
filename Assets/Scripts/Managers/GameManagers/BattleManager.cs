@@ -170,10 +170,6 @@ namespace Core.Managers {
                     // yield return InitTurnOrder();
                 }
 
-                ResetAll();
-                SceneTransitionHelper.LoadBattleRewardsScene();
-                yield break;
-
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
 
@@ -198,7 +194,7 @@ namespace Core.Managers {
             }
 
             ResetAll();
-            LoadSceneManager.Instance.LoadWorldMapScene();
+            LoadSceneManager.Instance.LoadBattleRewardsScene();
             yield break;
         }
 

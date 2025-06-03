@@ -7,73 +7,83 @@ using TMPro;
 using Cards.Data;
 using Entities.Categories;
 using Entities;
+using Shop.Models;
+using Core.Loaders.Shop;
+using Shop.Items;
+using Reward;
+using Core.Loaders.Cards;
 
-public class PlayerRewardPanel: MonoBehaviour {
-    //public TextMeshProUGUI playerNameText;
-    public Image avatar;
-    public Button[] cardButtons; // Expected size: 3
-    public Button skipButton;
-    //public TextMeshProUGUI pickStatusText;
+namespace Core.UI {
+    public class PlayerRewardPanel: MonoBehaviour {
+        public Transform itemsParent;
+        public GameObject cardItemPrefab;
+        //public TextMeshProUGUI playerNameText;
+        public Image avatar;
+        public Button[] cardButtons; // Expected size: 3
+        public Button skipButton;
+        //public TextMeshProUGUI pickStatusText;
 
-    private int? _selectedCard = null;
-    private bool _isSkip = false;
+        private CardData _selectedCard = null;
+        private bool _isSkip = false;
+        private Action<PlayerRewardPanel, CardData> _onPickedCardCallBack;
+        private bool _hasPicked = false;
 
-    private List<int> _cards;
-    private Action<PlayerRewardPanel, int?> _onPickCallback;
-    private bool _hasPicked = false;
+        public void Setup(Entity player, Action<PlayerRewardPanel, CardData> onPickedCardCallBack) {
+            //playerNameText.text = player.entityName;
+            avatar.sprite = player.avatar;
+            _onPickedCardCallBack = onPickedCardCallBack;
 
-    public void Setup(Entity player, List<int> cardOptions, Action<PlayerRewardPanel, int?> onPickCallback) {
-        //playerNameText.text = player.entityName;
-        avatar.sprite = player.avatar;
-        _onPickCallback = onPickCallback;
-        _cards = cardOptions;
-        for (int i = 0; i < cardButtons.Length; i++) {
-            int index = i;
-            if (i < _cards.Count) {
-                cardButtons[i].gameObject.SetActive(true);
-                cardButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = _cards[i].ToString();
-                cardButtons[i].onClick.RemoveAllListeners();
-                cardButtons[i].onClick.AddListener(() => OnCardSelected(_cards[index]));
+            foreach (Transform child in itemsParent)
+                Destroy(child.gameObject);
+
+            for (int i = 0; i < 3; i++) {
+                var slot = CreateCardItem();
             }
-            else {
-                cardButtons[i].gameObject.SetActive(false);
-            }
-        }
 
-        skipButton.onClick.RemoveAllListeners();
-        skipButton.onClick.AddListener(() => OnSkipSelected());
-        //pickStatusText.text = "尚未選擇";
-        _hasPicked = false;
-    }
-
-    private void OnCardSelected(int selectedCard) {
-        if (_selectedCard == selectedCard) {
+            skipButton.onClick.RemoveAllListeners();
+            skipButton.onClick.AddListener(() => OnSkipSelected());
             _hasPicked = false;
         }
-        else {
-            _hasPicked = true;
-            _selectedCard = selectedCard;
-            _isSkip = false;
-            UpdateCardHighlight();
+
+        public GameObject CreateCardItem() {
+            List<CardData> dataList = CardDataLoader.LoadAll();
+            CardData data = dataList[UnityEngine.Random.Range(0, dataList.Count)];
+
+            GameObject newItem = Instantiate(cardItemPrefab, itemsParent);
+            RewardCard item = newItem.GetComponent<RewardCard>();
+            item.Init(data, OnCardSelected);
+            return newItem;
         }
 
-        _onPickCallback?.Invoke(this, _selectedCard);
+        private void OnCardSelected(CardData selectedCard) {
+            if (_selectedCard == selectedCard) {
+                _hasPicked = false;
+            }
+            else {
+                _hasPicked = true;
+                _selectedCard = selectedCard;
+                _isSkip = false;
+                UpdateCardHighlight();
+            }
+
+            _onPickedCardCallBack?.Invoke(this, _selectedCard);
+        }
+
+        private void OnSkipSelected() {
+            _hasPicked = true;
+            _selectedCard = null;
+            _isSkip = true;
+            UpdateCardHighlight();
+
+            _onPickedCardCallBack?.Invoke(this, _selectedCard);
+        }
+
+        private void UpdateCardHighlight() {
+
+        }
+
+        public bool HasPicked() => _hasPicked;
+
+        public CardData GetSelectedCard() => _isSkip ? null : _selectedCard;
     }
-
-    private void OnSkipSelected() {
-        _hasPicked = true;
-        _selectedCard = null;
-        _isSkip = true;
-        UpdateCardHighlight();
-
-        _onPickCallback?.Invoke(this, _selectedCard);
-    }
-
-    private void UpdateCardHighlight() {
-
-    }
-
-    public bool HasPicked() => _hasPicked;
-    
-    public int? GetSelectedCard() => _isSkip ? null : _selectedCard;
 }
