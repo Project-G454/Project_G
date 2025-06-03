@@ -62,6 +62,7 @@ namespace Core.UI {
                 GameObject descObj = Instantiate(description.obj, effectParent);
                 descObj.transform.SetParent(effectParent);
                 descObj.GetComponent<ForceUpdateFitter>().Fit();
+                descObj.SetActive(true);
             }
         }
 

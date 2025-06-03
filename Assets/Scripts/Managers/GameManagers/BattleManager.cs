@@ -198,7 +198,7 @@ namespace Core.Managers {
             }
 
             ResetAll();
-            SceneTransitionHelper.LoadWorldMapScene();
+            LoadSceneManager.Instance.LoadWorldMapScene();
             yield break;
         }
 

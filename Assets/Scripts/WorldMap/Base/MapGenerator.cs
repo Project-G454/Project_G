@@ -16,29 +16,27 @@ namespace WorldMap {
         };
 
         private static readonly Dictionary<int, NodeType> forceFloorsType = new Dictionary<int, NodeType> {
-            {0, NodeType.Fork},
+            {0, NodeType.Start},
             {7, NodeType.Shop},
             {14, NodeType.Recover},
         };
 
         public static HashSet<LimitedNode> Generate(int width, int height, int genTimes = 6) {
-            var grid = InitGrid(width, height);
+            var grid = _InitGrid(width, height);
             HashSet<LimitedNode> map = new();
             for (int i = 0; i < genTimes; i++) {
-                Vector2Int startPos = PickStartNode(width);
-                HashSet<LimitedNode> newMap = DisitionNode(grid, startPos);
-                map = CombineMap(newMap, map);
+                Vector2Int startPos = _PickStartNode(width);
+                HashSet<LimitedNode> newMap = _DisitionNode(grid, startPos);
+                map = _CombineMap(newMap, map);
             }
 
-            // map = RemoveNoHeadNode(map, height);
-
-            var typedMap = AssignTypes(map);
-            var nodeMap = RemoveCrossedPath(typedMap, height);
-            nodeMap = RemoveNoHeadNode(nodeMap, height);
+            var typedMap = _AssignTypes(map);
+            var nodeMap = _RemoveCrossedPath(typedMap);
+            nodeMap = _RemoveNoHeadNode(nodeMap, height);
             return nodeMap;
         }
 
-        public static List<List<bool>> InitGrid(int width, int height) {
+        private static List<List<bool>> _InitGrid(int width, int height) {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("Width and height must be > 0");
 
@@ -53,7 +51,7 @@ namespace WorldMap {
             return map;
         }
 
-        public static HashSet<LimitedNode> DisitionNode(List<List<bool>> grid, Vector2Int startPos) {
+        private static HashSet<LimitedNode> _DisitionNode(List<List<bool>> grid, Vector2Int startPos) {
             int height = grid.Count;
             int width = grid[0].Count;
 
@@ -72,11 +70,12 @@ namespace WorldMap {
                 prev.Connect(curr);
                 nodes.Add(prev);
             }
+            curr.isTail = true;
             nodes.Add(curr);
             return nodes;
         }
 
-        public static HashSet<LimitedNode> CombineMap(HashSet<LimitedNode> newMap, HashSet<LimitedNode> oldMap) {
+        private static HashSet<LimitedNode> _CombineMap(HashSet<LimitedNode> newMap, HashSet<LimitedNode> oldMap) {
             Dictionary<Vector2Int, LimitedNode> positionMap = new();
 
             foreach (var node in oldMap.Concat(newMap)) {
@@ -119,27 +118,27 @@ namespace WorldMap {
             return positionMap.Values.ToHashSet();
         }
 
-        public static Vector2Int PickStartNode(int width) {
+        private static Vector2Int _PickStartNode(int width) {
             int rng = UnityEngine.Random.Range(0, width);
             return new Vector2Int(rng, 0);
         }
 
-        public static HashSet<LimitedNode> AssignTypes(HashSet<LimitedNode> map) {
+        private static HashSet<LimitedNode> _AssignTypes(HashSet<LimitedNode> map) {
             foreach (var node in map) {
                 if (forceFloorsType.TryGetValue(node.position.y, out NodeType type)) {
                     node.AssignType(type);
                 }
-                else node.AssignType(GetRandomType());
+                else node.AssignType(_GetRandomType());
             }
             return map;
         }
 
-        public static HashSet<LimitedNode> RemoveNoHeadNode(HashSet<LimitedNode> map, int height) {
+        private static HashSet<LimitedNode> _RemoveNoHeadNode(HashSet<LimitedNode> map, int height) {
             HashSet<LimitedNode> bottomToTop = new();
             HashSet<LimitedNode> topToBottom = new();
             HashSet<LimitedNode> visited = new();
             Queue<LimitedNode> queue = new();
-            Debug.Log($"Before: {map.Count}");
+
             // Find heads
             foreach (var node in map) {
                 if (node.position.y == 0 && node.connections.Count > 0) {
@@ -171,6 +170,7 @@ namespace WorldMap {
                 }
             }
 
+            // top to bottom
             while (queue.Count > 0) {
                 LimitedNode curr = queue.Dequeue();
                 foreach (var node in curr.prevConnections) {
@@ -182,6 +182,7 @@ namespace WorldMap {
                 topToBottom.Add(curr);
             }
 
+            // remove unlinked nodes
             HashSet<LimitedNode> removal = new();
             foreach (var node in map) {
                 if (!bottomToTop.Contains(node) || !topToBottom.Contains(node)) {
@@ -208,27 +209,22 @@ namespace WorldMap {
             return map;
         }
 
-
-
-        public static HashSet<LimitedNode> RemoveCrossedPath(HashSet<LimitedNode> map, int height) {
+        private static HashSet<LimitedNode> _RemoveCrossedPath(HashSet<LimitedNode> map) {
             Dictionary<Vector2Int, LimitedNode> heads = new();
             Dictionary<Vector2Int, LimitedNode> temp = new();
             foreach (LimitedNode node in map) {
                 if (node.position.y == 0) temp.Add(node.position, node);
             }
 
-            HashSet<LimitedNode> visiteds = new();
             HashSet<LimitedNode> crossedNodes = new();
-
             while (temp.Count > 0) {
                 heads.Clear();
                 foreach (var kvp in temp) {
                     heads[kvp.Key] = kvp.Value;
                 }
+
                 temp.Clear();
-                Debug.Log($"Head x{heads.Count}");
                 foreach (var head in heads.Values) {
-                    Debug.Log(head.connections.Count);
                     foreach (var target in head.connections) {
                         if (!temp.Keys.Contains(target.position)) {
                             temp.Add(target.position, target);
@@ -254,12 +250,11 @@ namespace WorldMap {
                     }
                     crossedNodes.Clear();
                 }
-                Debug.Log($"Column x{temp.Count}");
             }
             return map;
         }
 
-        private static NodeType GetRandomType() {
+        private static NodeType _GetRandomType() {
             float totalWeight = nodeSpawnChances.Sum(e => e.Value);
             float rng = UnityEngine.Random.Range(0f, totalWeight);
 

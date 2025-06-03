@@ -3,8 +3,9 @@ namespace WorldMap.Models {
         Shop,
         Battle,
         Recover,
-        Fork,
+        Start,
         Road,
+        Boss,
         Unset
     }
 }

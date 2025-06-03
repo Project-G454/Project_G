@@ -15,4 +15,4 @@ MonoBehaviour:
   nodeName: Shop
   nodeType: 0
   icon: {fileID: 863885934272679723, guid: c5658ade30cca054cb4baa9f69fbdda6, type: 3}
-  description: Shop
+  description: A mysterious merchant appears.\nSpend wisely, hero.
