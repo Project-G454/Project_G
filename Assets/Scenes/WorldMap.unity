@@ -458,7 +458,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1913130284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &811032850
+--- !u!21 &1123840693
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -614,7 +614,7 @@ PrefabInstance:
     - target: {fileID: 3162377428882717154, guid: 741218f33b7c0ac43a5a578e6d416f29,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 36.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3162377428882717154, guid: 741218f33b7c0ac43a5a578e6d416f29,
         type: 3}

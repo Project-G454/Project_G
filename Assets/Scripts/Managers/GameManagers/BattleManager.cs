@@ -197,7 +197,7 @@ namespace Core.Managers {
             }
 
             ResetAll();
-            LoadSceneManager.Instance.LoadWorldMapScene();
+            LoadSceneManager.Instance.LoadBattleRewardsScene();
             yield break;
         }
 

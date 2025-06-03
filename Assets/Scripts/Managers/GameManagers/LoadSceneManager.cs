@@ -80,5 +80,10 @@ namespace Core.Managers {
                 () => _LoadScene("WorldMap")
             );
         }
+
+        public void LoadBattleRewardsScene() {
+            if (_globalUIManager == null) Init();
+            _LoadScene("BattleRewards");
+        }
     }
 }
