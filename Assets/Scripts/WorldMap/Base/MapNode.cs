@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using Core.Helpers;
+using Core.Managers;
 using UnityEngine;
+using WorldMap.Animations;
 using WorldMap.Models;
 
 namespace WorldMap {
@@ -9,10 +11,14 @@ namespace WorldMap {
         public MapNodeData data;
         public int id;
         public Vector2 position;
+        public int stage;
         public List<MapNode> connectedNodes = new();
+        public List<MapNode> prevNodes = new();
         public MapNodeView view;
+        public MapNodeAnimator animator;
         public bool isLocked = true;
         public bool isVisited = false;
+        public bool isTail = false;
 
         public MapNode(MapNodeData data, int id, Vector2 pos) {
             this.data = data;
@@ -21,22 +27,83 @@ namespace WorldMap {
         }
 
         public void Init(int id, MapNodeData data, LimitedNode node) {
+            this.view = GetComponent<MapNodeView>();
+            this.animator = GetComponent<MapNodeAnimator>();
+
             this.data = data;
             this.id = id;
             this.position = node.position;
-            this.isLocked = node.position.y > 0;
-            this.isVisited = node.position.y == 0;
+            this.isLocked = node.type != NodeType.Start;
+            this.isVisited = node.type == NodeType.Start;
+            this.isTail = node.isTail;
+            this.stage = node.position.y;
+
+            this.view.Lock();
+            if (data != null) view.SetView(data.icon);
+        }
+
+        public void Init(int id, MapNodeData data, NodeType type, Vector2 position) {
             this.view = GetComponent<MapNodeView>();
+            this.animator = GetComponent<MapNodeAnimator>();
+
+            this.data = data;
+            this.id = id;
+            this.isLocked = type != NodeType.Start;
+            this.isVisited = type == NodeType.Start;
+            this.position = position;
+
+            this.view.Lock();
             if (data != null) view.SetView(data.icon);
         }
 
         public void Connect(MapNode node) {
             this.connectedNodes.Add(node);
+            node.prevNodes.Add(this);
+        }
+
+        public void Disconnect(MapNode node) {
+            this.connectedNodes.Remove(node);
+            node.prevNodes.Remove(this);
         }
 
         public void OnMouseUp() {
-            if (this.data.nodeType == NodeType.Battle) {
-                SceneTransitionHelper.LoadBattleScene();
+            if (this.isLocked) {
+                if (this.animator) {
+                    animator.Shake();
+                    animator.Blink(view.lockedColor, 1f);
+                }
+                return;
+            }
+
+            switch (this.data.nodeType) {
+                case NodeType.Boss:
+                case NodeType.Battle:
+                    LoadSceneManager.Instance.LoadBattleScene(this);
+                    break;
+                case NodeType.Shop:
+                    LoadSceneManager.Instance.LoadShopScene(this);
+                    break;
+                default:
+                    this.Resolve();
+                    break;
+            }
+        }
+
+        public void Unlock() {
+            if (!this.isVisited) this.view.Unlock();
+            this.isLocked = false;
+        }
+
+        public void Resolve() {
+            if (this.isLocked) this.Unlock();
+            this.isVisited = true;
+            this.view.Resolve();
+            _UnlockChildren();
+        }
+
+        private void _UnlockChildren() {
+            foreach (var node in connectedNodes) {
+                node.Unlock();
             }
         }
     }

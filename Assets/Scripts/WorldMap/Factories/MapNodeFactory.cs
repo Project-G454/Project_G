@@ -8,8 +8,9 @@ namespace WorldMap {
                 NodeType.Shop => WorldMapLoader.LoadShopNode(),
                 NodeType.Battle => WorldMapLoader.LoadBattleNode(),
                 NodeType.Recover => WorldMapLoader.LoadRecoverNode(),
-                NodeType.Fork => WorldMapLoader.LoadForkNode(),
+                NodeType.Start => WorldMapLoader.LoadStartNode(),
                 NodeType.Road => WorldMapLoader.LoadRoadNode(),
+                NodeType.Boss => WorldMapLoader.LoadBossNode(),
                 _ => WorldMapLoader.LoadRoadNode()
             };
             return data;

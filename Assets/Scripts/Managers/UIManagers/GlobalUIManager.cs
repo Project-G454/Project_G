@@ -16,6 +16,8 @@ namespace Core.Managers {
         public FreeStepUI freestepUI;
         public TurnPanelUI turnPanelUI;
         public CardActiveUI cardActiveUI;
+        public StageAlertUI stageAlertUI;
+        public ConfirmAlertUI confirmAlertUI;
 
         private void Awake() {
             Instance = this;

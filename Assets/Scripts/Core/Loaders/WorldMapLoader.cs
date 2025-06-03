@@ -11,8 +11,8 @@ namespace Core.Loaders.WorldMap {
             return Resources.Load<MapNodeData>("WorldMap/Shop");
         }
 
-        public static MapNodeData LoadForkNode() {
-            return Resources.Load<MapNodeData>("WorldMap/Fork");
+        public static MapNodeData LoadStartNode() {
+            return Resources.Load<MapNodeData>("WorldMap/Start");
         }
 
         public static MapNodeData LoadRecoverNode() {
@@ -21,6 +21,10 @@ namespace Core.Loaders.WorldMap {
 
         public static MapNodeData LoadRoadNode() {
             return Resources.Load<MapNodeData>("WorldMap/Road");
+        }
+
+        public static MapNodeData LoadBossNode() {
+            return Resources.Load<MapNodeData>("WorldMap/Boss");
         }
     }
 }

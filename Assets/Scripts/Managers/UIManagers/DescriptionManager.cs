@@ -34,6 +34,7 @@ namespace Core.Managers {
             foreach (DescriptionData data in _descriptionData) {
                 this.Add(data);
             }
+            Debug.Log($"Loaded {_descriptions.Count} descriptions.");
             this.HideAll();
             _is_initialized = true;
         }

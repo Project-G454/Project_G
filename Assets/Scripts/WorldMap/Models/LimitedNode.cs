@@ -3,11 +3,12 @@ using System.Numerics;
 using UnityEngine;
 
 namespace WorldMap.Models {
-    public class LimitedNode {
+    public class LimitedNode: MonoBehaviour {
         public Vector2Int position;
         public HashSet<LimitedNode> connections;
         public NodeType type;
         public HashSet<LimitedNode> prevConnections;
+        public bool isTail = false;
 
         public LimitedNode(int x, int y) {
             this.position = new Vector2Int(x, y);

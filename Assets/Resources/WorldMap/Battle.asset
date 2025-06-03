@@ -15,4 +15,4 @@ MonoBehaviour:
   nodeName: Battle
   nodeType: 1
   icon: {fileID: -6823364012854404737, guid: c5658ade30cca054cb4baa9f69fbdda6, type: 3}
-  description: Battle
+  description: Monsters roam these lands.\nDraw your blade and clear the way!
