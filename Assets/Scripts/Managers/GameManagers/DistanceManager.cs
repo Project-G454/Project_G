@@ -43,11 +43,10 @@ namespace Core.Managers {
                     if (dist <= maxDistance)
                     {
                         Vector2Int tilePos = origin + new Vector2Int(dx, dy);
-                        Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, -highlightParent.position.z) + highlightOffset;
+                        Vector3 worldPos = new Vector3(tilePos.x, tilePos.y, 0) + highlightOffset;
 
                         Tile tile = GridManager.Instance.GetTileAtPosition(tilePos);
                         if (tile == null) continue;
-                        if (!tile.Walkable) continue;
 
                         GameObject highlight = Instantiate(highlightTilePrefab, worldPos, Quaternion.identity);
                         highlight.transform.SetParent(highlightParent);

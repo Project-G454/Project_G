@@ -1,16 +1,15 @@
 using System.Collections.Generic;
-using Core.Helpers;
+using Agents.Helpers;
 using Cards;
 using Core.Entities;
 using Core.Managers.Cards;
 using Entities;
 using UnityEngine;
 
-namespace Core.Strategies {
+namespace Agents.Strategies {
     class StrategyAttack: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
-            this.isCardAnimationEnd = false;
 
             // pick a card
             List<CardBehaviour> cardBehaviours = _GetUsableCards();

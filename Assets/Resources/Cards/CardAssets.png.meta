@@ -717,7 +717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_Type_HEAL
+      name: Card_Type_Heal
       rect:
         serializedVersion: 2
         x: 466
@@ -2308,7 +2308,7 @@ TextureImporter:
       Card_Title_3: -169562485
       Card_Type_ATTACK: -923797468
       Card_Type_DEFENCE: 344846671
-      Card_Type_HEAL: -1757635165
+      Card_Type_Heal: -1757635165
       Card_Type_MAGIC: -1547991054
       Card_Type_MOVE: 983965485
   mipmapLimitGroupName: 

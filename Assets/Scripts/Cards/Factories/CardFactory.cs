@@ -23,7 +23,7 @@ namespace Cards.Factories {
                 case CardTypes.ENERGY:
                     card = new EnergyCard(cardData as EnergyCardData);
                     break;
-                case CardTypes.HEAL:
+                case CardTypes.Heal:
                     card = new HealCard(cardData as HealCardData);
                     break;
                 default:

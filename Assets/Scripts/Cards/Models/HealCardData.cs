@@ -7,6 +7,6 @@ namespace Cards.Data {
     /// </summary>
     public class HealCardData: CardData {
         public int healingAmount;
-        public override CardTypes type => CardTypes.HEAL;
+        public override CardTypes type => CardTypes.Heal;
     }
 }

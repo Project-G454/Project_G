@@ -19,11 +19,13 @@ namespace Core.Managers {
 
         [SerializeField] private List<Sprite> floorSpriteSet;
         [SerializeField] private Sprite wallSprite;
+        [SerializeField] private Sprite obstacleSprite;
 
         public Transform map;
         private Transform _cam;
 
         private Dictionary<Vector2, Tile> tiles;
+        private HashSet<Vector2Int> _floorPositions;
 
         public int width => _width;
         public int height => _height;
@@ -46,9 +48,12 @@ namespace Core.Managers {
             tiles = new Dictionary<Vector2, Tile>();
             
             Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
-            HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
-            CreateTilesFromFloorPositions(floorPositions); // 視覺化
+            _floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
+            CreateTilesFromFloorPositions(_floorPositions); // 視覺化 (生成地板、牆壁)
 
+
+            GenerateBorderWalls();
+            GenerateObstacles();
             _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         }
 
@@ -364,15 +369,20 @@ namespace Core.Managers {
                 new Vector2Int(0, -1), // 下
                 new Vector2Int(-1, 0)  // 左
             };
-            
-            foreach (var pos in floorPositions) {
-                foreach (var dir in directions) {
-                    var neighborPos = pos + dir;
+
+            for (int i = 0; i < _width; i++) {
+                for (int j = 0; j < _height; j++) {
+                    Vector2Int neighborPos = new Vector2Int(i, j);
+                    // var neighborPos = pos + dir;
                     if (!floorPositions.Contains(neighborPos)) {
                         wallPositions.Add(neighborPos);
                     }
                 }
             }
+            // foreach (var pos in floorPositions) {
+            //     foreach (var dir in directions) {
+            //     }
+            // }
             
             return wallPositions;
         }
@@ -413,5 +423,79 @@ namespace Core.Managers {
             ClearGrid();
             GenerateGrid();
         }
+        private void GenerateBorderWalls() {
+            for (int x = 0; x < _width; x++) {
+                for (int y = 0; y < _height; y++) {
+                    if (x == 0 || y == 0 || x == _width - 1 || y == _height - 1) {
+                        Vector2 pos = new Vector2(x, y);
+                        if (!tiles.ContainsKey(pos)) {
+                            var wallTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity, map);
+                            wallTile.name = $"Wall {x} {y}";
+                            wallTile.Init(pos);
+                            wallTile.SetWalkable(false);
+
+                            SpriteRenderer sr = wallTile.GetComponent<SpriteRenderer>();
+                            if (sr != null && wallSprite != null) {
+                                sr.sprite = wallSprite;
+                            }
+
+                            tiles[pos] = wallTile;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GenerateObstacles() {
+            // int obstacleCount = (_width * _height) / 10;
+            // int attempts = 0;
+            // int maxAttempts = 1000;
+
+            // while (obstacleCount > 0 && attempts < maxAttempts) {
+            //     int x = Random.Range(_boundaryOffset, _width - _boundaryOffset);
+            //     int y = Random.Range(_boundaryOffset, _height - _boundaryOffset);
+            //     Vector2Int pos = new Vector2Int(x, y);
+
+            //     if (_floorPositions.Contains(pos) && !tiles.ContainsKey(pos)) {
+            //         var spawnedTile = Instantiate(_obstacleTilePrefab, new Vector3(x, y), Quaternion.identity, map);
+            //         spawnedTile.name = $"Obstacle {x} {y}";
+            //         spawnedTile.Init(pos);
+            //         spawnedTile.SetWalkable(false);
+            //         SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
+            //         if (sr != null && obstacleSprite != null) {
+            //             sr.sprite = obstacleSprite;
+            //         }
+            //         tiles[new Vector2(x, y)] = spawnedTile;
+            //         obstacleCount--;
+            //     }
+            //     attempts++;
+            // }
+
+            List<Vector2Int> floor = _floorPositions.ToList();
+            int obstacleCount = _floorPositions.Count() / 10;
+            HashSet<Vector2Int> visited = new();
+            while (obstacleCount > 0) {
+                int rng = Random.Range(0, _floorPositions.Count());
+                Vector2Int pos = floor[rng];
+                if (!visited.Contains(pos)) {
+                    var spawnedTile = Instantiate(_obstacleTilePrefab, new Vector3(pos.x, pos.y, -2f), Quaternion.identity, map);
+                    if (spawnedTile == null) continue;
+                    spawnedTile.name = $"Obstacle {pos.x} {pos.y}";
+                    spawnedTile.Init(pos);
+                    spawnedTile.SetWalkable(false);
+
+                    Tile floorTile = GetTileAtPosition(pos);
+                    if (floorTile != null) floorTile.SetWalkable(false);
+                    
+                    SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
+                    if (sr != null && obstacleSprite != null) {
+                        sr.sprite = obstacleSprite;
+                    }
+                    visited.Add(pos);
+                    obstacleCount--;
+                }
+            }
+        }
+
     }
 }

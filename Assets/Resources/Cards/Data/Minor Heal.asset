@@ -20,5 +20,5 @@ MonoBehaviour:
   rarity: 1
   cost: 1
   range: 0
-  partical: 4
+  partical: 0
   healingAmount: 10

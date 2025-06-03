@@ -59,8 +59,7 @@
     "dotnet.defaultSolution": "Project_G.sln",
     "editor.formatOnType": false,
     "workbench.colorCustomizations": {
-        "editor.foldBackground": "#0b0b0b40"
+        "editor.foldBackground":"#0b0b0b40"
     },
-    "editor.detectIndentation": false,
-    "dotnet.codeLens.enableReferencesCodeLens": true
+    "editor.detectIndentation": false
 }

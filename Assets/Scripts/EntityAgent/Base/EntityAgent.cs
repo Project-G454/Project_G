@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Core.Data;
-using Core.Handlers;
-using Core.Helpers;
-using Core.Strategies;
+using Agents.Data;
+using Agents.Handlers;
+using Agents.Helpers;
+using Agents.Strategies;
 using Cards;
 using Cards.Data;
 using Core.Entities;
@@ -13,11 +13,11 @@ using Entities;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Core {
+namespace Agents {
     public class EntityAgent: MonoBehaviour {
         public Entity entity;
         public AgentStrategy strategy;
-        public AgentStateHandler stateHandler;
+        private AgentStateHandler _agentStateHandler;
         private bool _isBinded = false;
         public bool canMove = true;
 
@@ -28,13 +28,11 @@ namespace Core {
         public void Bind() {
             if (_isBinded) return;
             EntityBehaviour entityBehaviour = GetComponent<EntityBehaviour>();
-            stateHandler = GetComponent<AgentStateHandler>();
-            if (stateHandler == null) {
-                stateHandler = gameObject.AddComponent<AgentStateHandler>();
-            }
+            this._agentStateHandler = GetComponent<AgentStateHandler>();
 
-            entity = entityBehaviour.entity;
-            entity.type = EntityTypes.ENEMY;
+            this.entity = entityBehaviour.entity;
+            this.entity.type = EntityTypes.ENEMY;
+            this._agentStateHandler = gameObject.AddComponent<AgentStateHandler>();
 
             Debug.Log($"Bind Agent to Entity_{entity.entityId}");
             _isBinded = true;
@@ -70,6 +68,7 @@ namespace Core {
         }
 
         public void ExecuteStrategy(AgentAction action) {
+            AgentStrategy strategy = null;
             switch (action) {
                 case AgentAction.Move:
                     strategy = new StrategyMove();
@@ -85,7 +84,6 @@ namespace Core {
                     break;
                 case AgentAction.End:
                 default:
-                    strategy = new StrategyEnd();
                     break;
             }
             strategy?.Execute(this);

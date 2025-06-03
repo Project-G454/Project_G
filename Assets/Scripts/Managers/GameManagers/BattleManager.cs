@@ -11,6 +11,9 @@ using Entities;
 using Entities.Handlers;
 using UnityEngine;
 using Core.Handlers;
+using Agents;
+using Agents.Handlers;
+using Entities.Animations;
 
 namespace Core.Managers {
     public class BattleManager: MonoBehaviour, IManager, IEntryManager {
@@ -69,11 +72,11 @@ namespace Core.Managers {
         }
 
         public void BindAgents() {
-            // GameObject enemy1 = _entityManager.GetEntityObject(1);
-            // enemy1.AddComponent<EntityAgent>();
+            GameObject enemy1 = _entityManager.GetEntityObject(4);
+            enemy1.AddComponent<EntityAgent>();
             // GameObject enemy2 = _entityManager.GetEntityObject(2);
             // enemy2.AddComponent<EntityAgent>();
-            // GameObject enemy3 = _entityManager.GetEntityObject(3);
+            // GameObject enemy3 = _entityManager.GetEntityObject(4);
             // enemy3.AddComponent<EntityAgent>();
             GameObject enemy4 = _entityManager.GetEntityObject(4);
             enemy4.AddComponent<EntityAgent>();
@@ -86,7 +89,7 @@ namespace Core.Managers {
 
         public void StartBattle() {
             Init();
-            BindAgents();
+            // BindAgents();
             StartCoroutine(GameLoop());
         }
 
