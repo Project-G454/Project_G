@@ -43,7 +43,7 @@ namespace Core.Managers {
                 if (selectedTile != null) {
                     ClearAllHighlights(); // 清除 tile 高亮（不是綠色範圍）
                     selectedTile.SetHighlight(true);
-
+                    
                     int playerId = _battleManager.currentEntity.entityId;
                     GameObject player = _entityManager.GetEntityObject(playerId);
                     MoveHandler moveHandler = player.GetComponent<MoveHandler>();
