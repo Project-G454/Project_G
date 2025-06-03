@@ -67,9 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Skip
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0fe8c0a3c80374749997ba7662e0eeef, type: 2}
-  m_sharedMaterial: {fileID: 6561693641756977767, guid: 0fe8c0a3c80374749997ba7662e0eeef,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -605,10 +604,7 @@ MonoBehaviour:
   cardItemPrefab: {fileID: 7814738435404281997, guid: bafe9d7422659eb4e86aeecc66673aaf,
     type: 3}
   avatar: {fileID: 1718880852260727105}
-  cardButtons:
-  - {fileID: 1536655248819031153}
-  - {fileID: 6788174616980695854}
-  - {fileID: 1149592359710226045}
+  cardButtons: []
   skipButton: {fileID: 8464544091664402239}
 --- !u!1 &8628719139049043934
 GameObject:
@@ -934,18 +930,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bafe9d7422659eb4e86aeecc66673aaf, type: 3}
---- !u!114 &1536655248819031153 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 35164695940140247, guid: bafe9d7422659eb4e86aeecc66673aaf,
-    type: 3}
-  m_PrefabInstance: {fileID: 1526621130301669542}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &9072616012101716107 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7550229687413540909, guid: bafe9d7422659eb4e86aeecc66673aaf,
