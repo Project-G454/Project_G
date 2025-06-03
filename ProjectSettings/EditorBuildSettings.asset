@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/WorldMap.unity
     guid: 7167b24a933362d4b8dddfc769d81690
   - enabled: 1
+    path: Assets/Scenes/BattleRewards.unity
+    guid: b90cea0d5c7831546a03ff09416ca16c
+  - enabled: 1
     path: Assets/Scenes/Shop.unity
     guid: 36e67048b983ff94cbff067d7cd6079a
   m_configObjects:
