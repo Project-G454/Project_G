@@ -11,6 +11,12 @@ namespace Core.Helpers {
             };
         }
 
+        public static void LoadBattleRewardsScene() {
+            SceneManager.LoadSceneAsync("BattleRewards").completed += _ => {
+                BattleRewardsManager.Instance.Entry(); // 呼叫 Entry 初始化場景邏輯
+            };
+        }
+
         public static void LoadWorldMapScene() {
             SceneManager.LoadSceneAsync("WorldMap").completed += _ => {
                 WorldMapManager.Instance.Entry(); // 呼叫 Entry 初始化場景邏輯

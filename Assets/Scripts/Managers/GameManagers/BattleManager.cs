@@ -170,6 +170,10 @@ namespace Core.Managers {
                     // yield return InitTurnOrder();
                 }
 
+                ResetAll();
+                SceneTransitionHelper.LoadBattleRewardsScene();
+                yield break;
+
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
 
