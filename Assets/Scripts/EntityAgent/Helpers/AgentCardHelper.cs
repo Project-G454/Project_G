@@ -8,7 +8,7 @@ namespace Agents.Helpers {
         }
 
         public static bool IsHealCard(Card card) {
-            return card.type == CardTypes.Heal;
+            return card.type == CardTypes.HEAL;
         }
     }
 }

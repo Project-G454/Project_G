@@ -192,6 +192,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -934,7 +947,40 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      FG_Cellar_D_0: -4670617272016811566
+      FG_Cellar_D_1: 4258332553037684590
+      FG_Cellar_D_10: -7228383251298891492
+      FG_Cellar_D_11: -2261006594918735153
+      FG_Cellar_D_12: 5519643366183552900
+      FG_Cellar_D_13: -4062235555375191684
+      FG_Cellar_D_14: -1028118955216440831
+      FG_Cellar_D_15: 75375763750814138
+      FG_Cellar_D_16: -2026616122023224198
+      FG_Cellar_D_17: -7936119494972369481
+      FG_Cellar_D_18: -1295761351122019841
+      FG_Cellar_D_19: -4618246357855028899
+      FG_Cellar_D_2: 7376678597413954059
+      FG_Cellar_D_20: 1919763037459190729
+      FG_Cellar_D_21: -6419687596161186622
+      FG_Cellar_D_22: -8571960853838154523
+      FG_Cellar_D_23: -7835662330386447124
+      FG_Cellar_D_24: 7081798895309860537
+      FG_Cellar_D_25: 3363176285179998544
+      FG_Cellar_D_26: -999099867079867054
+      FG_Cellar_D_27: -6110165566244865399
+      FG_Cellar_D_28: -8687590188129529991
+      FG_Cellar_D_29: -7057449130356987750
+      FG_Cellar_D_3: -5886936595247358387
+      FG_Cellar_D_30: -6436220818438186015
+      FG_Cellar_D_31: -7339015729380678569
+      FG_Cellar_D_32: 176091751435172654
+      FG_Cellar_D_4: 5743502043727361050
+      FG_Cellar_D_5: 2134383659062841007
+      FG_Cellar_D_6: -6820222060787322262
+      FG_Cellar_D_7: -6803996790417846063
+      FG_Cellar_D_8: 6552367431485685785
+      FG_Cellar_D_9: 8342908486100308217
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

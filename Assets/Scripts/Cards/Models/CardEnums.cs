@@ -5,7 +5,7 @@ namespace Cards.Data {
         MAGIC,
         ENERGY,
         DEFENCE,
-        Heal
+        HEAL
     }
 
     public enum CardRarity {
