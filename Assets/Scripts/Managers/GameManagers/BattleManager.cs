@@ -80,8 +80,8 @@ namespace Core.Managers {
             // enemy2.AddComponent<EntityAgent>();
             // GameObject enemy3 = _entityManager.GetEntityObject(4);
             // enemy3.AddComponent<EntityAgent>();
-            GameObject enemy4 = _entityManager.GetEntityObject(4);
-            enemy4.AddComponent<EntityAgent>();
+            // GameObject enemy4 = _entityManager.GetEntityObject(4);
+            // enemy4.AddComponent<EntityAgent>();
             _bindingAgentLock = true;
         }
 
