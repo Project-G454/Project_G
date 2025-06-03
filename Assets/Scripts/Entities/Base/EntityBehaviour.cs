@@ -4,7 +4,7 @@ using Core.Managers;
 using Entities.Categories;
 using Entities.Factories;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace Entities {
     class EntityBehaviour: MonoBehaviour {
@@ -19,11 +19,17 @@ namespace Entities {
 
         private void InitializeEntityDeck(Entity entity) {
             entity.deckManager = gameObject.AddComponent<DeckManager>();
-            var initDeck = EntityFactory.GetClassDeck(entity.entityClass);
+            List<int> initDeck = new();
+            if (entity is Player player) {
+                initDeck = PlayerStateManager.Instance.GetPlayer(entity.entityId).deck;
+            }
+            else {
+                initDeck = EntityFactory.GetClassDeck(entity.entityClass);
+            }
+            
             foreach (var cardId in initDeck)
                 entity.deckManager.AddCardToDeck(cardId);
         }
-
 
         void OnMouseEnter() {
             HoverUIManager.Instance.Show(entity);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Interfaces;
 using Core.Loaders.WorldMap;
+using Entities;
 using Mono.Cecil;
 using UnityEngine;
 using WorldMap;
@@ -45,7 +46,13 @@ namespace Core.Managers.WorldMap {
         }
 
         public void Entry() {
-            if (!isInit) nodes = MapGenerator.Generate(7, 15, 6);
+            if (!isInit) {
+                nodes = MapGenerator.Generate(7, 15, 6);
+
+                PlayerStateManager.Instance.AddPlayer(0, "Player1", EntityClasses.WARRIOR);
+                PlayerStateManager.Instance.AddPlayer(1, "Player2", EntityClasses.RANGER);
+                PlayerStateManager.Instance.AddPlayer(2, "Player3", EntityClasses.ROGUE);
+            }
             if (currentNodeId > 0) resovedNodeIds.Add(currentNodeId);
             LoadCameraState();
             map = GenerateMap(nodes);

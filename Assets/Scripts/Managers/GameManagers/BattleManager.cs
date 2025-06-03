@@ -14,6 +14,8 @@ using Core.Handlers;
 using Agents;
 using Agents.Handlers;
 using Entities.Animations;
+using Entities.Categories;
+using Core.Game;
 
 namespace Core.Managers {
     public class BattleManager: MonoBehaviour, IManager, IEntryManager {
@@ -89,7 +91,7 @@ namespace Core.Managers {
 
         public void StartBattle() {
             Init();
-            // BindAgents();
+            BindAgents();
             StartCoroutine(GameLoop());
         }
 
@@ -113,40 +115,30 @@ namespace Core.Managers {
         }
 
         private void _InitEntities() {
-            EntityData data1 = new EntityData(
-                80,
-                "Player1",
-                EntityTypes.PLAYER,
-                EntityClasses.WARRIOR
-            );
+            var players = PlayerStateManager.Instance.GetAllPlayer();
+            List<EntityData> entityDatas = new();
+            foreach (GamePlayerState player in players) {
+                entityDatas.Add(new PlayerData(
+                    player.playerId,
+                    player.hp,
+                    player.playerName,
+                    EntityTypes.PLAYER,
+                    player.entityClass
+                ));
+            }
 
-            EntityData data2 = new EntityData(
-                90,
-                "Player2",
-                EntityTypes.PLAYER,
-                EntityClasses.RANGER
-            );
-
-            EntityData data3 = new EntityData(
-                100,
-                "Player3",
-                EntityTypes.PLAYER,
-                EntityClasses.ROGUE
-            );
-
-            EntityData data4 = new EntityData(
+            entityDatas.Add(new EntityData(
                 100,
                 "Enemy1",
                 EntityTypes.ENEMY,
                 EntityClasses.WIZARD
-            );
+            ));
 
-            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(4);
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(entityDatas.Count);
 
-            _entityManager.CreateEntity(data1, spawnPositions[0]);
-            _entityManager.CreateEntity(data2, spawnPositions[1]);
-            _entityManager.CreateEntity(data3, spawnPositions[2]);
-            _entityManager.CreateEntity(data4, spawnPositions[3]);
+            for (int i = 0; i < entityDatas.Count; i++) {
+                _entityManager.CreateEntity(entityDatas[i], spawnPositions[i]);
+            }
         }
 
         private void InitDeckAndEnergy() {

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Game;
+using Entities;
 
 public class PlayerStateManager : MonoBehaviour {
     public static PlayerStateManager Instance { get; private set; }
 
     [SerializeField] private List<GamePlayerState> allPlayers = new List<GamePlayerState>();
-    private Dictionary<string, GamePlayerState> players = new Dictionary<string, GamePlayerState>();
+    private Dictionary<int, GamePlayerState> players = new Dictionary<int, GamePlayerState>();
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -18,33 +19,37 @@ public class PlayerStateManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddPlayer(string id, List<string> deck, int hp = 100, int gold = 0) {
+    public void AddPlayer(int id, string name, EntityClasses entityClass, int gold = 0) {
         if (!players.ContainsKey(id)) {
-            var state = new GamePlayerState(id, deck, hp, gold);
+            var state = new GamePlayerState(id, name, entityClass, gold);
             players[id] = state;
             allPlayers.Add(state);
         }
     }
 
-    public GamePlayerState GetPlayer(string id) {
+    public GamePlayerState GetPlayer(int id) {
         return players.ContainsKey(id) ? players[id] : null;
     }
 
-    public void ModifyHP(string id, int delta) {
+    public List<GamePlayerState> GetAllPlayer() {
+        return allPlayers;
+    }
+
+    public void ModifyHP(int id, int delta) {
         if (players.ContainsKey(id)) {
             players[id].hp += delta;
         }
     }
 
-    public void ModifyGold(string id, int delta) {
+    public void ModifyGold(int id, int delta) {
         if (players.ContainsKey(id)) {
             players[id].gold += delta;
         }
     }
 
-    public void SetDeck(string id, List<string> newDeck) {
+    public void SetDeck(int id, List<int> newDeck) {
         if (players.ContainsKey(id)) {
-            players[id].deck = new List<string>(newDeck);
+            players[id].deck = new List<int>(newDeck);
         }
     }
 

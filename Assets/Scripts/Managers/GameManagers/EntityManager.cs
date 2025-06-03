@@ -19,7 +19,7 @@ namespace Core.Entities {
         public static EntityManager Instance { get; private set; }
         private readonly Dictionary<int, Entity> entityDict = new();
         private readonly Dictionary<int, GameObject> entityObjectDict = new();
-        private int nextEntityId = 1;
+        private int nextEntityId = 100;
 
         public void Init() { }
 
@@ -37,7 +37,12 @@ namespace Core.Entities {
             }
 
             EntityBehaviour eb = newEntity.GetComponent<EntityBehaviour>();
-            int id = nextEntityId++;
+            int id;
+            if (entityData is PlayerData playerData) {
+                id = playerData.playerId;
+            } else {
+                id = nextEntityId++;
+            }
             Entity entity = EntityFactory.MakeEntity(id, entityData);
             entity.position = position;
 

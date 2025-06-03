@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Cards.Data;
 using Entities.Categories;
@@ -12,6 +11,7 @@ using Core.Loaders.Shop;
 using Shop.Items;
 using Reward;
 using Core.Loaders.Cards;
+using UnityEngine.UIElements;
 
 namespace Core.UI {
     public class PlayerRewardPanel: MonoBehaviour {
@@ -40,8 +40,7 @@ namespace Core.UI {
                 var slot = CreateCardItem();
             }
 
-            skipButton.onClick.RemoveAllListeners();
-            skipButton.onClick.AddListener(() => OnSkipSelected());
+            skipButton.clicked += OnSkipSelected;
             _hasPicked = false;
         }
 

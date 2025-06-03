@@ -1,17 +1,23 @@
 using System.Collections.Generic;
+using Entities;
+using Entities.Factories;
 
 namespace Core.Game {
     [System.Serializable]
     public class GamePlayerState {
-        public string playerId;
-        public List<string> deck = new List<string>();
+        public int playerId;
+        public string playerName;
+        public EntityClasses entityClass;
+        public List<int> deck = new List<int>();
         public int hp = 100;
         public int gold = 0;
 
-        public GamePlayerState(string id, List<string> deck, int hp, int gold) {
+        public GamePlayerState(int id, string name, EntityClasses entityClass, int gold) {
             this.playerId = id;
-            this.deck = new List<string>(deck);
-            this.hp = hp;
+            this.playerName = name;
+            this.entityClass = entityClass;
+            this.deck = EntityFactory.GetClassDeck(entityClass);
+            this.hp = EntityFactory.GetHp(entityClass);
             this.gold = gold;
         }
     }
