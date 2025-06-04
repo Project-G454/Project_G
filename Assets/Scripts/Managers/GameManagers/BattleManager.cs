@@ -74,7 +74,7 @@ namespace Core.Managers {
         }
 
         public void BindAgents() {
-            GameObject enemy1 = _entityManager.GetEntityObject(100);
+            GameObject enemy1 = _entityManager.GetEntityObject(4);
             enemy1.AddComponent<EntityAgent>();
             // GameObject enemy2 = _entityManager.GetEntityObject(2);
             // enemy2.AddComponent<EntityAgent>();
@@ -164,12 +164,6 @@ namespace Core.Managers {
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
                     // yield return InitTurnOrder();
                 }
-
-
-                // ResetAll();
-                // LoadSceneManager.Instance.LoadBattleRewardsScene();
-                // yield break;
-
 
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
