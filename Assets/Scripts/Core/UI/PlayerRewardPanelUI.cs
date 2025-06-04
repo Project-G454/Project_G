@@ -11,7 +11,7 @@ using Core.Loaders.Shop;
 using Shop.Items;
 using Reward;
 using Core.Loaders.Cards;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 namespace Core.UI {
     public class PlayerRewardPanel: MonoBehaviour {
@@ -19,7 +19,6 @@ namespace Core.UI {
         public GameObject cardItemPrefab;
         //public TextMeshProUGUI playerNameText;
         public Image avatar;
-        public Button[] cardButtons; // Expected size: 3
         public Button skipButton;
         //public TextMeshProUGUI pickStatusText;
 
@@ -40,7 +39,8 @@ namespace Core.UI {
                 var slot = CreateCardItem();
             }
 
-            skipButton.clicked += OnSkipSelected;
+            skipButton.onClick.RemoveAllListeners();
+            skipButton.onClick.AddListener(() => OnSkipSelected());
             _hasPicked = false;
         }
 
