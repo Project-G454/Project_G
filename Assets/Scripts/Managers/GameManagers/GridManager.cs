@@ -1,31 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Interfaces;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 namespace Core.Managers {
-    public class GridManager : MonoBehaviour, IManager {
+    public class GridManager: MonoBehaviour, IManager {
         public static GridManager Instance;
         [SerializeField] private int _width, _height;
         [SerializeField] private Tile _tilePrefab;
-        [SerializeField] private Tile _obstacleTilePrefab; // 可以為障礙物使用不同的Tile預製體
-        [SerializeField] private Color floorColor, wallColor;
+        // [SerializeField] private Tile _obstacleTilePrefab; // 可以為障礙物使用不同的Tile預製體
+
+        [Header("Tilemap Setting")]
+        [SerializeField] private Tilemap floorTilemap;
+        [SerializeField] private Tilemap wallTilemap;
+        [SerializeField] private List<TileBase> floorTiles;
+        [SerializeField] private TileBase wallTile;
+        [SerializeField] private TilemapHighlightManager _highlightManager;
 
         [Header("Random Room")]
         [SerializeField] private int _iterations = 10;
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
 
-        [SerializeField] private List<Sprite> floorSpriteSet;
-        [SerializeField] private Sprite wallSprite;
-        [SerializeField] private Sprite obstacleSprite;
-
         public Transform map;
         private Transform _cam;
 
-        private Dictionary<Vector2, Tile> tiles;
-        private HashSet<Vector2Int> _floorPositions;
+        // private Dictionary<Vector2, Tile> tiles;
+        private Dictionary<Vector2, bool> walkableData;
 
         public int width => _width;
         public int height => _height;
@@ -34,7 +39,7 @@ namespace Core.Managers {
             Instance = this;
         }
 
-        public void Reset() {}
+        public void Reset() { }
 
         public void Init() {
             this._cam = Camera.main.transform;
@@ -44,72 +49,58 @@ namespace Core.Managers {
             // GenerateGrid();
         }
 
-        public void GenerateGrid() {
-            tiles = new Dictionary<Vector2, Tile>();
-            
-            Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
-            _floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
-            CreateTilesFromFloorPositions(_floorPositions); // 視覺化 (生成地板、牆壁)
-
-
-            GenerateBorderWalls();
-            GenerateObstacles();
-            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
-        }
-
         public List<Vector3> GetSpawnPositions(int count) {
             List<Vector3> spawnPositions = new List<Vector3>();
-            
-            // 基本檢查
-            if (tiles == null || tiles.Count == 0) {
+
+            if (walkableData == null || walkableData.Count == 0) {
                 Debug.LogError("地圖尚未生成，無法獲取生成位置");
                 return spawnPositions;
             }
 
             // 獲取所有可用的邊緣位置
             List<Vector2> edgePositions = GetEdgeWalkablePositions();
-            
+
             // 檢查是否有足夠的位置
             if (edgePositions.Count < count) {
                 Debug.LogWarning($"找不到足夠的生成位置，需要 {count} 個，僅有 {edgePositions.Count} 個");
                 return ConvertToVector3(edgePositions);
             }
-            
-            // 設置距離參數
+
             float minDistance = 2.0f;  // 最小距離
             float maxDistance = 5.0f;  // 最大距離
-            
+
             // 隨機選擇第一個位置
             List<Vector2> selectedPositions = new List<Vector2>();
             selectedPositions.Add(GetAndRemoveRandomPosition(edgePositions));
-            
+
             // 尋找其餘位置
             int maxAttempts = 100;
             for (int attempt = 0; attempt < maxAttempts && selectedPositions.Count < count && edgePositions.Count > 0; attempt++) {
                 // 尋找符合條件的位置
                 List<Vector2> validPositions = FindValidPositions(edgePositions, selectedPositions, minDistance, maxDistance);
-                
+
                 // 如果沒有完全符合的位置，僅考慮最小距離
                 if (validPositions.Count == 0) {
                     validPositions = FindPositionsWithMinDistance(edgePositions, selectedPositions, minDistance);
                 }
-                
+
                 // 如果找到有效位置，添加一個隨機位置
                 if (validPositions.Count > 0) {
                     int randomIndex = Random.Range(0, validPositions.Count);
                     Vector2 selectedPos = validPositions[randomIndex];
                     selectedPositions.Add(selectedPos);
                     edgePositions.Remove(selectedPos);
-                } else {
+                }
+                else {
                     break; // 無法找到更多符合條件的位置
                 }
             }
-            
+
             // 如果位置不夠，添加最接近的位置
             if (selectedPositions.Count < count) {
                 AddClosestPositions(ref selectedPositions, ref edgePositions, count);
             }
-            
+
             // 轉換為 Vector3 並返回
             return ConvertToVector3(selectedPositions);
         }
@@ -125,51 +116,51 @@ namespace Core.Managers {
         // 查找同時滿足最小和最大距離要求的位置
         private List<Vector2> FindValidPositions(List<Vector2> candidates, List<Vector2> existingPositions, float minDist, float maxDist) {
             List<Vector2> validPositions = new List<Vector2>();
-            
+
             foreach (Vector2 candidate in candidates) {
                 bool isValid = true;
                 bool hasOneInRange = false;
-                
+
                 foreach (Vector2 existing in existingPositions) {
                     float distance = Vector2.Distance(candidate, existing);
-                    
+
                     if (distance < minDist) {
                         isValid = false;
                         break;
                     }
-                    
+
                     if (distance <= maxDist) {
                         hasOneInRange = true;
                     }
                 }
-                
+
                 if (isValid && hasOneInRange) {
                     validPositions.Add(candidate);
                 }
             }
-            
+
             return validPositions;
         }
 
         // 僅查找滿足最小距離要求的位置
         private List<Vector2> FindPositionsWithMinDistance(List<Vector2> candidates, List<Vector2> existingPositions, float minDist) {
             List<Vector2> validPositions = new List<Vector2>();
-            
+
             foreach (Vector2 candidate in candidates) {
                 bool isFarEnough = true;
-                
+
                 foreach (Vector2 existing in existingPositions) {
                     if (Vector2.Distance(candidate, existing) < minDist) {
                         isFarEnough = false;
                         break;
                     }
                 }
-                
+
                 if (isFarEnough) {
                     validPositions.Add(candidate);
                 }
             }
-            
+
             return validPositions;
         }
 
@@ -178,23 +169,23 @@ namespace Core.Managers {
             // 重新獲取所有邊緣位置（如果需要）
             if (candidates.Count == 0) {
                 candidates = GetEdgeWalkablePositions();
-                
+
                 // 移除已選位置
                 foreach (Vector2 selected in selectedPositions) {
                     candidates.Remove(selected);
                 }
             }
-            
+
             // 參考點為第一個選擇的位置
             Vector2 referencePos = selectedPositions[0];
-            
+
             // 根據距離排序
             candidates.Sort((a, b) => {
                 float distA = Vector2.Distance(a, referencePos);
                 float distB = Vector2.Distance(b, referencePos);
                 return distA.CompareTo(distB);
             });
-            
+
             // 添加最接近的位置
             while (selectedPositions.Count < targetCount && candidates.Count > 0) {
                 selectedPositions.Add(candidates[0]);
@@ -213,62 +204,73 @@ namespace Core.Managers {
 
         private List<Vector2> GetAllWalkablePositions() {
             List<Vector2> walkablePositions = new List<Vector2>();
-            
-            foreach (var pair in tiles) {
-                if (pair.Value.Walkable) {
+
+            foreach (var pair in walkableData) {
+                if (pair.Value) {
                     walkablePositions.Add(pair.Key);
                 }
             }
-            
+
             return walkablePositions;
         }
 
         private List<Vector2> GetEdgeWalkablePositions() {
             List<Vector2> edgePositions = new List<Vector2>();
-            
+
             List<Vector2> directions = new List<Vector2> {
                 new Vector2(0, 1),  // 上
                 new Vector2(1, 0),  // 右
                 new Vector2(0, -1), // 下
                 new Vector2(-1, 0)  // 左
             };
-            
-            foreach (var pair in tiles) {
+
+            foreach (var pair in walkableData) {
                 Vector2 pos = pair.Key;
-                Tile tile = pair.Value;
-                
-                if (!tile.Walkable) continue;
-                
+                bool isWalkable = pair.Value;
+
+                if (!isWalkable) continue;
+
                 // 檢查是否為邊緣位置 (至少有一個相鄰位置是牆壁或不存在)
                 bool isEdge = false;
                 foreach (var dir in directions) {
                     Vector2 neighborPos = pos + dir;
-                    Tile neighborTile = GetTileAtPosition(neighborPos);
-                    
-                    if (neighborTile == null || !neighborTile.Walkable) {
+                    bool neighborWalkable = GetTileWalkable(neighborPos);
+
+                    if (!neighborWalkable) {
                         isEdge = true;
                         break;
                     }
                 }
-                
+
                 if (isEdge) {
                     edgePositions.Add(pos);
                 }
             }
-            
+
             return edgePositions;
+        }
+
+        // -------------------地圖生成邏輯-------------------
+        public void GenerateGrid() {
+            walkableData = new Dictionary<Vector2, bool>();
+
+            Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
+            HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
+            CreateTilesFromFloorPositions(floorPositions); // 視覺化
+
+            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         }
 
         private HashSet<Vector2Int> GenerateIrregularRoom(Vector2Int center) {
             var floorPositions = RunRandomWalk(center);
-            
+
             // 確保房間在網格邊界內
             floorPositions = new HashSet<Vector2Int>(floorPositions.Where(
-                pos => pos.x >= _boundaryOffset && 
-                       pos.x < width - _boundaryOffset && 
-                       pos.y >= _boundaryOffset && 
+                pos => pos.x >= _boundaryOffset &&
+                       pos.x < width - _boundaryOffset &&
+                       pos.y >= _boundaryOffset &&
                        pos.y < height - _boundaryOffset));
-            
+
             return floorPositions;
         }
 
@@ -276,16 +278,16 @@ namespace Core.Managers {
             var currentPosition = startPosition;
             HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
             floorPositions.Add(currentPosition);
-            
+
             for (int i = 0; i < _iterations; i++) {
                 var path = SimpleRandomWalk(currentPosition, _walkLength);
                 floorPositions.UnionWith(path);
-                
+
                 if (floorPositions.Count > 0) {
                     currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
                 }
             }
-            
+
             return floorPositions;
         }
 
@@ -293,7 +295,7 @@ namespace Core.Managers {
             HashSet<Vector2Int> path = new HashSet<Vector2Int>();
             path.Add(startPosition);
             var previousPosition = startPosition;
-            
+
             List<Vector2Int> directions = new List<Vector2Int>
             {
                 new Vector2Int(0, 1),  // 上
@@ -301,67 +303,49 @@ namespace Core.Managers {
                 new Vector2Int(0, -1), // 下
                 new Vector2Int(-1, 0)  // 左
             };
-            
+
             for (int i = 0; i < walkLength; i++) {
                 var direction = directions[Random.Range(0, directions.Count)];
                 var newPosition = previousPosition + direction;
                 path.Add(newPosition);
                 previousPosition = newPosition;
             }
-            
+
             return path;
         }
 
         private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
+
+            floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, height, 1), new TileBase[_width * _height]);
+
             foreach (var pos in floorPositions) {
-                var spawnedTile = Instantiate(_tilePrefab, new Vector2(pos.x, pos.y), Quaternion.identity, map);
-                spawnedTile.name = $"Tile {pos.x} {pos.y}";
-                spawnedTile.Init(new Vector2(pos.x, pos.y));
+                Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
 
-                SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-                if (sr != null) {
-                    Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
-                    sr.sprite = floorSprite; // ✅ 改為拖入 sprite
-                    // sr.color = floorColor;   // ✅ 疊加顏色
-                }
+                TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
+                floorTilemap.SetTile(tilePos, selectedFloorTile);
 
-                tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
+                walkableData[new Vector2(pos.x, pos.y)] = true;
             }
 
             HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
             foreach (var pos in wallPositions) {
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
-                    Tile tileToUse = _obstacleTilePrefab != null ? _obstacleTilePrefab : _tilePrefab;
-                    
-                    var spawnedTile = Instantiate(tileToUse, new Vector3(pos.x, pos.y, -0.5f), Quaternion.identity, map);
-                    spawnedTile.name = $"Wall {pos.x} {pos.y}";
-                    spawnedTile.Init(new Vector2(pos.x, pos.y));
-                    spawnedTile.SetWalkable(false);
+                    Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
 
-                    var spawnedTileFloor = Instantiate(tileToUse, new Vector3(pos.x, pos.y, 0), Quaternion.identity, map);
-                    spawnedTileFloor.name = $"Wall {pos.x} {pos.y}";
-                    spawnedTileFloor.Init(new Vector2(pos.x, pos.y));
-                    spawnedTileFloor.SetWalkable(false);
+                    TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
+                    floorTilemap.SetTile(tilePos, selectedFloorTile);
 
-                    SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-                    SpriteRenderer floorSR = spawnedTileFloor.GetComponent<SpriteRenderer>();
-                    if (sr != null) {
-                        Sprite floorSprite = floorSpriteSet[Random.Range(0, floorSpriteSet.Count)];
-                        floorSR.sprite = floorSprite;
+                    wallTilemap.SetTile(tilePos, wallTile);
 
-                        sr.sprite = wallSprite; // ✅ 改為拖入 sprite
-                        // sr.transform.position += new Vector3(0, -0.2f, -1f);
-                        // sr.color = wallColor;   // ✅ 疊加顏色
-                    }
-
-                    tiles[new Vector2(pos.x, pos.y)] = spawnedTile;
+                    walkableData[new Vector2(pos.x, pos.y)] = false;
                 }
             }
         }
 
         private HashSet<Vector2Int> FindWallPositions(HashSet<Vector2Int> floorPositions) {
             HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
-            
+
             List<Vector2Int> directions = new List<Vector2Int>
             {
                 new Vector2Int(0, 1),  // 上
@@ -370,132 +354,115 @@ namespace Core.Managers {
                 new Vector2Int(-1, 0)  // 左
             };
 
-            for (int i = 0; i < _width; i++) {
-                for (int j = 0; j < _height; j++) {
-                    Vector2Int neighborPos = new Vector2Int(i, j);
-                    // var neighborPos = pos + dir;
+            foreach (var pos in floorPositions) {
+                foreach (var dir in directions) {
+                    var neighborPos = pos + dir;
                     if (!floorPositions.Contains(neighborPos)) {
                         wallPositions.Add(neighborPos);
                     }
                 }
             }
-            // foreach (var pos in floorPositions) {
-            //     foreach (var dir in directions) {
-            //     }
-            // }
-            
+
             return wallPositions;
         }
 
-        public Tile GetTileAtPosition(Vector2 pos) {
-            if (tiles.TryGetValue(pos, out var tile)) {
-                return tile;
+        public bool GetTileWalkable(Vector2 pos) {
+            if (walkableData.TryGetValue(pos, out bool walkable)) {
+                return walkable;
+            }
+            return false; // 預設為不可行走
+        }
+
+        // public Tile GetTileAtPosition(Vector2 pos) {
+        //     if (tiles.TryGetValue(pos, out var tile)) {
+        //         return tile;
+        //     }
+        //     return null;
+        // }
+
+        [System.Serializable]
+        public class TileData {
+            public Vector2 position;
+            public bool walkable;
+
+            public TileData(Vector2 pos, bool isWalkable) {
+                position = pos;
+                walkable = isWalkable;
+            }
+
+            // 提供和原本 Tile 相同的屬性，讓其他程式碼可以無痛使用
+            public bool Walkable => walkable;
+        }
+
+        public TileData GetTileAtPosition(Vector2 pos) {
+            if (walkableData.TryGetValue(pos, out bool walkable)) {
+                return new TileData(pos, walkable);
             }
             return null;
         }
 
+        // public bool GetTileAtPosition(Vector2 pos) {
+        //     return walkableData.ContainsKey(pos);
+        // }
+
         public void SetTileWalkable(Vector2 pos, bool walkable) {
-            var tile = GetTileAtPosition(pos);
-            if (tile != null) {
-                tile.SetWalkable(walkable);
-            }
+            walkableData[pos] = walkable;
         }
+
+        // public void SetTileWalkable(Vector2 pos, bool walkable) {
+        //     var tile = GetTileAtPosition(pos);
+        //     if (tile != null) {
+        //         tile.SetWalkable(walkable);
+        //     }
+        // }
 
         public Vector2 WorldToGridPosition(Vector3 worldPosition) {
             int x = Mathf.RoundToInt(worldPosition.x);
             int y = Mathf.RoundToInt(worldPosition.y);
             return new Vector2(x, y);
         }
-        
+
         public void ClearGrid() {
-            if (tiles != null) {
-                foreach (var tile in tiles.Values) {
-                    if (tile != null) {
-                        Destroy(tile.gameObject);
-                    }
-                }
-                tiles.Clear();
+            if (walkableData != null) {
+                walkableData.Clear();
+            }
+
+            // 清空 Tilemap
+            if (floorTilemap != null) {
+                floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            }
+            if (wallTilemap != null) {
+                wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
             }
         }
-        
+
+        // public void ClearGrid() {
+        //     if (tiles != null) {
+        //         foreach (var tile in tiles.Values) {
+        //             if (tile != null) {
+        //                 Destroy(tile.gameObject);
+        //             }
+        //         }
+        //         tiles.Clear();
+        //     }
+        // }
+
+        public void SetTileHighlight(Vector2 pos, bool active, bool needWalkable = true) {
+            if (_highlightManager != null) {
+                _highlightManager.SetHighlight(pos, active, needWalkable);
+            }
+        }
+
+        public void ClearAllHighlights() {
+            if (_highlightManager != null) {
+                _highlightManager.ClearAllHighlights();
+            }
+        }
+
         // 重新生成網格
         public void RegenerateGrid() {
             ClearGrid();
             GenerateGrid();
         }
-        private void GenerateBorderWalls() {
-            for (int x = 0; x < _width; x++) {
-                for (int y = 0; y < _height; y++) {
-                    if (x == 0 || y == 0 || x == _width - 1 || y == _height - 1) {
-                        Vector2 pos = new Vector2(x, y);
-                        if (!tiles.ContainsKey(pos)) {
-                            var wallTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity, map);
-                            wallTile.name = $"Wall {x} {y}";
-                            wallTile.Init(pos);
-                            wallTile.SetWalkable(false);
-
-                            SpriteRenderer sr = wallTile.GetComponent<SpriteRenderer>();
-                            if (sr != null && wallSprite != null) {
-                                sr.sprite = wallSprite;
-                            }
-
-                            tiles[pos] = wallTile;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void GenerateObstacles() {
-            // int obstacleCount = (_width * _height) / 10;
-            // int attempts = 0;
-            // int maxAttempts = 1000;
-
-            // while (obstacleCount > 0 && attempts < maxAttempts) {
-            //     int x = Random.Range(_boundaryOffset, _width - _boundaryOffset);
-            //     int y = Random.Range(_boundaryOffset, _height - _boundaryOffset);
-            //     Vector2Int pos = new Vector2Int(x, y);
-
-            //     if (_floorPositions.Contains(pos) && !tiles.ContainsKey(pos)) {
-            //         var spawnedTile = Instantiate(_obstacleTilePrefab, new Vector3(x, y), Quaternion.identity, map);
-            //         spawnedTile.name = $"Obstacle {x} {y}";
-            //         spawnedTile.Init(pos);
-            //         spawnedTile.SetWalkable(false);
-            //         SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-            //         if (sr != null && obstacleSprite != null) {
-            //             sr.sprite = obstacleSprite;
-            //         }
-            //         tiles[new Vector2(x, y)] = spawnedTile;
-            //         obstacleCount--;
-            //     }
-            //     attempts++;
-            // }
-
-            List<Vector2Int> floor = _floorPositions.ToList();
-            int obstacleCount = _floorPositions.Count() / 10;
-            HashSet<Vector2Int> visited = new();
-            while (obstacleCount > 0) {
-                int rng = Random.Range(0, _floorPositions.Count());
-                Vector2Int pos = floor[rng];
-                if (!visited.Contains(pos)) {
-                    var spawnedTile = Instantiate(_obstacleTilePrefab, new Vector3(pos.x, pos.y, -2f), Quaternion.identity, map);
-                    if (spawnedTile == null) continue;
-                    spawnedTile.name = $"Obstacle {pos.x} {pos.y}";
-                    spawnedTile.Init(pos);
-                    spawnedTile.SetWalkable(false);
-
-                    Tile floorTile = GetTileAtPosition(pos);
-                    if (floorTile != null) floorTile.SetWalkable(false);
-                    
-                    SpriteRenderer sr = spawnedTile.GetComponent<SpriteRenderer>();
-                    if (sr != null && obstacleSprite != null) {
-                        sr.sprite = obstacleSprite;
-                    }
-                    visited.Add(pos);
-                    obstacleCount--;
-                }
-            }
-        }
-
     }
 }
