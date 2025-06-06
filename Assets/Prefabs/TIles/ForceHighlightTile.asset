@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: HighlightTIle
+  m_Name: ForceHighlightTile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 2924560605029197246, guid: bdf4ac708dea948c3b4438567201f1a9,
+  m_DefaultSprite: {fileID: -7232154388474586162, guid: 80ec4f7b632a4448bbe9fc50c48ef97e,
     type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1

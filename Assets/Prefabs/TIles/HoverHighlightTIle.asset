@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: HighlightTile30%
+  m_Name: HoverHighlightTIle
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -8521177505407326933, guid: 0da9b86fd0fec455db6da5ea9153faef,
+  m_DefaultSprite: {fileID: -6631978794181846395, guid: bd2ab46d763d242e4900703a200211d7,
     type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1

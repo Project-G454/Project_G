@@ -17,8 +17,8 @@ namespace Core.Managers {
         [Header("Tilemap Setting")]
         [SerializeField] private Tilemap floorTilemap;
         [SerializeField] private Tilemap wallTilemap;
-        [SerializeField] private List<TileBase> floorTiles;
-        [SerializeField] private TileBase wallTile;
+        [SerializeField] private RuleTile floorTile;
+        [SerializeField] private RuleTile wallTile;
         [SerializeField] private TilemapHighlightManager _highlightManager;
 
         [Header("Random Room")]
@@ -314,30 +314,60 @@ namespace Core.Managers {
             return path;
         }
 
+        // private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
+
+        //     floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+        //     wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, height, 1), new TileBase[_width * _height]);
+
+        //     foreach (var pos in floorPositions) {
+        //         Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+
+        //         TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
+        //         floorTilemap.SetTile(tilePos, selectedFloorTile);
+
+        //         walkableData[new Vector2(pos.x, pos.y)] = true;
+        //     }
+
+        //     HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
+        //     foreach (var pos in wallPositions) {
+        //         if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
+        //             Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+
+        //             TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
+        //             floorTilemap.SetTile(tilePos, selectedFloorTile);
+
+        //             wallTilemap.SetTile(tilePos, wallTile);
+
+        //             walkableData[new Vector2(pos.x, pos.y)] = false;
+        //         }
+        //     }
+        // }
+
         private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
-
+            // 首先清空 Tilemap
             floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
-            wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, height, 1), new TileBase[_width * _height]);
+            wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
 
+            // 放置地板瓦片並設定 walkableData
             foreach (var pos in floorPositions) {
                 Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+                floorTilemap.SetTile(tilePos, floorTile); // Auto Tiling 在這裡發生
 
-                TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
-                floorTilemap.SetTile(tilePos, selectedFloorTile);
-
+                // ⭐ 重要：設定可行走資料
                 walkableData[new Vector2(pos.x, pos.y)] = true;
             }
 
+            // 放置牆壁瓦片並設定 walkableData
             HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
             foreach (var pos in wallPositions) {
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
                     Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
 
-                    TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
-                    floorTilemap.SetTile(tilePos, selectedFloorTile);
+                    // 牆壁底下也放地板（常見做法）
+                    floorTilemap.SetTile(tilePos, floorTile);
+                    wallTilemap.SetTile(tilePos, wallTile); // Auto Tiling 在這裡發生
 
-                    wallTilemap.SetTile(tilePos, wallTile);
-
+                    // ⭐ 重要：設定不可行走資料
                     walkableData[new Vector2(pos.x, pos.y)] = false;
                 }
             }
