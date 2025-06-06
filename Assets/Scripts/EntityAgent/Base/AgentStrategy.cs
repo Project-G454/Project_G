@@ -88,8 +88,7 @@ namespace Agents {
         }
 
         protected bool _IsWalkable(Vector2 pos) {
-            Tile tile = GridManager.Instance.GetTileAtPosition(pos);
-            return tile != null && tile.Walkable && !_PlayerAt(pos);
+            return GridManager.Instance.GetTileWalkable(pos) && !_PlayerAt(pos);
         }
 
         protected bool _PlayerAt(Vector2 pos) {
@@ -101,8 +100,7 @@ namespace Agents {
         }
 
         protected bool IsTile(Vector2 pos) {
-            Tile tile = GridManager.Instance.GetTileAtPosition(pos);
-            return tile != null;
+            return GridManager.Instance.GetTileAtPosition(pos) != null;
         }
 
         protected void DebugDrawPoint(Vector3 pos, Color color, float size = 0.1f, float duration = 0.1f) {
