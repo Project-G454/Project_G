@@ -20,5 +20,5 @@ MonoBehaviour:
   rarity: 2
   cost: 0
   range: 0
-  partical: 0
+  partical: 5
   step: 4
