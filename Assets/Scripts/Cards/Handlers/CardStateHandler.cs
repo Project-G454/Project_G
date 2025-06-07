@@ -44,7 +44,7 @@ namespace Cards.Handlers {
             switch (_currentState) {
                 case CardState.Dodge:
                     _HandleDodge();
-                    break; 
+                    break;
                 case CardState.Idle:
                     _HandleIdle();
                     break;

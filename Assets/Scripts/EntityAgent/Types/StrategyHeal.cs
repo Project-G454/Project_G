@@ -8,6 +8,8 @@ namespace Agents.Strategies {
     class StrategyHeal: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
+            this.isCardAnimationEnd = false;
+
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
             if (cardBehaviours.Count == 0) return;
             int cardIdx = Random.Range(0, cardBehaviours.Count);
