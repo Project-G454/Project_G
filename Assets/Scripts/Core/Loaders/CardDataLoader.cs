@@ -46,7 +46,7 @@ namespace Core.Loaders.Cards {
         }
 
         public static Sprite LoadHealIcon() {
-            return LoadAssets().FirstOrDefault(e => e.name == $"Card_Type_HEAL");
+            return LoadAssets().FirstOrDefault(e => e.name == $"Card_Type_Heal");
         }
 
         public static Sprite LoadEnergyIcon() {

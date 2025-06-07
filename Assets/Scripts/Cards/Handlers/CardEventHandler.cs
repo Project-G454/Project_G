@@ -7,33 +7,40 @@ using UnityEngine.EventSystems;
 
 namespace Cards.Handlers {
     class CardEventHandler: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
+        private bool _lock = false;
         private bool _isPointerOver = false;
         private bool _isClicked = false;
         private bool _isDragging = false;
         private PointerEventData _eventData;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
+            if (_lock) return;
             if (!_isDragging) _isClicked = true;
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData) {
+            if (_lock) return;
             _isPointerOver = true;
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData) {
+            if (_lock) return;
             _isPointerOver = false;
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData) {
+            if (_lock) return;
             _eventData = eventData;
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
+            if (_lock) return;
             _isClicked = false;
             _isDragging = true;
         }
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData) {
+            if (_lock) return;
             _isDragging = false;
         }
 
@@ -66,7 +73,7 @@ namespace Cards.Handlers {
         }
 
         public int GetHoveringCardIdx() {
-            for (int i=0; i<CardManager.cardList.Count; i++) {
+            for (int i = 0; i < CardManager.cardList.Count; i++) {
                 GameObject cardObj = CardManager.cardList[i];
                 CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
                 CardState state = stateHandler.GetState();
@@ -76,7 +83,7 @@ namespace Cards.Handlers {
         }
 
         public bool IsAnyCardHovering() {
-            for (int i=0; i<CardManager.cardList.Count; i++) {
+            for (int i = 0; i < CardManager.cardList.Count; i++) {
                 GameObject cardObj = CardManager.cardList[i];
                 CardStateHandler stateHandler = cardObj.GetComponent<CardStateHandler>();
                 CardState state = stateHandler.GetState();
@@ -87,11 +94,19 @@ namespace Cards.Handlers {
 
         private bool _IsHoverState(CardState state) {
             return (
-                state == CardState.Hover || 
+                state == CardState.Hover ||
                 state == CardState.Dragging ||
                 state == CardState.Active ||
                 state == CardState.Targeting
             );
+        }
+
+        public void Lock() {
+            _lock = true;
+        }
+
+        public void Unlock() {
+            _lock = false;
         }
     }
 }

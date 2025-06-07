@@ -5,8 +5,11 @@ using Cards;
 using Cards.Animations;
 using Cards.Data;
 using Cards.Factories;
+using Cards.Handlers;
 using Cards.Helpers;
 using Core.Entities;
+using Core.Helpers;
+using Agents.Helpers;
 using Core.Interfaces;
 using Core.Loaders.Cards;
 using Core.Managers.Deck;
@@ -37,7 +40,7 @@ namespace Core.Managers.Cards {
             cardList.Clear();
             cardAssets.Clear();   
         }
-        
+
         public void Init() {
             _battleManager = BattleManager.Instance;
             _deckManager = (_battleManager.currentEntity as Player)?.deckManager;
@@ -109,7 +112,7 @@ namespace Core.Managers.Cards {
             ResetCardObjects();
         }
 
-        public bool UseCard(CardBehaviour cb, int targetId) {
+        public bool UseCard(CardBehaviour cb, int targetId, Action onComplete = null) {
             if (isTurnFinished) return false;
 
             Entity currentEntity = _battleManager.currentEntity;
@@ -124,15 +127,21 @@ namespace Core.Managers.Cards {
                 Debug.Log("No energy!");
                 return false;
             }
-            Vector2 dv = currObj.transform.position - targetObj.transform.position;
-            if (Math.Abs(dv.x) + Math.Abs(dv.y) > cb.card.range) {
+            if (!DistanceHelper.EntityInRange(currentEntity, targetEntity, cb.card.range)) {
                 Debug.Log("Out of card range!");
                 return false;
             }
-            
+
             cb.card.Use(currentEntity.entityId, targetId);   // Apply card effect
             _deckManager.Use(cb.card.id);                    // Remove card from deck
-            ParticalAnimation.PlayCardAnimation(targetObj, cb.card.partical);
+            ParticalAnimation.PlayCardAnimation(
+                targetObj,
+                cb.card.partical,
+                () => {
+                    onComplete?.Invoke();
+                    Debug.Log("Card animation end");
+                }
+            );
             EntityAnimation.PlayAnimationOnce(currObj, PlayerState.ATTACK);
             EntityAnimation.PlayAnimationOnce(targetObj, PlayerState.DAMAGED);
             if (targetEntity.IsDead()) EntityAnimation.PlayAnimation(targetObj, PlayerState.DEATH);
@@ -142,7 +151,7 @@ namespace Core.Managers.Cards {
 
         public void SetNewCardPosition() {
             List<Vector3> cardsPos = CardPositionHelper.CalcCardPosition(cardParent, cardList);
-            for (int i=0; i<cardList.Count(); i++) {
+            for (int i = 0; i < cardList.Count(); i++) {
                 CardView view = cardList[i].GetComponent<CardView>();
                 view.SetInitialState(cardsPos[i], view.GetInitialScale(), view.GetInitialSiblingIdx());
             }
@@ -157,6 +166,20 @@ namespace Core.Managers.Cards {
 
         public void RemoveCard(GameObject cardObject) {
             cardList.Remove(cardObject);
+        }
+
+        public void Unlock() {
+            foreach (GameObject cardObj in cardList) {
+                CardEventHandler handler = cardObj.GetComponent<CardEventHandler>();
+                handler.Unlock();
+            }
+        }
+
+        public void Lock() {
+            foreach (GameObject cardObj in cardList) {
+                CardEventHandler handler = cardObj.GetComponent<CardEventHandler>();
+                handler.Lock();
+            }
         }
     }
 }

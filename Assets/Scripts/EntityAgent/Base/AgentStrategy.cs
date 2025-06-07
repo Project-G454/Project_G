@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Agents.Helpers;
+using Core.Helpers;
 using Cards;
 using Core.Entities;
 using Core.Managers;
@@ -10,6 +11,7 @@ using UnityEngine;
 namespace Agents {
     public abstract class AgentStrategy {
         protected EntityAgent _agent;
+        public bool isCardAnimationEnd = true;
 
         public virtual void Execute(EntityAgent agent) {
             _agent = agent;
@@ -31,7 +33,8 @@ namespace Agents {
         }
 
         protected void _UseCard(CardBehaviour cardBehaviour, int targetId) {
-            if (CardManager.Instance.UseCard(cardBehaviour, targetId)) {
+            Debug.Log($"Agent use the card: {cardBehaviour.card.cardName}");
+            if (CardManager.Instance.UseCard(cardBehaviour, targetId, () => { isCardAnimationEnd = true; })) {
                 cardBehaviour.DestroySelf();
             }
         }

@@ -10,6 +10,7 @@ namespace Agents.Strategies {
     class StrategyAttack: AgentStrategy {
         public override void Execute(EntityAgent agent) {
             base.Execute(agent);
+            this.isCardAnimationEnd = false;
 
             // pick a card
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
@@ -48,12 +49,7 @@ namespace Agents.Strategies {
             List<int> Ids = new();
             List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
             foreach (Entity target in players) {
-                if (
-                    DistanceHelper.InRange(_agent.entity.position, target.position, range) &&
-                    !target.IsDead()
-                ) {
-                    Ids.Add(target.entityId);
-                }
+                if (DistanceHelper.EntityInRange(_agent.gameObject, target, range)) Ids.Add(target.entityId); 
             }
             return Ids;
         }

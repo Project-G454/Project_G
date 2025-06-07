@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Agents.Data;
 using Agents.Handlers;
 using Agents.Helpers;
+using Core.Handlers;
 using Agents.Strategies;
 using Cards;
 using Cards.Data;
@@ -17,7 +18,7 @@ namespace Agents {
     public class EntityAgent: MonoBehaviour {
         public Entity entity;
         public AgentStrategy strategy;
-        private AgentStateHandler _agentStateHandler;
+        public AgentStateHandler stateHandler;
         private bool _isBinded = false;
         public bool canMove = true;
 
@@ -28,11 +29,13 @@ namespace Agents {
         public void Bind() {
             if (_isBinded) return;
             EntityBehaviour entityBehaviour = GetComponent<EntityBehaviour>();
-            this._agentStateHandler = GetComponent<AgentStateHandler>();
+            stateHandler = GetComponent<AgentStateHandler>();
+            if (stateHandler == null) {
+                stateHandler = gameObject.AddComponent<AgentStateHandler>();
+            }
 
-            this.entity = entityBehaviour.entity;
-            this.entity.type = EntityTypes.ENEMY;
-            this._agentStateHandler = gameObject.AddComponent<AgentStateHandler>();
+            entity = entityBehaviour.entity;
+            entity.type = EntityTypes.ENEMY;
 
             Debug.Log($"Bind Agent to Entity_{entity.entityId}");
             _isBinded = true;
@@ -68,7 +71,6 @@ namespace Agents {
         }
 
         public void ExecuteStrategy(AgentAction action) {
-            AgentStrategy strategy = null;
             switch (action) {
                 case AgentAction.Move:
                     strategy = new StrategyMove();
@@ -84,6 +86,7 @@ namespace Agents {
                     break;
                 case AgentAction.End:
                 default:
+                    strategy = new StrategyEnd();
                     break;
             }
             strategy?.Execute(this);
@@ -133,9 +136,7 @@ namespace Agents {
         public bool HasReachablePlayer(int range) {
             List<Entity> players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
             foreach (Entity target in players) {
-                if (DistanceHelper.InRange(entity.position, target.position, range) && !target.IsDead()) {
-                    return true;
-                }
+                if (DistanceHelper.EntityInRange(gameObject, target, range)) return true;
             }
             return false;
         }

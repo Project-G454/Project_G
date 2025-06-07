@@ -23,7 +23,8 @@ namespace Cards.Handlers {
             var targetId = GetTargetId();
             if (targetId == null) return false;
 
-            return _cardManager.UseCard(_cardBehaviour, (int)targetId);
+            Entity target = EntityManager.Instance.GetEntity((int)targetId);
+            return _cardManager.UseCard(_cardBehaviour, target.entityId);
         }
 
         public int? GetTargetId() {
