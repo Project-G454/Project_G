@@ -26,6 +26,10 @@ namespace Core.Managers {
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
 
+        [Header("Wall Optimization")]
+        [SerializeField] private int _wallThickness = 2;
+        [SerializeField] private bool _useThickWalls = true;
+
         public Transform map;
         private Transform _cam;
 
@@ -283,8 +287,19 @@ namespace Core.Managers {
                 var path = SimpleRandomWalk(currentPosition, _walkLength);
                 floorPositions.UnionWith(path);
 
+                // if (floorPositions.Count > 0) {
+                //     currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                // }
+                // 改進：有機率回到較早的位置，創造更連貫的結構
                 if (floorPositions.Count > 0) {
-                    currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                    if (Random.value < 0.3f && floorPositions.Count > 10) {
+                        // 30% 機率回到較早的位置
+                        var earlyPositions = floorPositions.Take(floorPositions.Count / 2).ToList();
+                        currentPosition = earlyPositions[Random.Range(0, earlyPositions.Count)];
+                    }
+                    else {
+                        currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                    }
                 }
             }
 
@@ -354,7 +369,15 @@ namespace Core.Managers {
                 walkableData[new Vector2(pos.x, pos.y)] = true;
             }
 
-            HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
+            HashSet<Vector2Int> wallPositions;
+            if (_useThickWalls) {
+                wallPositions = FindThickWallPositions(floorPositions, _wallThickness);
+            }
+            else {
+                wallPositions = FindWallPositions(floorPositions);
+            }
+
+            // HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
             foreach (var pos in wallPositions) {
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
                     Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
@@ -365,6 +388,74 @@ namespace Core.Managers {
                     walkableData[new Vector2(pos.x, pos.y)] = false;
                 }
             }
+        }
+
+        private HashSet<Vector2Int> FindThickWallPositions(HashSet<Vector2Int> floorPositions, int thickness) {
+            HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
+
+            // 先找到所有邊界位置
+            HashSet<Vector2Int> boundaries = FindBoundaryPositions(floorPositions);
+
+            // 對每個邊界位置向外擴展指定厚度
+            foreach (var boundary in boundaries) {
+                for (int layer = 1; layer <= thickness; layer++) {
+                    var expandedPositions = ExpandPositionByLayer(boundary, layer, floorPositions);
+                    wallPositions.UnionWith(expandedPositions);
+                }
+            }
+
+            return wallPositions;
+        }
+
+        private HashSet<Vector2Int> FindBoundaryPositions(HashSet<Vector2Int> floorPositions) {
+            HashSet<Vector2Int> boundaries = new HashSet<Vector2Int>();
+
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1), new Vector2Int(1, 0),
+                new Vector2Int(0, -1), new Vector2Int(-1, 0)
+            };
+
+            foreach (var pos in floorPositions) {
+                bool isBoundary = false;
+                foreach (var dir in directions) {
+                    var neighbor = pos + dir;
+                    if (!floorPositions.Contains(neighbor)) {
+                        isBoundary = true;
+                        break;
+                    }
+                }
+
+                if (isBoundary) {
+                    boundaries.Add(pos);
+                }
+            }
+
+            return boundaries;
+        }
+
+        private HashSet<Vector2Int> ExpandPositionByLayer(Vector2Int center, int layer, HashSet<Vector2Int> floorPositions) {
+            HashSet<Vector2Int> expanded = new HashSet<Vector2Int>();
+
+            // 8方向擴展
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1), new Vector2Int(-1, 0),
+                new Vector2Int(1, 1), new Vector2Int(-1, 1), new Vector2Int(1, -1), new Vector2Int(-1, -1)
+            };
+
+            for (int x = -layer; x <= layer; x++) {
+                for (int y = -layer; y <= layer; y++) {
+                    if (Mathf.Abs(x) == layer || Mathf.Abs(y) == layer) {
+                        var pos = center + new Vector2Int(x, y);
+
+                        // 只有在不是地板的位置才加入牆壁
+                        if (!floorPositions.Contains(pos)) {
+                            expanded.Add(pos);
+                        }
+                    }
+                }
+            }
+
+            return expanded;
         }
 
         private HashSet<Vector2Int> FindWallPositions(HashSet<Vector2Int> floorPositions) {
