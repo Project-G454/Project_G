@@ -22,39 +22,38 @@ namespace Shop.Items {
             CheckState();
         }
 
-        public virtual void CheckState() {
+        public void CheckState() {
             buyButton.onClick.RemoveAllListeners();
 
-            if (!IsPlayerCanBuy()) {
-                Lock();
+            if (!_IsPlayerCanBuy()) {
+                _Lock();
                 return;
             }
 
             buyButton.onClick.AddListener(() => {
                 if (!Buy()) return;
-                Sold();
+                _Sold();
                 shopManager.UpdateShopState();
             });
         }
 
-        private bool IsPlayerCanBuy() {
+        private bool _IsPlayerCanBuy() {
             GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
             return state == ShopItemState.Available && player.gold >= item.price;
         }
 
         public virtual bool Buy() {
             GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
-            if (!IsPlayerCanBuy()) return false;
+            if (!_IsPlayerCanBuy()) return false;
             playerStateManager.ModifyGold(player.playerId, -item.price);
             return true;
         }
 
-        private void Sold() {
-            Debug.Log("Sold!");
+        private void _Sold() {
             this.state = ShopItemState.SoldOut;
         }
 
-        private void Lock() {
+        private void _Lock() {
             this.state = ShopItemState.SoldOut;
         }
     }
