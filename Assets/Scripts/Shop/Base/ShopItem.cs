@@ -1,5 +1,6 @@
 using Core.Game;
 using Core.Managers;
+using DG.Tweening;
 using Shop.Models;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Shop.Items {
         public ShopItemState state = ShopItemState.Available;
         public Button buyButton;
         public TMP_Text btnText;
+        public GameObject soldOutPanel;
         protected ShopManager shopManager;
         protected PlayerStateManager playerStateManager;
 
@@ -19,6 +21,7 @@ namespace Shop.Items {
             shopManager = ShopManager.Instance;
             playerStateManager = PlayerStateManager.Instance;
             btnText.text = item.price.ToString();
+            soldOutPanel.SetActive(false);
             CheckState();
         }
 
@@ -51,10 +54,30 @@ namespace Shop.Items {
 
         private void _Sold() {
             this.state = ShopItemState.SoldOut;
+            buyButton.onClick.RemoveAllListeners();
+            Flip(0.3f);
         }
 
         private void _Lock() {
             this.state = ShopItemState.SoldOut;
         }
+
+        public void Flip(float duration = 0.5f){
+            RectTransform rt = GetComponent<RectTransform>();
+            Sequence flipSeq = DOTween.Sequence();
+
+            // 前半段：縮小 X 軸到 0（像是翻到一半）
+            flipSeq.Append(rt.DOScaleX(0f, duration / 2).SetEase(Ease.InOutQuad));
+
+            // 替換內容（例如切換圖片）
+            flipSeq.AppendCallback(() => {
+                // TODO：切換卡牌正反面，例如換圖片、換文字
+                soldOutPanel.SetActive(true);
+            });
+
+            // 後半段：從 0 拉回到 1，完成翻牌
+            flipSeq.Append(rt.DOScaleX(1f, duration / 2).SetEase(Ease.InOutQuad));
+        }
+
     }
 }
