@@ -1,3 +1,5 @@
+using Core.Game;
+using Core.Managers;
 using Shop.Models;
 using TMPro;
 using UnityEngine;
@@ -8,20 +10,52 @@ namespace Shop.Items {
         public ShopItemState state = ShopItemState.Available;
         public Button buyButton;
         public TMP_Text btnText;
+        protected ShopManager shopManager;
+        protected PlayerStateManager playerStateManager;
 
         public abstract ShopItemSO item { get; }
 
         public virtual void Init() {
-            buyButton.onClick.AddListener(Buy);
+            shopManager = ShopManager.Instance;
+            playerStateManager = PlayerStateManager.Instance;
             btnText.text = item.price.ToString();
+            CheckState();
         }
 
-        public virtual void CheckState(int money) {
-            if (money < item.price) {
-                state = ShopItemState.Locked;
+        public virtual void CheckState() {
+            buyButton.onClick.RemoveAllListeners();
+
+            if (!IsPlayerCanBuy()) {
+                Lock();
+                return;
             }
+
+            buyButton.onClick.AddListener(() => {
+                if (!Buy()) return;
+                Sold();
+                shopManager.UpdateShopState();
+            });
         }
 
-        public abstract void Buy();
+        private bool IsPlayerCanBuy() {
+            GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
+            return state == ShopItemState.Available && player.gold >= item.price;
+        }
+
+        public virtual bool Buy() {
+            GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
+            if (!IsPlayerCanBuy()) return false;
+            playerStateManager.ModifyGold(player.playerId, -item.price);
+            return true;
+        }
+
+        private void Sold() {
+            Debug.Log("Sold!");
+            this.state = ShopItemState.SoldOut;
+        }
+
+        private void Lock() {
+            this.state = ShopItemState.SoldOut;
+        }
     }
 }

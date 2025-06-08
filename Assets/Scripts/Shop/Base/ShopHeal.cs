@@ -1,5 +1,8 @@
+using Core.Game;
+using Core.Managers;
 using Shop.Models;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Shop.Items {
@@ -17,9 +20,13 @@ namespace Shop.Items {
             title.text = $"Heal {data.healingAmount} HP";
         }
 
-        public override void Buy() {
-            // Implement logic to handle the purchase of the card
-            // This could include checking if the player has enough currency, updating inventory, etc.
+        public override bool Buy() {
+            if (!base.Buy()) return false;
+            GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
+            Debug.Log($"Old Hp: {player.hp}");
+            playerStateManager.ModifyHP(player.playerId, _healItem.healingAmount);
+            Debug.Log($"New Hp: {player.hp}");
+            return true;
         }
     }
 }

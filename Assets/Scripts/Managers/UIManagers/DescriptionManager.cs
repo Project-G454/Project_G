@@ -39,6 +39,10 @@ namespace Core.Managers {
             _is_initialized = true;
         }
 
+        public void Start() {
+            Init();
+        }
+
         public void Add(DescriptionData data) {
             if (_descriptions.ContainsKey(data.id)) {
                 Debug.LogWarning($"Duplicate description ID: {data.id}");

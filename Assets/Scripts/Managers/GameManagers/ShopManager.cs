@@ -10,6 +10,8 @@ using System.Linq;
 using Shop.Items;
 using Core.Helpers;
 using UnityEngine.UI;
+using Core.Game;
+using TMPro;
 
 
 namespace Core.Managers {
@@ -19,9 +21,13 @@ namespace Core.Managers {
         public GameObject cardItemPrefab;
         public GameObject healItemPrefab;
         public Button worldMapBtn;
+        public TMP_Text goldText;
+        public int playerId;
         private DescriptionManager _descriptionManager;
         private LoadSceneManager _loadSceneManager;
+        private PlayerStateManager _playerStateManager;
         private bool _isInit = false;
+        private List<GameObject> items = new();
 
 
         private void Awake() {
@@ -36,6 +42,7 @@ namespace Core.Managers {
             // Initialize shop card states or any other setup needed
             _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
             _loadSceneManager = ManagerHelper.RequireManager(LoadSceneManager.Instance);
+            _playerStateManager = ManagerHelper.RequireManager(PlayerStateManager.Instance);
             worldMapBtn.onClick.AddListener(_loadSceneManager.LoadWorldMapScene);
             _isInit = true;
         }
@@ -44,6 +51,12 @@ namespace Core.Managers {
             if (_isInit) return;
             Init();
             Roll();
+            _LoadPlayerData(1);
+            UpdateShopState();
+        }
+
+        private void _LoadPlayerData(int playerId) {
+            this.playerId = playerId;
         }
 
         void Start() {
@@ -54,7 +67,6 @@ namespace Core.Managers {
             for (int i = 0; i < times; i++) {
                 ShopItemType type = RollRandomTypes();
                 ShopItemRarity rarity = RollRandomRarity();
-                List<GameObject> items = new();
 
                 // 根據類型載入資料
                 switch (type) {
@@ -131,6 +143,19 @@ namespace Core.Managers {
             }
 
             return rarity;
+        }
+
+        public void UpdateShopState() {
+            GamePlayerState playerData = _playerStateManager.GetPlayer(playerId);
+
+            goldText.text = playerData.gold.ToString();
+            goldText.ForceMeshUpdate();
+
+            foreach (var itemObj in items) {
+                ShopItem item = itemObj.GetComponent<ShopItem>();
+                if (item == null) continue;
+                item.CheckState();
+            }
         }
     }
 }
