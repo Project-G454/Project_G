@@ -26,9 +26,7 @@ namespace Shop.Items {
             if (!base.Buy()) return false;
             GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
             List<int> deck = new List<int>(player.deck) { _cardItem.card.id };
-            Debug.Log($"Old Deck: {string.Join(", ", player.deck)}");
             playerStateManager.SetDeck(player.playerId, deck);
-            Debug.Log($"New Deck: {string.Join(", ", player.deck)}");
             return true;
         }
     }

@@ -23,9 +23,7 @@ namespace Shop.Items {
         public override bool Buy() {
             if (!base.Buy()) return false;
             GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
-            Debug.Log($"Old Hp: {player.hp}");
             playerStateManager.ModifyHP(player.playerId, _healItem.healingAmount);
-            Debug.Log($"New Hp: {player.hp}");
             return true;
         }
     }
