@@ -44,26 +44,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Layer 1
+  - name: Floor
     uniqueID: 2425651459
     locked: 0
-  - name: Layer 2
+  - name: Highlight
+    uniqueID: 3034434503
+    locked: 0
+  - name: Characters
     uniqueID: 4250941897
     locked: 0
-  - name: Layer 3
+  - name: Walls
     uniqueID: 4189426099
+    locked: 0
+  - name: Effects
+    uniqueID: 2422609915
     locked: 0
   - name: UI
     uniqueID: 638209629
-    locked: 0
-  - name: Map
-    uniqueID: 2422609915
-    locked: 0
-  - name: Entity
-    uniqueID: 2036219377
-    locked: 0
-  - name: Partical
-    uniqueID: 1187765901
     locked: 0
   m_RenderingLayers:
   - Default

@@ -49,8 +49,21 @@ namespace Core.Managers {
             this._cam = Camera.main.transform;
         }
 
+        // void Start() {
+        //     // GenerateGrid();
+        // }
+
         void Start() {
-            // GenerateGrid();
+            // // 設置 Tilemap 的 Sorting Layer
+            // if (floorTilemap != null) {
+            //     floorTilemap.GetComponent<TilemapRenderer>().sortingLayerName = "Floor";
+            //     floorTilemap.GetComponent<TilemapRenderer>().sortingOrder = 0;
+            // }
+
+            // if (wallTilemap != null) {
+            //     wallTilemap.GetComponent<TilemapRenderer>().sortingLayerName = "Walls";
+            //     wallTilemap.GetComponent<TilemapRenderer>().sortingOrder = 0;
+            // }
         }
 
         public List<Vector3> GetSpawnPositions(int count) {
