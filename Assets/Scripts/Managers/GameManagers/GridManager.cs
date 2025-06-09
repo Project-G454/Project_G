@@ -290,6 +290,30 @@ namespace Core.Managers {
             return floorPositions;
         }
 
+        // private HashSet<Vector2Int> RunRandomWalk(Vector2Int startPosition) {
+        //     var currentPosition = startPosition;
+        //     HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+        //     floorPositions.Add(currentPosition);
+
+        //     for (int i = 0; i < _iterations; i++) {
+        //         var path = SimpleRandomWalk(currentPosition, _walkLength);
+        //         floorPositions.UnionWith(path);
+
+        //         if (floorPositions.Count > 0) {
+        //             if (Random.value < 0.3f && floorPositions.Count > 10) {
+        //                 // 30% 機率回到較早的位置
+        //                 var earlyPositions = floorPositions.Take(floorPositions.Count / 2).ToList();
+        //                 currentPosition = earlyPositions[Random.Range(0, earlyPositions.Count)];
+        //             }
+        //             else {
+        //                 currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+        //             }
+        //         }
+        //     }
+
+        //     return floorPositions;
+        // }
+
         private HashSet<Vector2Int> RunRandomWalk(Vector2Int startPosition) {
             var currentPosition = startPosition;
             HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
@@ -300,19 +324,99 @@ namespace Core.Managers {
                 floorPositions.UnionWith(path);
 
                 if (floorPositions.Count > 0) {
-                    if (Random.value < 0.3f && floorPositions.Count > 10) {
-                        // 30% 機率回到較早的位置
-                        var earlyPositions = floorPositions.Take(floorPositions.Count / 2).ToList();
-                        currentPosition = earlyPositions[Random.Range(0, earlyPositions.Count)];
-                    }
-                    else {
-                        currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
-                    }
+                    currentPosition = ChooseSmartStartPosition(floorPositions);
                 }
             }
 
             return floorPositions;
         }
+
+        private Vector2Int ChooseSmartStartPosition(HashSet<Vector2Int> floorPositions) {
+            Vector2 centroid = CalculateCentroid(floorPositions);
+
+            float randomValue = Random.value;
+
+            if (randomValue < 0.5f) {
+                return GetNearCentroidPosition(floorPositions, centroid);
+            }
+            else if (randomValue < 0.8f) {
+                return GetMainBodyEdgePosition(floorPositions, centroid);
+            }
+            else {
+                return floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+            }
+        }
+
+        // 計算中心點
+        private Vector2 CalculateCentroid(HashSet<Vector2Int> positions) {
+            if (positions.Count == 0) return Vector2.zero;
+
+            float sumX = 0, sumY = 0;
+            foreach (var pos in positions) {
+                sumX += pos.x;
+                sumY += pos.y;
+            }
+
+            return new Vector2(sumX / positions.Count, sumY / positions.Count);
+        }
+
+        private Vector2Int GetNearCentroidPosition(HashSet<Vector2Int> floorPositions, Vector2 centroid) {
+            var nearPositions = floorPositions
+                .OrderBy(pos => Vector2.Distance(pos, centroid))
+                .Take(Mathf.Min(10, floorPositions.Count))
+                .ToList();
+
+            return nearPositions[Random.Range(0, nearPositions.Count)];
+        }
+
+        private Vector2Int GetMainBodyEdgePosition(HashSet<Vector2Int> floorPositions, Vector2 centroid) {
+            // 定義主體區域（距離質心較近的75%區域）
+            var sortedByDistance = floorPositions
+                .OrderBy(pos => Vector2.Distance(pos, centroid))
+                .ToList();
+
+            int mainBodyCount = Mathf.RoundToInt(sortedByDistance.Count * 0.75f);
+            var mainBodyPositions = new HashSet<Vector2Int>(sortedByDistance.Take(mainBodyCount));
+
+            // 找出主體區域的邊緣位置
+            var edgePositions = GetEdgePositions(mainBodyPositions);
+
+            if (edgePositions.Count > 0) {
+                return edgePositions[Random.Range(0, edgePositions.Count)];
+            }
+            else {
+                // 如果沒有邊緣位置，回到中心點策略
+                return GetNearCentroidPosition(floorPositions, centroid);
+            }
+        }
+
+        private List<Vector2Int> GetEdgePositions(HashSet<Vector2Int> floorPositions) {
+            List<Vector2Int> edgePositions = new List<Vector2Int>();
+
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1),  // 上
+                new Vector2Int(1, 0),  // 右
+                new Vector2Int(0, -1), // 下
+                new Vector2Int(-1, 0)  // 左
+            };
+
+            foreach (var pos in floorPositions) {
+                bool isEdge = false;
+                foreach (var dir in directions) {
+                    var neighbor = pos + dir;
+                    if (!floorPositions.Contains(neighbor)) {
+                        isEdge = true;
+                        break;
+                    }
+                }
+                if (isEdge) {
+                    edgePositions.Add(pos);
+                }
+            }
+
+            return edgePositions;
+        }
+
 
         private HashSet<Vector2Int> SimpleRandomWalk(Vector2Int startPosition, int walkLength) {
             HashSet<Vector2Int> path = new HashSet<Vector2Int>();
