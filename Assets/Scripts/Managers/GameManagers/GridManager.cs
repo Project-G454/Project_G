@@ -17,9 +17,12 @@ namespace Core.Managers {
         [Header("Tilemap Setting")]
         [SerializeField] private Tilemap floorTilemap;
         [SerializeField] private Tilemap wallTilemap;
+        [SerializeField] private Tilemap decorationTilemap;
         [SerializeField] private RuleTile floorTile;
         [SerializeField] private RuleTile wallTile;
+        [SerializeField] private RuleTile decorationTile;
         [SerializeField] private TilemapHighlightManager _highlightManager;
+        [SerializeField] private float decorationProbability = 0.3f;
 
         [Header("Random Room")]
         [SerializeField] private int _iterations = 10;
@@ -444,6 +447,9 @@ namespace Core.Managers {
         private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
             floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
             wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            if (decorationTilemap != null) {
+                decorationTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            }
 
             foreach (var pos in floorPositions) {
                 Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
@@ -463,6 +469,22 @@ namespace Core.Managers {
                     wallTilemap.SetTile(tilePos, wallTile); // Auto Tiling
 
                     walkableData[new Vector2(pos.x, pos.y)] = false;
+                }
+            }
+
+            GenerateWallDecorations(wallPositions);
+        }
+
+        private void GenerateWallDecorations(HashSet<Vector2Int> wallPositions) {
+            if (decorationTile == null || decorationTilemap == null) {
+                return;
+            }
+
+            foreach (var pos in wallPositions) {
+                // 檢查機率
+                if (Random.value <= decorationProbability) {
+                    Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+                    decorationTilemap.SetTile(tilePos, decorationTile);
                 }
             }
         }

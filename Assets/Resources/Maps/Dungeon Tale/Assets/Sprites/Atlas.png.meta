@@ -181,10 +181,10 @@ TextureImporter:
       name: Floor_A
       rect:
         serializedVersion: 2
-        x: 142
-        y: 62
-        width: 20
-        height: 20
+        x: 144
+        y: 65
+        width: 15
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,10 +203,10 @@ TextureImporter:
       name: Floor_B
       rect:
         serializedVersion: 2
-        x: 174
-        y: 62
-        width: 20
-        height: 20
+        x: 176
+        y: 65
+        width: 15
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,10 +225,10 @@ TextureImporter:
       name: Floor_C
       rect:
         serializedVersion: 2
-        x: 142
-        y: 30
-        width: 20
-        height: 20
+        x: 144
+        y: 33
+        width: 15
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,10 +247,10 @@ TextureImporter:
       name: Floor_D
       rect:
         serializedVersion: 2
-        x: 174
-        y: 30
-        width: 20
-        height: 20
+        x: 176
+        y: 33
+        width: 15
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2756,9 +2756,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 206
-        y: 190
+        y: 192
         width: 20
-        height: 20
+        height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4190,7 +4190,7 @@ TextureImporter:
         width: 9
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4212,7 +4212,7 @@ TextureImporter:
         width: 9
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
