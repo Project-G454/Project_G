@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.Game;
 using Entities;
+using Core.Interfaces;
 
-public class PlayerStateManager : MonoBehaviour {
+public class PlayerStateManager : MonoBehaviour, IManager {
     public static PlayerStateManager Instance { get; private set; }
 
     [SerializeField] private List<GamePlayerState> allPlayers = new List<GamePlayerState>();
@@ -57,4 +58,8 @@ public class PlayerStateManager : MonoBehaviour {
         players.Clear();
         allPlayers.Clear();
     }
+
+    public void Init() { }
+
+    public void Reset() { }
 }
