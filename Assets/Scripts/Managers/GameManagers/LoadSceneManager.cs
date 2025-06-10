@@ -81,6 +81,18 @@ namespace Core.Managers {
             );
         }
 
+        public void LoadWorldMapScene_BattleReward(Action OnConfirm) {
+            if (_globalUIManager == null) Init();
+            _globalUIManager.confirmAlertUI.Show(
+                "Exit",
+                "Return to world map?",
+                () => {
+                    OnConfirm?.Invoke();
+                    _LoadScene("WorldMap");
+                }
+            );
+        }
+
         public void LoadBattleRewardsScene() {
             if (_globalUIManager == null) Init();
             _LoadScene("BattleRewards");

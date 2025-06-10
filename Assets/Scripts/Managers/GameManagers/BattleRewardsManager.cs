@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using Cards.Data;
-using Core.Entities;
 using Core.Game;
 using Core.Interfaces;
-using Core.UI;
-using Entities;
+using Reward;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,6 +55,10 @@ namespace Core.Managers {
         }
 
         private void OnConfirm() {
+            LoadSceneManager.Instance.LoadWorldMapScene_BattleReward(AddCardToDeck);
+        }
+
+        private void AddCardToDeck() {
             for (int i = 0; i < _panels.Count; i++) {
                 var selectedCard = _panels[i].GetSelectedCard();
                 if (selectedCard != null) {
@@ -66,7 +67,6 @@ namespace Core.Managers {
             }
 
             Reset();
-            LoadSceneManager.Instance.LoadWorldMapScene();
         }
 
         private bool AllPlayersPicked() {
