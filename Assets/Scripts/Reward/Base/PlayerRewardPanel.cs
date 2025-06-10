@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Cards.Data;
 using UnityEngine.UI;
-using Reward;
-using Reward.Factories;
 using Core.Game;
+using Reward.Factories;
 
-namespace Core.UI {
+namespace Reward {
     public class PlayerRewardPanel: MonoBehaviour {
         public Transform itemsParent;
         public GameObject cardItemPrefab;

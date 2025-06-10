@@ -4,9 +4,7 @@ using UnityEngine;
 using Entities;
 using Entities.Factories;
 using Core.Interfaces;
-using Effects;
 using Entities.Handlers;
-using Entities.Categories;
 using Entities.Models;
 
 namespace Core.Entities {
