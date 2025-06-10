@@ -1501,10 +1501,10 @@ TextureImporter:
       name: Prop_Candles
       rect:
         serializedVersion: 2
-        x: 253
-        y: 95
-        width: 22
-        height: 29
+        x: 255
+        y: 98
+        width: 19
+        height: 17
       alignment: 9
       pivot: {x: 0.5, y: -0.42105263}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1523,10 +1523,10 @@ TextureImporter:
       name: Prop_Root_K
       rect:
         serializedVersion: 2
-        x: 193
-        y: 119
-        width: 26
-        height: 33
+        x: 198
+        y: 120
+        width: 18
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1546,9 +1546,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 222
-        y: 127
+        y: 130
         width: 26
-        height: 21
+        height: 18
       alignment: 9
       pivot: {x: 0.48676476, y: -0.2873121}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1612,9 +1612,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 190
-        y: 159
+        y: 160
         width: 25
-        height: 25
+        height: 24
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3217,10 +3217,10 @@ TextureImporter:
       name: Prop_TreeC
       rect:
         serializedVersion: 2
-        x: 362
-        y: 366
-        width: 22
-        height: 45
+        x: 363
+        y: 367
+        width: 18
+        height: 38
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3239,10 +3239,10 @@ TextureImporter:
       name: Prop_TreeB
       rect:
         serializedVersion: 2
-        x: 337
-        y: 366
-        width: 22
-        height: 45
+        x: 339
+        y: 367
+        width: 19
+        height: 38
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3261,10 +3261,10 @@ TextureImporter:
       name: Prop_TreeA
       rect:
         serializedVersion: 2
-        x: 314
-        y: 366
-        width: 22
-        height: 45
+        x: 315
+        y: 367
+        width: 20
+        height: 38
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4225,6 +4225,116 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Atlas_0
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 192
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bad83816e02e04cf99fa183d62f53f99
+      internalID: -1247196158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70e90ab0ec85f42fe9ad86f8c59a547a
+      internalID: -1196120033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad2b6719645264aafb502788f10c6114
+      internalID: -4194528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 192
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b169370a41e2433eb8d48f59bdf0f70
+      internalID: 1102314981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_4
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 213
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60dbd87d61bc9437e98df6ded3129e10
+      internalID: 517014675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape:
@@ -4244,6 +4354,11 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Arrow_Shot: 210736301
+      Atlas_0: -1247196158
+      Atlas_1: -1196120033
+      Atlas_2: -4194528
+      Atlas_3: 1102314981
+      Atlas_4: 517014675
       Carpet_A: -1455102901
       Carpet_B: 2080420847
       Carpet_C: 297017320
