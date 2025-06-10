@@ -305,15 +305,12 @@ namespace Core.Managers {
                 new TileBase[totalWidth * totalHeight]
             );
 
-            // 填充整個背景區域
             for (int x = -9; x < totalWidth - 9; x++) {
                 for (int y = -5; y < totalHeight - 5; y++) {
                     Vector3Int tilePos = new Vector3Int(x, y, 0);
                     backgroundTilemap.SetTile(tilePos, backgroundTile);
                 }
             }
-
-            Debug.Log($"背景生成完成：總尺寸 {totalWidth}x{totalHeight}");
         }
 
         private HashSet<Vector2Int> GenerateIrregularRoom(Vector2Int center) {
@@ -556,14 +553,12 @@ namespace Core.Managers {
             Debug.Log($"生成了 {obstaclePositions.Count} 個障礙物，檢查了 {validObstaclePositions.Count} 個有效位置");
         }
 
-        // 檢查某個位置是否適合放置障礙物
         private bool IsValidObstaclePosition(Vector2 centerPos) {
             if (walkableData == null) {
                 Debug.LogError("walkableData 未初始化");
                 return false;
             }
 
-            // 檢查當前位置必須是可行走的地板
             if (!GetTileWalkable(centerPos)) {
                 return false;
             }
@@ -579,13 +574,10 @@ namespace Core.Managers {
             foreach (var offset in nineGridOffsets) {
                 Vector2 checkPos = centerPos + offset;
 
-                // 如果這個位置是牆壁（不可行走且不在地板位置中），則不符合條件
                 if (!GetTileWalkable(checkPos)) {
-                    // 進一步檢查：如果這個位置在 walkableData 中存在且為 false，代表是牆壁
                     if (walkableData.ContainsKey(checkPos) && !walkableData[checkPos]) {
                         return false;
                     }
-                    // 如果這個位置不在 walkableData 中，代表是邊界外的區域，也算作不符合條件
                     if (!walkableData.ContainsKey(checkPos)) {
                         return false;
                     }
