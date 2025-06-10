@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using Cards;
 using Cards.Data;
+using Core.Game;
+using Core.Managers.Deck;
 using Shop.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,9 +22,12 @@ namespace Shop.Items {
             cb.Init(cardObj, card);
         }
 
-        public override void Buy() {
-            // Implement logic to handle the purchase of the card
-            // This could include checking if the player has enough currency, updating inventory, etc.
+        public override bool Buy() {
+            if (!base.Buy()) return false;
+            GamePlayerState player = playerStateManager.GetPlayer(shopManager.playerId);
+            List<int> deck = new List<int>(player.deck) { _cardItem.card.id };
+            playerStateManager.SetDeck(player.playerId, deck);
+            return true;
         }
     }
 }
