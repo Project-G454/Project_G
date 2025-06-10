@@ -5,12 +5,12 @@ using Entities.Models;
 using UnityEngine;
 
 namespace Entities.Handlers {
-    public class CharacterVisualHandler : MonoBehaviour {
+    public class CharacterVisualHandler: MonoBehaviour {
         [SerializeField] private Animator characterAnimator;
 
         // 用於編輯器中設置，也可以動態加載
         [SerializeField] private CharacterVisualSO[] characterVisuals;
-        
+
         private Dictionary<EntityClasses, CharacterVisualSO> _visualsMap;
 
         private void Awake() {
@@ -19,7 +19,7 @@ namespace Entities.Handlers {
 
         private void InitializeVisualsMap() {
             _visualsMap = new Dictionary<EntityClasses, CharacterVisualSO>();
-            
+
             foreach (var visual in characterVisuals) {
                 if (visual != null) {
                     _visualsMap[visual.characterClass] = visual;
@@ -30,11 +30,12 @@ namespace Entities.Handlers {
         public void SetVisual(EntityClasses characterClass) {
             if (_visualsMap.TryGetValue(characterClass, out CharacterVisualSO visual)) {
                 ApplyVisual(visual);
-            } else {
+            }
+            else {
                 Debug.LogWarning($"No visual found for character class: {characterClass}");
             }
         }
-        
+
         public CharacterVisualSO GetVisual(EntityClasses characterClass) {
             if (_visualsMap.TryGetValue(characterClass, out CharacterVisualSO visual)) {
                 return visual;

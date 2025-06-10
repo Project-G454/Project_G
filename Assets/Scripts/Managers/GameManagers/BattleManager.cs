@@ -31,6 +31,7 @@ namespace Core.Managers {
         private HoverUIManager _hoverUIManager;
         private DistanceManager _distanceManager;
         private GlobalUIManager _globalUIManager;
+        private CameraController _cameraController;
         public Entity currentEntity;
         private int _turn;
         private int _round;
@@ -58,11 +59,21 @@ namespace Core.Managers {
             // StartBattle();
         }
 
+        private void _InitCamera() {
+            _cameraController = Camera.main.GetComponent<CameraController>();
+            Vector3Int minPos = _gridManager.backgroundTilemap.cellBounds.min;
+            Vector3Int maxPos = _gridManager.backgroundTilemap.cellBounds.max;
+            _cameraController.minBounds = new Vector2(minPos.x, minPos.y);
+            _cameraController.maxBounds = new Vector2(maxPos.x, maxPos.y);
+        }
+
         public void Init() {
             _InitManagers();
             _InitMap();
             _InitEntities();
+            _InitCamera();
             InitDeckAndEnergy();
+
             this._entityCount = _entityManager.GetEntityList().Count;
             _turn = 0;
             _round = 1;
@@ -162,7 +173,7 @@ namespace Core.Managers {
                     _round++;
                     currentEntity = null;
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
-                    // yield return InitTurnOrder();
+                    yield return InitTurnOrder();
                 }
 
                 NextPlayer();
@@ -181,9 +192,9 @@ namespace Core.Managers {
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
 
-                ResetAll();
-                LoadSceneManager.Instance.LoadBattleRewardsScene();
-                yield break;
+                // ResetAll();
+                // LoadSceneManager.Instance.LoadBattleRewardsScene();
+                // yield break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();
@@ -205,7 +216,8 @@ namespace Core.Managers {
             _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
             
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
-            _cameraManager.SnapCameraTo(entityObject);
+            // _cameraManager.SnapCameraTo(entityObject);
+            _cameraController.target = entityObject.transform;
             
             HoverUIManager.Instance.Show(currentEntity);
 
@@ -226,7 +238,7 @@ namespace Core.Managers {
             Dictionary<int, int> points = new();
             foreach (int id in _orderedIds) {
                 GameObject entityObj = _entityManager.GetEntityObject(id);
-                _cameraManager.SnapCameraTo(entityObj);
+                _cameraController.target = entityObj.transform;
 
                 Entity entity = _entityManager.GetEntity(id);
                 if (entity.IsDead()) {

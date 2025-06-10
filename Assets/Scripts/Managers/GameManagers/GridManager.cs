@@ -17,20 +17,37 @@ namespace Core.Managers {
         [Header("Tilemap Setting")]
         [SerializeField] private Tilemap floorTilemap;
         [SerializeField] private Tilemap wallTilemap;
-        [SerializeField] private List<TileBase> floorTiles;
-        [SerializeField] private TileBase wallTile;
+        [SerializeField] private Tilemap decorationTilemap;
+        [SerializeField] private Tilemap obstacleTilemap;
+        [SerializeField] private RuleTile floorTile;
+        [SerializeField] private RuleTile wallTile;
+        [SerializeField] private RuleTile decorationTile;
+        [SerializeField] private RuleTile obstacleTile;
         [SerializeField] private TilemapHighlightManager _highlightManager;
+        [SerializeField] private float decorationProbability = 0.3f;
+        [SerializeField] private float obstacleProbability = 0.15f;
+
+        [Header("BackGround Setting")]
+        [SerializeField] public Tilemap backgroundTilemap;
+        [SerializeField] private RuleTile backgroundTile;
 
         [Header("Random Room")]
         [SerializeField] private int _iterations = 10;
         [SerializeField] private int _walkLength = 10;
         [SerializeField] private int _boundaryOffset = 1;
 
+        [Header("Wall Optimization")]
+        [SerializeField] private int _wallThickness = 2;
+
         public Transform map;
         private Transform _cam;
 
         // private Dictionary<Vector2, Tile> tiles;
         private Dictionary<Vector2, bool> walkableData;
+        private HashSet<Vector2> obstaclePositions;
+
+        public int totalWidth => _width + 18;
+        public int totalHeight => _height + 10;
 
         public int width => _width;
         public int height => _height;
@@ -45,8 +62,21 @@ namespace Core.Managers {
             this._cam = Camera.main.transform;
         }
 
+        // void Start() {
+        //     // GenerateGrid();
+        // }
+
         void Start() {
-            // GenerateGrid();
+            // // 設置 Tilemap 的 Sorting Layer
+            // if (floorTilemap != null) {
+            //     floorTilemap.GetComponent<TilemapRenderer>().sortingLayerName = "Floor";
+            //     floorTilemap.GetComponent<TilemapRenderer>().sortingOrder = 0;
+            // }
+
+            // if (wallTilemap != null) {
+            //     wallTilemap.GetComponent<TilemapRenderer>().sortingLayerName = "Walls";
+            //     wallTilemap.GetComponent<TilemapRenderer>().sortingOrder = 0;
+            // }
         }
 
         public List<Vector3> GetSpawnPositions(int count) {
@@ -254,11 +284,33 @@ namespace Core.Managers {
         public void GenerateGrid() {
             walkableData = new Dictionary<Vector2, bool>();
 
+            GenerateBackground();
             Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
             HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
             CreateTilesFromFloorPositions(floorPositions); // 視覺化
+            GenerateObstacles(floorPositions);
 
             _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        }
+
+        private void GenerateBackground() {
+            if (backgroundTilemap == null || backgroundTile == null) {
+                Debug.LogWarning("背景 Tilemap 或 Tile 未設置");
+                return;
+            }
+
+            // 清空背景層
+            backgroundTilemap.SetTilesBlock(
+                new BoundsInt(0, 0, 0, totalWidth, totalHeight, 1),
+                new TileBase[totalWidth * totalHeight]
+            );
+
+            for (int x = -9; x < totalWidth - 9; x++) {
+                for (int y = -5; y < totalHeight - 5; y++) {
+                    Vector3Int tilePos = new Vector3Int(x, y, 0);
+                    backgroundTilemap.SetTile(tilePos, backgroundTile);
+                }
+            }
         }
 
         private HashSet<Vector2Int> GenerateIrregularRoom(Vector2Int center) {
@@ -274,6 +326,30 @@ namespace Core.Managers {
             return floorPositions;
         }
 
+        // private HashSet<Vector2Int> RunRandomWalk(Vector2Int startPosition) {
+        //     var currentPosition = startPosition;
+        //     HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+        //     floorPositions.Add(currentPosition);
+
+        //     for (int i = 0; i < _iterations; i++) {
+        //         var path = SimpleRandomWalk(currentPosition, _walkLength);
+        //         floorPositions.UnionWith(path);
+
+        //         if (floorPositions.Count > 0) {
+        //             if (Random.value < 0.3f && floorPositions.Count > 10) {
+        //                 // 30% 機率回到較早的位置
+        //                 var earlyPositions = floorPositions.Take(floorPositions.Count / 2).ToList();
+        //                 currentPosition = earlyPositions[Random.Range(0, earlyPositions.Count)];
+        //             }
+        //             else {
+        //                 currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+        //             }
+        //         }
+        //     }
+
+        //     return floorPositions;
+        // }
+
         private HashSet<Vector2Int> RunRandomWalk(Vector2Int startPosition) {
             var currentPosition = startPosition;
             HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
@@ -284,12 +360,99 @@ namespace Core.Managers {
                 floorPositions.UnionWith(path);
 
                 if (floorPositions.Count > 0) {
-                    currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                    currentPosition = ChooseSmartStartPosition(floorPositions);
                 }
             }
 
             return floorPositions;
         }
+
+        private Vector2Int ChooseSmartStartPosition(HashSet<Vector2Int> floorPositions) {
+            Vector2 centroid = CalculateCentroid(floorPositions);
+
+            float randomValue = Random.value;
+
+            if (randomValue < 0.5f) {
+                return GetNearCentroidPosition(floorPositions, centroid);
+            }
+            else if (randomValue < 0.8f) {
+                return GetMainBodyEdgePosition(floorPositions, centroid);
+            }
+            else {
+                return floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+            }
+        }
+
+        // 計算中心點
+        private Vector2 CalculateCentroid(HashSet<Vector2Int> positions) {
+            if (positions.Count == 0) return Vector2.zero;
+
+            float sumX = 0, sumY = 0;
+            foreach (var pos in positions) {
+                sumX += pos.x;
+                sumY += pos.y;
+            }
+
+            return new Vector2(sumX / positions.Count, sumY / positions.Count);
+        }
+
+        private Vector2Int GetNearCentroidPosition(HashSet<Vector2Int> floorPositions, Vector2 centroid) {
+            var nearPositions = floorPositions
+                .OrderBy(pos => Vector2.Distance(pos, centroid))
+                .Take(Mathf.Min(10, floorPositions.Count))
+                .ToList();
+
+            return nearPositions[Random.Range(0, nearPositions.Count)];
+        }
+
+        private Vector2Int GetMainBodyEdgePosition(HashSet<Vector2Int> floorPositions, Vector2 centroid) {
+            // 定義主體區域（距離質心較近的75%區域）
+            var sortedByDistance = floorPositions
+                .OrderBy(pos => Vector2.Distance(pos, centroid))
+                .ToList();
+
+            int mainBodyCount = Mathf.RoundToInt(sortedByDistance.Count * 0.75f);
+            var mainBodyPositions = new HashSet<Vector2Int>(sortedByDistance.Take(mainBodyCount));
+
+            // 找出主體區域的邊緣位置
+            var edgePositions = GetEdgePositions(mainBodyPositions);
+
+            if (edgePositions.Count > 0) {
+                return edgePositions[Random.Range(0, edgePositions.Count)];
+            }
+            else {
+                // 如果沒有邊緣位置，回到中心點策略
+                return GetNearCentroidPosition(floorPositions, centroid);
+            }
+        }
+
+        private List<Vector2Int> GetEdgePositions(HashSet<Vector2Int> floorPositions) {
+            List<Vector2Int> edgePositions = new List<Vector2Int>();
+
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1),  // 上
+                new Vector2Int(1, 0),  // 右
+                new Vector2Int(0, -1), // 下
+                new Vector2Int(-1, 0)  // 左
+            };
+
+            foreach (var pos in floorPositions) {
+                bool isEdge = false;
+                foreach (var dir in directions) {
+                    var neighbor = pos + dir;
+                    if (!floorPositions.Contains(neighbor)) {
+                        isEdge = true;
+                        break;
+                    }
+                }
+                if (isEdge) {
+                    edgePositions.Add(pos);
+                }
+            }
+
+            return edgePositions;
+        }
+
 
         private HashSet<Vector2Int> SimpleRandomWalk(Vector2Int startPosition, int walkLength) {
             HashSet<Vector2Int> path = new HashSet<Vector2Int>();
@@ -315,55 +478,227 @@ namespace Core.Managers {
         }
 
         private void CreateTilesFromFloorPositions(HashSet<Vector2Int> floorPositions) {
-
             floorTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
-            wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, height, 1), new TileBase[_width * _height]);
+            wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            if (decorationTilemap != null) {
+                decorationTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
+            }
 
             foreach (var pos in floorPositions) {
                 Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
-
-                TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
-                floorTilemap.SetTile(tilePos, selectedFloorTile);
+                floorTilemap.SetTile(tilePos, floorTile); // Auto Tiling
 
                 walkableData[new Vector2(pos.x, pos.y)] = true;
             }
 
-            HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
+            HashSet<Vector2Int> wallPositions;
+            wallPositions = FindWallPositions(floorPositions, _wallThickness);
+
             foreach (var pos in wallPositions) {
                 if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
                     Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
 
-                    TileBase selectedFloorTile = floorTiles[Random.Range(0, floorTiles.Count)];
-                    floorTilemap.SetTile(tilePos, selectedFloorTile);
-
-                    wallTilemap.SetTile(tilePos, wallTile);
+                    floorTilemap.SetTile(tilePos, floorTile);
+                    wallTilemap.SetTile(tilePos, wallTile); // Auto Tiling
 
                     walkableData[new Vector2(pos.x, pos.y)] = false;
                 }
             }
+
+            GenerateWallDecorations(wallPositions);
         }
 
-        private HashSet<Vector2Int> FindWallPositions(HashSet<Vector2Int> floorPositions) {
-            HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
+        private void GenerateObstacles(HashSet<Vector2Int> floorPositions) {
+            if (obstacleTile == null || obstacleTilemap == null) {
+                return;
+            }
 
-            List<Vector2Int> directions = new List<Vector2Int>
-            {
-                new Vector2Int(0, 1),  // 上
-                new Vector2Int(1, 0),  // 右
-                new Vector2Int(0, -1), // 下
-                new Vector2Int(-1, 0)  // 左
-            };
+            if (floorPositions == null || floorPositions.Count == 0) {
+                return;
+            }
 
-            foreach (var pos in floorPositions) {
-                foreach (var dir in directions) {
-                    var neighborPos = pos + dir;
-                    if (!floorPositions.Contains(neighborPos)) {
-                        wallPositions.Add(neighborPos);
+            if (walkableData == null) {
+                return;
+            }
+
+            if (obstaclePositions == null) {
+                obstaclePositions = new HashSet<Vector2>();
+            }
+
+            List<Vector2> validObstaclePositions = new List<Vector2>();
+
+            foreach (var floorPos in floorPositions) {
+                Vector2 pos = new Vector2(floorPos.x, floorPos.y);
+
+                if (IsValidObstaclePosition(pos)) {
+                    validObstaclePositions.Add(pos);
+                }
+            }
+
+            foreach (var pos in validObstaclePositions) {
+                if (Random.value <= obstacleProbability) {
+                    try {
+                        Vector3Int tilePos = new Vector3Int((int)pos.x, (int)pos.y, 0);
+                        obstacleTilemap.SetTile(tilePos, obstacleTile);
+
+                        walkableData[pos] = false;
+                        obstaclePositions.Add(pos);
+                    }
+                    catch (System.Exception e) {
+                        Debug.LogError($"生成障礙物時發生錯誤，位置: {pos}, 錯誤: {e.Message}");
                     }
                 }
             }
 
+            Debug.Log($"生成了 {obstaclePositions.Count} 個障礙物，檢查了 {validObstaclePositions.Count} 個有效位置");
+        }
+
+        private bool IsValidObstaclePosition(Vector2 centerPos) {
+            if (walkableData == null) {
+                Debug.LogError("walkableData 未初始化");
+                return false;
+            }
+
+            if (!GetTileWalkable(centerPos)) {
+                return false;
+            }
+
+            // 九宮格的相對位置偏移
+            List<Vector2> nineGridOffsets = new List<Vector2> {
+                new Vector2(-1, -1), new Vector2(0, -1), new Vector2(1, -1),  // 下排
+                new Vector2(-1,  0), new Vector2(0,  0), new Vector2(1,  0),  // 中排
+                new Vector2(-1,  1), new Vector2(0,  1), new Vector2(1,  1)   // 上排
+            };
+
+            // 檢查九宮格內是否都沒有牆壁
+            foreach (var offset in nineGridOffsets) {
+                Vector2 checkPos = centerPos + offset;
+
+                if (!GetTileWalkable(checkPos)) {
+                    if (walkableData.ContainsKey(checkPos) && !walkableData[checkPos]) {
+                        return false;
+                    }
+                    if (!walkableData.ContainsKey(checkPos)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // 新增方法：檢查某個位置是否有障礙物
+        public bool HasObstacle(Vector2 pos) {
+            return obstaclePositions != null && obstaclePositions.Contains(pos);
+        }
+
+        // 新增方法：移除障礙物
+        public void RemoveObstacle(Vector2 pos) {
+            if (obstaclePositions != null && obstaclePositions.Contains(pos)) {
+                Vector3Int tilePos = new Vector3Int((int)pos.x, (int)pos.y, 0);
+                if (obstacleTilemap != null) {
+                    obstacleTilemap.SetTile(tilePos, null);
+                }
+                obstaclePositions.Remove(pos);
+                walkableData[pos] = true; // 恢復可行走狀態
+            }
+        }
+
+        // 新增方法：添加障礙物
+        public void AddObstacle(Vector2 pos) {
+            if (GetTileWalkable(pos) && !HasObstacle(pos)) {
+                Vector3Int tilePos = new Vector3Int((int)pos.x, (int)pos.y, 0);
+                if (obstacleTilemap != null && obstacleTile != null) {
+                    obstacleTilemap.SetTile(tilePos, obstacleTile);
+                }
+                if (obstaclePositions == null) {
+                    obstaclePositions = new HashSet<Vector2>();
+                }
+                obstaclePositions.Add(pos);
+                walkableData[pos] = false; // 設為不可行走
+            }
+        }
+
+        private void GenerateWallDecorations(HashSet<Vector2Int> wallPositions) {
+            if (decorationTile == null || decorationTilemap == null) {
+                return;
+            }
+
+            foreach (var pos in wallPositions) {
+                // 檢查機率
+                if (Random.value <= decorationProbability) {
+                    Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+                    decorationTilemap.SetTile(tilePos, decorationTile);
+                }
+            }
+        }
+
+        private HashSet<Vector2Int> FindWallPositions(HashSet<Vector2Int> floorPositions, int thickness) {
+            HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
+
+            // 先找到所有邊界位置
+            HashSet<Vector2Int> boundaries = FindBoundaryPositions(floorPositions);
+
+            // 對每個邊界位置向外擴展指定厚度
+            foreach (var boundary in boundaries) {
+                for (int layer = 1; layer <= thickness; layer++) {
+                    var expandedPositions = ExpandPositionByLayer(boundary, layer, floorPositions);
+                    wallPositions.UnionWith(expandedPositions);
+                }
+            }
+
             return wallPositions;
+        }
+
+        private HashSet<Vector2Int> FindBoundaryPositions(HashSet<Vector2Int> floorPositions) {
+            HashSet<Vector2Int> boundaries = new HashSet<Vector2Int>();
+
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1), new Vector2Int(1, 0),
+                new Vector2Int(0, -1), new Vector2Int(-1, 0)
+            };
+
+            foreach (var pos in floorPositions) {
+                bool isBoundary = false;
+                foreach (var dir in directions) {
+                    var neighbor = pos + dir;
+                    if (!floorPositions.Contains(neighbor)) {
+                        isBoundary = true;
+                        break;
+                    }
+                }
+
+                if (isBoundary) {
+                    boundaries.Add(pos);
+                }
+            }
+
+            return boundaries;
+        }
+
+        private HashSet<Vector2Int> ExpandPositionByLayer(Vector2Int center, int layer, HashSet<Vector2Int> floorPositions) {
+            HashSet<Vector2Int> expanded = new HashSet<Vector2Int>();
+
+            // 8方向擴展
+            List<Vector2Int> directions = new List<Vector2Int> {
+                new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1), new Vector2Int(-1, 0),
+                new Vector2Int(1, 1), new Vector2Int(-1, 1), new Vector2Int(1, -1), new Vector2Int(-1, -1)
+            };
+
+            for (int x = -layer; x <= layer; x++) {
+                for (int y = -layer; y <= layer; y++) {
+                    if (Mathf.Abs(x) == layer || Mathf.Abs(y) == layer) {
+                        var pos = center + new Vector2Int(x, y);
+
+                        // 只有在不是地板的位置才加入牆壁
+                        if (!floorPositions.Contains(pos)) {
+                            expanded.Add(pos);
+                        }
+                    }
+                }
+            }
+
+            return expanded;
         }
 
         public bool GetTileWalkable(Vector2 pos) {
@@ -409,13 +744,6 @@ namespace Core.Managers {
             walkableData[pos] = walkable;
         }
 
-        // public void SetTileWalkable(Vector2 pos, bool walkable) {
-        //     var tile = GetTileAtPosition(pos);
-        //     if (tile != null) {
-        //         tile.SetWalkable(walkable);
-        //     }
-        // }
-
         public Vector2 WorldToGridPosition(Vector3 worldPosition) {
             int x = Mathf.RoundToInt(worldPosition.x);
             int y = Mathf.RoundToInt(worldPosition.y);
@@ -435,17 +763,6 @@ namespace Core.Managers {
                 wallTilemap.SetTilesBlock(new BoundsInt(0, 0, 0, _width, _height, 1), new TileBase[_width * _height]);
             }
         }
-
-        // public void ClearGrid() {
-        //     if (tiles != null) {
-        //         foreach (var tile in tiles.Values) {
-        //             if (tile != null) {
-        //                 Destroy(tile.gameObject);
-        //             }
-        //         }
-        //         tiles.Clear();
-        //     }
-        // }
 
         public void SetTileHighlight(Vector2 pos, bool active, bool needWalkable = true) {
             if (_highlightManager != null) {
