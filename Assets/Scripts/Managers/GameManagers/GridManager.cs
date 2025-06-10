@@ -28,7 +28,7 @@ namespace Core.Managers {
         [SerializeField] private float obstacleProbability = 0.15f;
 
         [Header("BackGround Setting")]
-        [SerializeField] private Tilemap backgroundTilemap;
+        [SerializeField] public Tilemap backgroundTilemap;
         [SerializeField] private RuleTile backgroundTile;
 
         [Header("Random Room")]

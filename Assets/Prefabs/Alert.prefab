@@ -424,8 +424,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1-1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 45081f5474f1b9640bd0275b285d4908, type: 2}
+  m_sharedMaterial: {fileID: -6152995415149091905, guid: 45081f5474f1b9640bd0275b285d4908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -574,8 +575,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "A formidable foe awaits. \nThis fight will test your limits."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a6fc5ace83772b746b1c68d10a624d7c, type: 2}
-  m_sharedMaterial: {fileID: 6561693641756977767, guid: a6fc5ace83772b746b1c68d10a624d7c,
+  m_fontAsset: {fileID: 11400000, guid: 2e9c3618bb8b3a14bb3f4dc1f5f332eb, type: 2}
+  m_sharedMaterial: {fileID: -1851622316224512336, guid: 2e9c3618bb8b3a14bb3f4dc1f5f332eb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -851,8 +852,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Battle
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 45081f5474f1b9640bd0275b285d4908, type: 2}
+  m_sharedMaterial: {fileID: -6152995415149091905, guid: 45081f5474f1b9640bd0275b285d4908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -914,7 +916,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -253.8617, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
