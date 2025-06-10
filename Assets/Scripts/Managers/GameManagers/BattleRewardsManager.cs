@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using Cards.Data;
 using Core.Entities;
-using Core.Helpers;
+using Core.Game;
 using Core.Interfaces;
-using Core.Managers;
 using Core.UI;
 using Entities;
 using UnityEngine;
@@ -13,13 +11,12 @@ using UnityEngine.UI;
 namespace Core.Managers {
     class BattleRewardsManager: MonoBehaviour, IManager, IEntryManager {
         public static BattleRewardsManager Instance { get; private set; }
-        private DescriptionManager _descriptionManager;
         public GameObject playerRewardPanelPrefab;
         public Transform panelContainer;
         public Button confirmButton; // 顯示等待其他人完成
 
         private List<PlayerRewardPanel> _panels = new();
-        private List<Entity> _players;
+        private List<GamePlayerState> _players;
 
         private void Awake() {
             Instance = this;
@@ -34,15 +31,14 @@ namespace Core.Managers {
         }
 
         public void Entry() {
-            _descriptionManager = ManagerHelper.RequireManager(DescriptionManager.Instance);
-            List<Entity> Players = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER);
+            List<GamePlayerState> Players = PlayerStateManager.Instance.GetAllPlayer();
             ShowRewards(Players);
         }
 
         public void Init() {
         }
 
-        public void ShowRewards(List<Entity> players) {
+        public void ShowRewards(List<GamePlayerState> players) {
             _players = players;
             foreach (Transform child in panelContainer) Destroy(child.gameObject);
             _panels.Clear();
@@ -57,12 +53,7 @@ namespace Core.Managers {
             confirmButton.interactable = false;
         }
 
-        private void OnPickedCard(PlayerRewardPanel panel, CardData cardData) {
-            var playerIndex = _panels.IndexOf(panel);
-            if (playerIndex >= 0 && cardData != null) {
-                _players[playerIndex].deckManager.deck.Add(cardData.id);
-            }
-
+        private void OnPickedCard() {
             confirmButton.interactable = AllPlayersPicked();
         }
 
@@ -70,7 +61,7 @@ namespace Core.Managers {
             for (int i = 0; i < _panels.Count; i++) {
                 var selectedCard = _panels[i].GetSelectedCard();
                 if (selectedCard != null) {
-                    _players[i].deckManager.deck.Add(selectedCard.id);
+                    _players[i].deck.Add(selectedCard.cardData.id);
                 }
             }
 
