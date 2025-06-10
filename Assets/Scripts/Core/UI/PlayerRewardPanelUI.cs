@@ -1,34 +1,25 @@
-// PlayerRewardPanel.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Cards.Data;
-using Entities.Categories;
-using Entities;
-using Shop.Models;
-using Core.Loaders.Shop;
-using Shop.Items;
-using Reward;
-using Core.Loaders.Cards;
 using UnityEngine.UI;
+using Reward;
+using Reward.Factories;
+using Core.Game;
 
 namespace Core.UI {
     public class PlayerRewardPanel: MonoBehaviour {
         public Transform itemsParent;
         public GameObject cardItemPrefab;
-        //public TextMeshProUGUI playerNameText;
         public Image avatar;
         public Button skipButton;
-        //public TextMeshProUGUI pickStatusText;
-
-        private CardData _selectedCard = null;
+        private RewardCard _selectedCard;
         private bool _isSkip = false;
-        private Action<PlayerRewardPanel, CardData> _onPickedCardCallBack;
+        private Action _onPickedCardCallBack;
         private bool _hasPicked = false;
+        private List<RewardCard> _cardOptions = new();
 
-        public void Setup(Entity player, Action<PlayerRewardPanel, CardData> onPickedCardCallBack) {
-            //playerNameText.text = player.entityName;
+        public void Setup(GamePlayerState player, Action onPickedCardCallBack) {
             avatar.sprite = player.avatar;
             _onPickedCardCallBack = onPickedCardCallBack;
 
@@ -36,7 +27,9 @@ namespace Core.UI {
                 Destroy(child.gameObject);
 
             for (int i = 0; i < 3; i++) {
-                var slot = CreateCardItem();
+                var slot = RewardCardFactory.CreateRewardCard(cardItemPrefab, itemsParent, OnCardSelected);
+                var RewardCard = slot.GetComponent<RewardCard>();
+                _cardOptions.Add(RewardCard);
             }
 
             skipButton.onClick.RemoveAllListeners();
@@ -44,17 +37,7 @@ namespace Core.UI {
             _hasPicked = false;
         }
 
-        public GameObject CreateCardItem() {
-            List<CardData> dataList = CardDataLoader.LoadAll();
-            CardData data = dataList[UnityEngine.Random.Range(0, dataList.Count)];
-
-            GameObject newItem = Instantiate(cardItemPrefab, itemsParent);
-            RewardCard item = newItem.GetComponent<RewardCard>();
-            item.Init(data, OnCardSelected);
-            return newItem;
-        }
-
-        private void OnCardSelected(CardData selectedCard) {
+        private void OnCardSelected(RewardCard selectedCard) {
             if (_selectedCard == selectedCard) {
                 _hasPicked = false;
             }
@@ -62,27 +45,29 @@ namespace Core.UI {
                 _hasPicked = true;
                 _selectedCard = selectedCard;
                 _isSkip = false;
-                UpdateCardHighlight();
+                UpdateCardsHighlight();
             }
 
-            _onPickedCardCallBack?.Invoke(this, _selectedCard);
+            _onPickedCardCallBack?.Invoke();
         }
 
         private void OnSkipSelected() {
             _hasPicked = true;
             _selectedCard = null;
             _isSkip = true;
-            UpdateCardHighlight();
+            UpdateCardsHighlight();
 
-            _onPickedCardCallBack?.Invoke(this, _selectedCard);
+            _onPickedCardCallBack?.Invoke();
         }
 
-        private void UpdateCardHighlight() {
-
+        private void UpdateCardsHighlight() {
+            foreach (var card in _cardOptions) {
+                card.AnimateFocus(_selectedCard == card);
+            }
         }
 
         public bool HasPicked() => _hasPicked;
 
-        public CardData GetSelectedCard() => _isSkip ? null : _selectedCard;
+        public RewardCard GetSelectedCard() => _isSkip ? null : _selectedCard;
     }
 }

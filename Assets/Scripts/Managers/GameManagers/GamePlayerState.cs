@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using Entities;
 using Entities.Factories;
+using UnityEngine;
 
 namespace Core.Game {
     [System.Serializable]
     public class GamePlayerState {
         public int playerId;
         public string playerName;
+        public Sprite avatar;
         public EntityClasses entityClass;
         public List<int> deck = new List<int>();
         public int hp = 100;

@@ -51,6 +51,10 @@ namespace Core.Entities {
             SetupCharacterVisual(newEntity, entityData.entityClass);
 
             entity.avatar = CaptureHeadSetFromEntity(newEntity);
+            var playerState = PlayerStateManager.Instance.GetPlayer(id);
+            if (playerState != null) {
+                playerState.avatar = entity.avatar;
+            }
 
             RegisterEntity(entity, newEntity);
             return entity;
