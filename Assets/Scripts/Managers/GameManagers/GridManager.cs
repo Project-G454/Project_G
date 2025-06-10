@@ -27,6 +27,10 @@ namespace Core.Managers {
         [SerializeField] private float decorationProbability = 0.3f;
         [SerializeField] private float obstacleProbability = 0.15f;
 
+        [Header("BackGround Setting")]
+        [SerializeField] private Tilemap backgroundTilemap;
+        [SerializeField] private RuleTile backgroundTile;
+
         [Header("Random Room")]
         [SerializeField] private int _iterations = 10;
         [SerializeField] private int _walkLength = 10;
@@ -41,6 +45,9 @@ namespace Core.Managers {
         // private Dictionary<Vector2, Tile> tiles;
         private Dictionary<Vector2, bool> walkableData;
         private HashSet<Vector2> obstaclePositions;
+
+        public int totalWidth => _width + 18;
+        public int totalHeight => _height + 10;
 
         public int width => _width;
         public int height => _height;
@@ -277,12 +284,36 @@ namespace Core.Managers {
         public void GenerateGrid() {
             walkableData = new Dictionary<Vector2, bool>();
 
+            GenerateBackground();
             Vector2Int roomCenter = new Vector2Int(_width / 2, _height / 2);
             HashSet<Vector2Int> floorPositions = GenerateIrregularRoom(roomCenter); // 設定所有座標
             CreateTilesFromFloorPositions(floorPositions); // 視覺化
             GenerateObstacles(floorPositions);
 
             _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        }
+
+        private void GenerateBackground() {
+            if (backgroundTilemap == null || backgroundTile == null) {
+                Debug.LogWarning("背景 Tilemap 或 Tile 未設置");
+                return;
+            }
+
+            // 清空背景層
+            backgroundTilemap.SetTilesBlock(
+                new BoundsInt(0, 0, 0, totalWidth, totalHeight, 1),
+                new TileBase[totalWidth * totalHeight]
+            );
+
+            // 填充整個背景區域
+            for (int x = -9; x < totalWidth - 9; x++) {
+                for (int y = -5; y < totalHeight - 5; y++) {
+                    Vector3Int tilePos = new Vector3Int(x, y, 0);
+                    backgroundTilemap.SetTile(tilePos, backgroundTile);
+                }
+            }
+
+            Debug.Log($"背景生成完成：總尺寸 {totalWidth}x{totalHeight}");
         }
 
         private HashSet<Vector2Int> GenerateIrregularRoom(Vector2Int center) {
