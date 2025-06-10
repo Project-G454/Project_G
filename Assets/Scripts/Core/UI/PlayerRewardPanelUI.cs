@@ -12,6 +12,7 @@ using Shop.Items;
 using Reward;
 using Core.Loaders.Cards;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Core.UI {
     public class PlayerRewardPanel: MonoBehaviour {
@@ -26,6 +27,7 @@ namespace Core.UI {
         private bool _isSkip = false;
         private Action<PlayerRewardPanel, CardData> _onPickedCardCallBack;
         private bool _hasPicked = false;
+        private List<RewardCard> _cardOptions = new();
 
         public void Setup(Entity player, Action<PlayerRewardPanel, CardData> onPickedCardCallBack) {
             //playerNameText.text = player.entityName;
@@ -51,6 +53,7 @@ namespace Core.UI {
             GameObject newItem = Instantiate(cardItemPrefab, itemsParent);
             RewardCard item = newItem.GetComponent<RewardCard>();
             item.Init(data, OnCardSelected);
+            _cardOptions.Add(item);
             return newItem;
         }
 
@@ -62,7 +65,7 @@ namespace Core.UI {
                 _hasPicked = true;
                 _selectedCard = selectedCard;
                 _isSkip = false;
-                UpdateCardHighlight();
+                UpdateCardsHighlight();
             }
 
             _onPickedCardCallBack?.Invoke(this, _selectedCard);
@@ -72,13 +75,15 @@ namespace Core.UI {
             _hasPicked = true;
             _selectedCard = null;
             _isSkip = true;
-            UpdateCardHighlight();
+            UpdateCardsHighlight();
 
             _onPickedCardCallBack?.Invoke(this, _selectedCard);
         }
 
-        private void UpdateCardHighlight() {
-
+        private void UpdateCardsHighlight() {
+            foreach (var card in _cardOptions) {
+                card.AnimateFocus(_selectedCard == card.cardData);
+            }
         }
 
         public bool HasPicked() => _hasPicked;

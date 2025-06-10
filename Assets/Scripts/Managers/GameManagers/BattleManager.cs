@@ -165,12 +165,6 @@ namespace Core.Managers {
                     // yield return InitTurnOrder();
                 }
 
-
-                // ResetAll();
-                // LoadSceneManager.Instance.LoadBattleRewardsScene();
-                // yield break;
-
-
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
 
@@ -186,6 +180,10 @@ namespace Core.Managers {
                     _cardManager.StartTurn();
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
+
+                ResetAll();
+                LoadSceneManager.Instance.LoadBattleRewardsScene();
+                yield break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();

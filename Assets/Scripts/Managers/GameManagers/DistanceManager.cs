@@ -31,13 +31,7 @@ namespace Core.Managers {
         }
 
         void Awake() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         public void ShowReachableTiles(Vector2Int origin) {

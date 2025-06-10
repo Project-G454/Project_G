@@ -604,7 +604,6 @@ MonoBehaviour:
   cardItemPrefab: {fileID: 7814738435404281997, guid: bafe9d7422659eb4e86aeecc66673aaf,
     type: 3}
   avatar: {fileID: 1718880852260727105}
-  cardButtons: []
   skipButton: {fileID: 8464544091664402239}
 --- !u!1 &8628719139049043934
 GameObject:
