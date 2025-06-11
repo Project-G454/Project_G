@@ -191,7 +191,7 @@ namespace Core.Managers {
                     _cardManager.StartTurn();
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
-
+                break;
                 // ResetAll();
                 // LoadSceneManager.Instance.LoadBattleRewardsScene();
                 // yield break;

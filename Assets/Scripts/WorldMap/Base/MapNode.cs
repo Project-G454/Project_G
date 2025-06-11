@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Core.Helpers;
 using Core.Managers;
 using Core.Managers.WorldMap;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using WorldMap.Animations;
 using WorldMap.Models;
 
@@ -20,6 +23,7 @@ namespace WorldMap {
         public bool isLocked = true;
         public bool isVisited = false;
         public bool isTail = false;
+        [SerializeField] public UnityEvent onClick;
 
         public MapNode(MapNodeData data, int id, Vector2 pos) {
             this.data = data;
@@ -68,6 +72,9 @@ namespace WorldMap {
         }
 
         public void OnMouseUp() {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+                
             if (this.isLocked || this.isVisited) {
                 if (this.animator) {
                     animator.Shake();
@@ -79,10 +86,10 @@ namespace WorldMap {
                 return;
             }
 
+            onClick?.Invoke();
+
             WorldMapManager.Instance.currentNodeId = this.id;
             WorldMapManager.Instance.currentStage = this.stage;
-            Debug.Log($"Current node set to {this.id} at {this.stage}");
-
             WorldMapManager.Instance.SaveCameraState();
 
             switch (this.data.nodeType) {

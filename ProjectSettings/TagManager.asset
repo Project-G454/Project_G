@@ -1,3 +1,66 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2b327e1240b5bd8b1ad17c88b255a5ade0e9d430f0911b12b7414c24fcd8a72c
-size 836
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Bouncing Wall
+  - Card Receiver
+  - Card Active UI
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Dice
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Layer 1
+  - Layer 2
+  - Layer 3
+  - 
+  - 
+  - 
+  - HeadCapture
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 2425651459
+    locked: 0
+  - name: Highlight
+    uniqueID: 3034434503
+    locked: 0
+  - name: Characters
+    uniqueID: 4250941897
+    locked: 0
+  - name: Walls
+    uniqueID: 4189426099
+    locked: 0
+  - name: Effects
+    uniqueID: 2422609915
+    locked: 0
+  - name: UI
+    uniqueID: 638209629
+    locked: 0
+  m_RenderingLayers:
+  - Default

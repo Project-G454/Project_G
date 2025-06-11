@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4564038942306588283}
   - component: {fileID: 2936801219796688888}
   - component: {fileID: 5787925722445467727}
+  - component: {fileID: 1667543352451182130}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -51,12 +52,29 @@ MonoBehaviour:
   data: {fileID: 0}
   id: 0
   position: {x: 0, y: 0}
+  stage: 0
   connectedNodes: []
   prevNodes: []
   view: {fileID: 0}
   animator: {fileID: 0}
   isLocked: 0
   isVisited: 0
+  isTail: 0
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1667543352451182130}
+        m_TargetAssemblyTypeName: Core.Handlers.SoundHandler, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4564038942306588283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +150,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconObj: {fileID: 6551557093109763570}
+--- !u!114 &1667543352451182130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3954074867361827616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: b21b36013262c70479906e8acceaa9b1, type: 3}
+  type: 1
 --- !u!1 &6551557093109763570
 GameObject:
   m_ObjectHideFlags: 0
