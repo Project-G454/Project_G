@@ -3,6 +3,7 @@ using Cards.Helpers;
 using Core.Managers.Cards;
 using Systems.Interactions;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Cards.Handlers {

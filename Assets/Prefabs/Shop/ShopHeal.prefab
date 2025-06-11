@@ -280,8 +280,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sold Out!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 45081f5474f1b9640bd0275b285d4908, type: 2}
+  m_sharedMaterial: {fileID: -6152995415149091905, guid: 45081f5474f1b9640bd0275b285d4908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -887,19 +888,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6932936022618094436}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6475818196537898357}
-        m_TargetAssemblyTypeName: Core.Handlers.SoundHandler, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2472320138644319895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,8 +927,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
-  type: 1
+  hoverFX:
+  - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
 --- !u!1 &9077259781872859558
 GameObject:
   m_ObjectHideFlags: 0

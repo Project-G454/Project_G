@@ -23,7 +23,6 @@ namespace WorldMap {
         public bool isLocked = true;
         public bool isVisited = false;
         public bool isTail = false;
-        [SerializeField] public UnityEvent onClick;
 
         public MapNode(MapNodeData data, int id, Vector2 pos) {
             this.data = data;
@@ -85,8 +84,6 @@ namespace WorldMap {
                 }
                 return;
             }
-
-            onClick?.Invoke();
 
             WorldMapManager.Instance.currentNodeId = this.id;
             WorldMapManager.Instance.currentStage = this.stage;

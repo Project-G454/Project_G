@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 5718351911315881381}
   - component: {fileID: 550390974296077762}
   - component: {fileID: 8683692268921891439}
+  - component: {fileID: 6221049099476790579}
   m_Layer: 5
   m_Name: Card_v2
   m_TagString: Untagged
@@ -275,6 +276,25 @@ MonoBehaviour:
   effectPrefab: {fileID: 5725098359846840625, guid: c7ec03fdf72f2c5438612ef97d9cb4ba,
     type: 3}
   effectParent: {fileID: 6543308284761739438}
+--- !u!114 &6221049099476790579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428684987215517972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverFX:
+  - {fileID: 8300000, guid: e887a73e96556664fa80f79ed66e1731, type: 3}
+  clickFX: []
+  dragFX:
+  - {fileID: 8300000, guid: 2c6cae490d60eb34482848e1a76dd85c, type: 3}
+  releaseFX:
+  - {fileID: 8300000, guid: 137dcdf9f777ecb4495c1978666616eb, type: 3}
 --- !u!1 &1732965530300630708
 GameObject:
   m_ObjectHideFlags: 0

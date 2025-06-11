@@ -60,21 +60,6 @@ MonoBehaviour:
   isLocked: 0
   isVisited: 0
   isTail: 0
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1667543352451182130}
-        m_TargetAssemblyTypeName: Core.Handlers.SoundHandler, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &4564038942306588283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: b21b36013262c70479906e8acceaa9b1, type: 3}
-  type: 1
+  hoverFX:
+  - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 59b94578038ebf74a9b428601bf4270d, type: 3}
 --- !u!1 &6551557093109763570
 GameObject:
   m_ObjectHideFlags: 0
