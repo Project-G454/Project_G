@@ -470,6 +470,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
   clickFX:
   - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
+  dragFX: []
+  releaseFX: []
 --- !u!1 &5452315502793897646
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,6 +982,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -63.03334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221049099476790579, guid: 2b16d6bee8e09714c8548826ca2131d6,
+        type: 3}
+      propertyPath: hoverFX.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6543308284761739438, guid: 2b16d6bee8e09714c8548826ca2131d6,
         type: 3}

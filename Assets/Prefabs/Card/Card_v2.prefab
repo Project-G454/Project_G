@@ -291,10 +291,9 @@ MonoBehaviour:
   hoverFX:
   - {fileID: 8300000, guid: e887a73e96556664fa80f79ed66e1731, type: 3}
   clickFX: []
-  dragFX:
-  - {fileID: 8300000, guid: 2c6cae490d60eb34482848e1a76dd85c, type: 3}
+  dragFX: []
   releaseFX:
-  - {fileID: 8300000, guid: 137dcdf9f777ecb4495c1978666616eb, type: 3}
+  - {fileID: 8300000, guid: 2c6cae490d60eb34482848e1a76dd85c, type: 3}
 --- !u!1 &1732965530300630708
 GameObject:
   m_ObjectHideFlags: 0
