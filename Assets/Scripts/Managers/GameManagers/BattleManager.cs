@@ -231,7 +231,6 @@ namespace Core.Managers {
             _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
             
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
-            // _cameraManager.SnapCameraTo(entityObject);
             _cameraController.target = entityObject.transform;
             
             HoverUIManager.Instance.Show(currentEntity);
