@@ -75,7 +75,7 @@ MonoBehaviour:
   icon: {fileID: 2718272692879435716}
   lockedColor: {r: 0.53333336, g: 0.53333336, b: 0.53333336, a: 1}
   unlockColor: {r: 1, g: 1, b: 1, a: 1}
-  resolvedColor: {r: 0, g: 0.8962264, b: 0.09271318, a: 1}
+  resolvedColor: {r: 0.23137255, g: 0.8117647, b: 0.29411766, a: 1}
 --- !u!61 &2936801219796688888
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -151,6 +151,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
   clickFX:
   - {fileID: 8300000, guid: 59b94578038ebf74a9b428601bf4270d, type: 3}
+  dragFX: []
+  releaseFX: []
 --- !u!1 &6551557093109763570
 GameObject:
   m_ObjectHideFlags: 0

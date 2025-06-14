@@ -4,16 +4,18 @@ using DG.Tweening;
 using Shop.Models;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Shop.Items {
-    public abstract class ShopItem: MonoBehaviour {
+    public abstract class ShopItem: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         public ShopItemState state = ShopItemState.Available;
         public Button buyButton;
         public TMP_Text btnText;
         public GameObject soldOutPanel;
         protected ShopManager shopManager;
         protected PlayerStateManager playerStateManager;
+        private Vector3 _oriScale;
 
         public abstract ShopItemSO item { get; }
 
@@ -22,6 +24,7 @@ namespace Shop.Items {
             playerStateManager = PlayerStateManager.Instance;
             btnText.text = item.price.ToString();
             soldOutPanel.SetActive(false);
+            _oriScale = transform.localScale;
             CheckState();
         }
 
@@ -79,5 +82,12 @@ namespace Shop.Items {
             flipSeq.Append(rt.DOScaleX(1f, duration / 2).SetEase(Ease.InOutQuad));
         }
 
+        public void OnPointerEnter(PointerEventData eventData) {
+            transform.DOScale(_oriScale*1.1f, 0.3f);
+        }
+
+        public void OnPointerExit(PointerEventData eventData) {
+            transform.DOScale(_oriScale, 0.3f);
+        }
     }
 }
