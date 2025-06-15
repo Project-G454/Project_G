@@ -49,7 +49,7 @@ namespace Core.Managers {
         private void _SetEndAction() {
             Action action;
             if (_endedPlayerCount == _playerStateManager.GetAllPlayer().Count - 1) {
-                action = _loadSceneManager.LoadWorldMapScene;
+                action = () => _loadSceneManager.LoadWorldMapScene(true);
             }
             else action = () => _isPlayerEnd = true;
             worldMapBtn.onClick.RemoveAllListeners();

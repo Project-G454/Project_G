@@ -193,7 +193,7 @@ namespace Core.Managers {
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
 
-                // break;
+                break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();

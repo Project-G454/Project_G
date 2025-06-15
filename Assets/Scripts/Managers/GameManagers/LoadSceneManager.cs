@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Core.Handlers;
 using Core.Interfaces;
 using Core.Managers.WorldMap;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Core.Managers {
         private AsyncOperation _asyncOperation;
         private GlobalUIManager _globalUIManager;
         private string _loadingSceneName;
+        public TransitionHandler transHandler;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -36,9 +38,28 @@ namespace Core.Managers {
 
         private void _LoadScene(string sceneName) {
             _loadingSceneName = sceneName;
+            if (transHandler != null) {
+                StartCoroutine(_LoadWithTransition(sceneName));
+            }
+            else _NormalLoad(sceneName);
+        }
+
+        private IEnumerator _LoadWithTransition(string sceneName) {
+            yield return StartCoroutine(transHandler.StartTransition());
             _asyncOperation = SceneManager.LoadSceneAsync(sceneName);
             _asyncOperation.allowSceneActivation = true;
+            _RunEntry(sceneName);
+            yield return new WaitUntil(() => _asyncOperation.isDone);
+            yield return StartCoroutine(transHandler.EndTransition());
+        }
 
+        private void _NormalLoad(string sceneName) {
+            _asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+            _asyncOperation.allowSceneActivation = true;
+            _RunEntry(sceneName);
+        }
+
+        private void _RunEntry(string sceneName) {
             _asyncOperation.completed += _ => {
                 switch (sceneName) {
                     case "WorldMap":
@@ -72,7 +93,11 @@ namespace Core.Managers {
             );
         }
 
-        public void LoadWorldMapScene() {
+        public void LoadWorldMapScene(bool showAlert = true) {
+            if (!showAlert) {
+                _LoadScene("WorldMap");
+                return;
+            }
             if (_globalUIManager == null) Init();
             _globalUIManager.confirmAlertUI.Show(
                 "Exit",
