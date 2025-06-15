@@ -23,6 +23,7 @@ namespace Shop.Items {
             shopManager = ShopManager.Instance;
             playerStateManager = PlayerStateManager.Instance;
             btnText.text = item.price.ToString();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(btnText.rectTransform);
             soldOutPanel.SetActive(false);
             _oriScale = transform.localScale;
             CheckState();

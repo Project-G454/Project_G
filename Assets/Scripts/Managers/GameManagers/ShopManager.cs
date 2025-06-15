@@ -66,7 +66,7 @@ namespace Core.Managers {
             GamePlayerState playerData = _playerStateManager.GetPlayer(playerId);
 
             goldText.text = playerData.gold.ToString();
-            goldText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(goldText.rectTransform);
 
             foreach (var itemObj in items) {
                 ShopItem item = itemObj.GetComponent<ShopItem>();
