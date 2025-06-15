@@ -14,14 +14,14 @@ namespace Core.Handlers {
             if (_animator == null) yield break;
             _animator.runtimeAnimatorController = anim;
             _animator.SetTrigger("Start");
-            yield return new WaitForSeconds(anim.animationClips[0].length);
+            yield return new WaitForSeconds(anim.animationClips[0].length + 0.2f);
         }
 
         public IEnumerator EndTransition() {
             if (_animator == null) yield break;
             _animator.runtimeAnimatorController = anim;
             _animator.SetTrigger("End");
-            yield return new WaitForSeconds(anim.animationClips[0].length);
+            yield return new WaitForSeconds(anim.animationClips[0].length + 0.2f);
         }
     }
 }
