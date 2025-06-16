@@ -84,10 +84,15 @@ namespace Shop.Items {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
+            if (state != ShopItemState.Available) {
+                transform.DOScale(_oriScale, 0.3f);
+                return;
+            }
             transform.DOScale(_oriScale*1.1f, 0.3f);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
+            if (state != ShopItemState.Available) return;
             transform.DOScale(_oriScale, 0.3f);
         }
     }
