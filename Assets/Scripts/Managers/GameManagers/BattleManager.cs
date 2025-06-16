@@ -168,7 +168,7 @@ namespace Core.Managers {
                     currentEntity = null;
                     _SetEntitiesShadow();
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
-                    yield return InitTurnOrder();
+                    // yield return InitTurnOrder();
                 }
 
                 NextPlayer();
@@ -250,10 +250,9 @@ namespace Core.Managers {
 
             _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
-            Debug.Log(currentEntity.entityId);
 
             _turn++;
-            Debug.Log($"Turn: Entity_{currentEntity.entityId}");
+            Debug.Log($"--------- Turn: Entity_{currentEntity.entityId} ---------");
         }
 
         public void AddTurnOreder(int entityId) {

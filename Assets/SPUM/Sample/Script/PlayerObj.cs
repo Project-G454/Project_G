@@ -28,7 +28,6 @@ public class PlayerObj : MonoBehaviour
         _prefabs.OverrideControllerInit();
         foreach (PlayerState state in Enum.GetValues(typeof(PlayerState)))
         {
-            Debug.Log("Set state");
             IndexPair[state] = 0;
         }
     }

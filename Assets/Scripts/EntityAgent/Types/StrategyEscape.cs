@@ -12,6 +12,7 @@ namespace Agents.Strategies {
     class StrategyEscape: AgentStrategy {
         public override bool Execute(EntityAgent agent) {
             base.Execute(agent);
+            agent.endMoving = false;
             Entity player = _FindNearestPlayer();
             if (player == null) return false;
             Vector2 targetPos = _FindBestEscapePosition(5);
@@ -20,7 +21,10 @@ namespace Agents.Strategies {
                 _agent.canMove = false;
                 return false;
             }
-            MapManager.Instance.MoveTo(bestPos);
+            MapManager.Instance.MoveTo(bestPos, () => {
+                agent.endMoving = true;
+                Debug.Log("Agent moving end");
+            });
             if (bestPos == (Vector2)agent.transform.position) {
                 _agent.canMove = false;
                 return false;
