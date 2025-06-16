@@ -112,22 +112,25 @@ namespace WorldMap {
 
         private List<EntityData> SetEntities() {
             List<EntityData> entityDatas = new();
-            entityDatas.Add(new EntityData(
-                100,
-                "Enemy1",
-                EntityTypes.ENEMY,
-                EntityClasses.WIZARD
-            ));
+            int count = 1;
+            for (int i = 0; i < Math.Max(2, stage % 3); i++) {
+                entityDatas.Add(new EntityData(
+                    UnityEngine.Random.Range(10, 20),
+                    $"Enemy{count++}",
+                    EntityTypes.ENEMY,
+                    (EntityClasses)UnityEngine.Random.Range(1, 5)
+                ));
+            }
             return entityDatas;
         }
 
         private List<EntityData> SetBossEntities() {
             List<EntityData> entityDatas = new();
             entityDatas.Add(new EntityData(
-                100,
-                "Enemy1",
+                600,
+                "Boss",
                 EntityTypes.ENEMY,
-                EntityClasses.WIZARD
+                EntityClasses.Boss
             ));
             return entityDatas;
         }

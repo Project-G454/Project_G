@@ -6,18 +6,19 @@ using UnityEngine;
 
 namespace Agents.Strategies {
     class StrategyHeal: AgentStrategy {
-        public override void Execute(EntityAgent agent) {
+        public override bool Execute(EntityAgent agent) {
             base.Execute(agent);
             this.isCardAnimationEnd = false;
 
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
-            if (cardBehaviours.Count == 0) return;
+            if (cardBehaviours.Count == 0) return false;
             int cardIdx = Random.Range(0, cardBehaviours.Count);
             CardBehaviour cardBehaviour = cardBehaviours[cardIdx];
             Debug.Log($"Agent selected {cardBehaviour.card.cardName}");
 
             // use card
             base._UseCard(cardBehaviour, agent.entity.entityId);
+            return true;
         }
 
         private List<CardBehaviour> _GetUsableCards() {

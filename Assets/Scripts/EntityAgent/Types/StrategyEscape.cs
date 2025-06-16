@@ -10,16 +10,22 @@ using UnityEngine;
 
 namespace Agents.Strategies {
     class StrategyEscape: AgentStrategy {
-        public override void Execute(EntityAgent agent) {
+        public override bool Execute(EntityAgent agent) {
             base.Execute(agent);
             Entity player = _FindNearestPlayer();
-            if (player == null) return;
+            if (player == null) return false;
             Vector2 targetPos = _FindBestEscapePosition(5);
             Vector2 bestPos = base._FindBestPosition(targetPos, 5);
+            if (!CanMoveTo(bestPos)) {
+                _agent.canMove = false;
+                return false;
+            }
             MapManager.Instance.MoveTo(bestPos);
             if (bestPos == (Vector2)agent.transform.position) {
                 _agent.canMove = false;
+                return false;
             }
+            return true;
         }
 
         // --- helper functions ---

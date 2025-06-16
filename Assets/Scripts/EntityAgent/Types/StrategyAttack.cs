@@ -8,25 +8,26 @@ using UnityEngine;
 
 namespace Agents.Strategies {
     class StrategyAttack: AgentStrategy {
-        public override void Execute(EntityAgent agent) {
+        public override bool Execute(EntityAgent agent) {
             base.Execute(agent);
             this.isCardAnimationEnd = false;
 
             // pick a card
             List<CardBehaviour> cardBehaviours = _GetUsableCards();
-            if (cardBehaviours.Count == 0) return;
+            if (cardBehaviours.Count == 0) return false;
             int cardIdx = Random.Range(0, cardBehaviours.Count);
             CardBehaviour cardBehaviour = cardBehaviours[cardIdx];
 
             // choose a target
             List<int> targetIds = _GetReachableEntityIds(cardBehaviour.card.range);
             Debug.Log(targetIds.ToString());
-            if (targetIds.Count == 0) return;
+            if (targetIds.Count == 0) return false;
             int targetIdx = Random.Range(0, targetIds.Count);
             int targetId = targetIds[targetIdx];
 
             // use card
             base._UseCard(cardBehaviour, targetId);
+            return true;
         }
 
         // --- helper functions ---

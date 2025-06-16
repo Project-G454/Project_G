@@ -7,14 +7,16 @@ using Core.Managers;
 using Core.Managers.Cards;
 using Entities;
 using UnityEngine;
+using Entities.Handlers;
 
 namespace Agents {
     public abstract class AgentStrategy {
         protected EntityAgent _agent;
         public bool isCardAnimationEnd = true;
 
-        public virtual void Execute(EntityAgent agent) {
+        public virtual bool Execute(EntityAgent agent) {
             _agent = agent;
+            return true;
         }
 
         protected Entity _FindNearestPlayer() {
@@ -33,7 +35,6 @@ namespace Agents {
         }
 
         protected void _UseCard(CardBehaviour cardBehaviour, int targetId) {
-            Debug.Log($"Agent use the card: {cardBehaviour.card.cardName}");
             if (CardManager.Instance.UseCard(cardBehaviour, targetId, () => { isCardAnimationEnd = true; })) {
                 cardBehaviour.DestroySelf();
             }
@@ -41,7 +42,6 @@ namespace Agents {
 
         protected Vector2 _FindBestPosition(Vector2 targetPos, int maxDistance) {
             Vector2 agentPos = _agent.transform.position;
-            Debug.Log($"AgentPos: {agentPos}, TargetPos: {targetPos}");
 
             Queue<Vector2> q = new();
             HashSet<Vector2> visited = new();
@@ -112,6 +112,12 @@ namespace Agents {
 
             Debug.DrawLine(pos - up, pos + up, color, duration);
             Debug.DrawLine(pos - right, pos + right, color, duration);
+        }
+
+        protected bool CanMoveTo(Vector2 to) {
+            GameObject currObj = EntityManager.Instance.GetEntityObject(_agent.entity.entityId);
+            MoveHandler moveHandler = currObj.GetComponent<MoveHandler>();
+            return moveHandler.CanReachPosition(to);
         }
     }
 }

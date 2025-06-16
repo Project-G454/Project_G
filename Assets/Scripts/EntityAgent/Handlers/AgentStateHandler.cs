@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace Agents.Handlers {
     public class AgentStateHandler : MonoBehaviour {
-        private AgentState _currentState = AgentState.Waiting;
-        private AgentAction _agentAction = AgentAction.End;
-        private EntityAgent _agent;
-        private bool _active = false;
-        private bool _acting = false;
+        [SerializeField] private AgentState _currentState = AgentState.Waiting;
+        [SerializeField] private AgentAction _agentAction = AgentAction.End;
+        [SerializeField] private EntityAgent _agent;
+        [SerializeField] private bool _active = false;
+        [SerializeField] private bool _acting = false;
         private static readonly AgentAction[] _actionsWithCardAnimation = {
             AgentAction.Attack,
             AgentAction.Heal
@@ -62,7 +62,9 @@ namespace Agents.Handlers {
         private void _HandlePlanning() {
             _agentAction = _agent.DecisionStrategy();
 
+            Debug.Log($"Executing strategy: {_agentAction}");
             if (!_agent.CanUseStrategy(_agentAction)) {
+                Debug.Log("Agent can not use strategy...");
                 _agentAction = AgentAction.End;
             }
             _ChangeState(AgentState.Acting);
@@ -70,8 +72,9 @@ namespace Agents.Handlers {
 
         private void _HandleActing() {
             if (!_acting) {
-                _agent.ExecuteStrategy(_agentAction);
-                _acting = true;
+                _acting = _agent.ExecuteStrategy(_agentAction);
+                if (!_acting) _ChangeState(AgentState.Waiting);
+                Debug.Log("Done.");
             }
 
             if (_IsMovingEnd() && _IsCardAnimationEnd()) {

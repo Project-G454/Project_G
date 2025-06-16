@@ -56,7 +56,7 @@ namespace Agents {
                 return AgentAction.Attack;
             }
             else if (LowHP(0.5f)) {
-                if (HasReachablePlayer(ESCAPE_RANGE) && canMove) return AgentAction.Escape;
+                if (HasReachablePlayer(ESCAPE_RANGE)) return AgentAction.Escape;
                 else if (IsHealCardUsable()) return AgentAction.Heal;
                 else {
                     Debug.Log("Can not use Heal Card");
@@ -74,7 +74,7 @@ namespace Agents {
             }
         }
 
-        public void ExecuteStrategy(AgentAction action) {
+        public bool ExecuteStrategy(AgentAction action) {
             switch (action) {
                 case AgentAction.Move:
                     strategy = new StrategyMove();
@@ -96,7 +96,12 @@ namespace Agents {
                     strategy = new StrategyEnd();
                     break;
             }
-            strategy?.Execute(this);
+            bool success = strategy?.Execute(this) ?? false;
+            if (!success) {
+                strategy = new StrategyEnd();
+                strategy.Execute(this);
+            }
+            return success;
         }
 
         // --- Helper functions ---
@@ -127,7 +132,7 @@ namespace Agents {
                     if (!IsHealCardUsable()) return false;
                     break;
                 case AgentAction.Move:
-                    if (!HasResource()) return false;
+                    if (!HasResource() || !canMove) return false;
                     break;
                 case AgentAction.Escape:
                     if (!HasResource() || !canMove) return false;
@@ -174,7 +179,7 @@ namespace Agents {
             foreach (GameObject cardObj in CardManager.cardList) {
                 CardBehaviour cardBehaviour = cardObj.GetComponent<CardBehaviour>();
                 Card card = cardBehaviour.card;
-                if (AgentCardHelper.IsSummonCard(card) &&CanUseCard(card)) return true;
+                if (AgentCardHelper.IsSummonCard(card) && CanUseCard(card)) return true;
             }
             return false;
         }

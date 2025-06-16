@@ -165,6 +165,7 @@ namespace Core.Managers {
                     _turn = 0;
                     _round++;
                     currentEntity = null;
+                    _SetEntitiesShadow();
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
                     yield return InitTurnOrder();
                 }
@@ -212,9 +213,13 @@ namespace Core.Managers {
                     EntityTypes.ENEMY => new Color(255, 0, 0, 0.5f),
                     _ => new Color(100, 100, 100, 0.5f)
                 };
-                if (entity.entityId == currentEntity.entityId && currentEntity.type == EntityTypes.PLAYER) {
-                    color = new Color(255, 202, 0, 0.5f);
-                }
+
+                if (
+                    currentEntity != null &&
+                    entity.entityId == currentEntity.entityId &&
+                    currentEntity.type == EntityTypes.PLAYER
+                ) color = new Color(255, 202, 0, 0.5f);
+
                 entityController.SetShadowColor(color);
             }
         }
@@ -257,6 +262,7 @@ namespace Core.Managers {
             foreach (int id in _orderedIds) {
                 GameObject entityObj = _entityManager.GetEntityObject(id);
                 _cameraController.target = entityObj.transform;
+                _cameraController.isFollowing = true;
 
                 Entity entity = _entityManager.GetEntity(id);
                 if (entity.IsDead()) {

@@ -164,8 +164,8 @@ namespace Core.Managers {
                     Debug.Log($"{player.playerName} 回復了 {actualHealAmount} 點血量");
                 }
             }
-
-            // node.Resolve();
+            
+            WorldMapManager.Instance.Entry();
         }
     }
 }

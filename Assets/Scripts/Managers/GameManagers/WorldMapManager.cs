@@ -47,12 +47,14 @@ namespace Core.Managers.WorldMap {
 
         public void Entry() {
             if (!isInit) {
+                Debug.Log("Init worldmap");
                 nodes = MapGenerator.Generate(7, 15, 6);
 
                 PlayerStateManager.Instance.AddPlayer(0, "Player1", EntityClasses.WARRIOR, 100);
                 PlayerStateManager.Instance.AddPlayer(1, "Player2", EntityClasses.RANGER, 100);
                 PlayerStateManager.Instance.AddPlayer(2, "Player3", EntityClasses.ROGUE, 100);
             }
+            
             if (currentNodeId > 0) resovedNodeIds.Add(currentNodeId);
             LoadCameraState();
             map = GenerateMap(nodes);
@@ -81,7 +83,6 @@ namespace Core.Managers.WorldMap {
                     newNode.id != currentNodeId ||
                     _disabledNodeIds.Contains(newNode.id)
                 ) {
-                    Debug.Log($"ID: {newNode.id}, {newNode.stage} == {currentStage}, {newNode.id} != {currentNodeId}");
                     _disabledNodeIds.Add(newNode.id);
                     _disabledNodes.Add(newNode);
                 }
