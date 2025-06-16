@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3829444766389373441}
   - component: {fileID: 187589422796871881}
   - component: {fileID: 7985878988118585537}
+  - component: {fileID: 3619755215233762242}
   m_Layer: 5
   m_Name: RewardCard
   m_TagString: Untagged
@@ -92,6 +93,27 @@ MonoBehaviour:
   _layout: {fileID: 7550229687413540909}
   cardData: {fileID: 0}
   cardObj: {fileID: 6364712345794475303}
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3619755215233762242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814738435404281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverFX:
+  - {fileID: 8300000, guid: e887a73e96556664fa80f79ed66e1731, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 2c6cae490d60eb34482848e1a76dd85c, type: 3}
+  dragFX: []
+  releaseFX: []
 --- !u!1001 &6748360991913372723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,6 +401,7 @@ PrefabInstance:
     - {fileID: 550390974296077762, guid: 2b16d6bee8e09714c8548826ca2131d6, type: 3}
     - {fileID: 5718351911315881381, guid: 2b16d6bee8e09714c8548826ca2131d6, type: 3}
     - {fileID: 2097500870327942497, guid: 2b16d6bee8e09714c8548826ca2131d6, type: 3}
+    - {fileID: 6221049099476790579, guid: 2b16d6bee8e09714c8548826ca2131d6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

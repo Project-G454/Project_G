@@ -173,11 +173,12 @@ namespace Core.Managers {
                     _round++;
                     currentEntity = null;
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
-                    yield return InitTurnOrder();
+                    // yield return InitTurnOrder();
                 }
 
                 NextPlayer();
                 if (currentEntity.IsDead()) continue;
+                _SetEntitiesShadow();
 
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();
@@ -192,9 +193,7 @@ namespace Core.Managers {
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
 
-                // ResetAll();
-                // LoadSceneManager.Instance.LoadBattleRewardsScene();
-                // yield break;
+                break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();
@@ -208,6 +207,22 @@ namespace Core.Managers {
             yield break;
         }
 
+        private void _SetEntitiesShadow() {
+            foreach (var entity in _entityManager.GetEntityList()) {
+                GameObject entityObj = _entityManager.GetEntityObject(entity.entityId);
+                SPUM_Prefabs entityController = entityObj.GetComponentInChildren<SPUM_Prefabs>();
+                Color color = entity.type switch {
+                    EntityTypes.PLAYER => new Color(0, 0, 255, 0.5f),
+                    EntityTypes.ENEMY => new Color(255, 0, 0, 0.5f),
+                    _ => new Color(100, 100, 100, 0.5f)
+                };
+                if (entity.entityId == currentEntity.entityId && currentEntity.type == EntityTypes.PLAYER) {
+                    color = new Color(255, 202, 0, 0.5f);
+                }
+                entityController.SetShadowColor(color);
+            }
+        }
+
         public void NextPlayer() {
             DistanceManager.Instance.ClearHighlights();
             
@@ -216,7 +231,6 @@ namespace Core.Managers {
             _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
             
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
-            // _cameraManager.SnapCameraTo(entityObject);
             _cameraController.target = entityObject.transform;
             
             HoverUIManager.Instance.Show(currentEntity);

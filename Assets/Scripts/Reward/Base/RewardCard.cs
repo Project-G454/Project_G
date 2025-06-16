@@ -4,6 +4,7 @@ using Cards.Data;
 using Core.Managers;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Reward {
@@ -13,6 +14,7 @@ namespace Reward {
         private Card _card;
         public GameObject cardObj;
         private Action<RewardCard> _onCardSelectedCallBack;
+        public UnityEvent onClick;
 
         public void Init(CardData data, Action<RewardCard> onCardSelectedCallBack) {
             cardData = data;
@@ -27,6 +29,7 @@ namespace Reward {
         public void OnPointerClick(PointerEventData eventData) {
             if (eventData.button == PointerEventData.InputButton.Left) {
                 _onCardSelectedCallBack?.Invoke(this);
+                onClick?.Invoke();
             }
             else if (eventData.button == PointerEventData.InputButton.Right) {
                 GlobalUIManager.Instance.cardActiveUI.Show(_card);
