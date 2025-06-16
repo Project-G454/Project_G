@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Corrosive Touch
   description: Apply Poison for 5 turns
   desctiptionIds: 01000000
-  classes: 00000000
+  classes: 03000000
   rarity: 2
   cost: 1
   range: 3

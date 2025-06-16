@@ -25,7 +25,7 @@ namespace Reward {
                 Destroy(child.gameObject);
 
             for (int i = 0; i < 3; i++) {
-                var slot = RewardCardFactory.CreateRewardCard(cardItemPrefab, itemsParent, OnCardSelected);
+                var slot = RewardCardFactory.CreateRewardCard(player.entityClass, cardItemPrefab, itemsParent, OnCardSelected);
                 var RewardCard = slot.GetComponent<RewardCard>();
                 _cardOptions.Add(RewardCard);
             }

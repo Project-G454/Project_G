@@ -9,20 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Whirlwind Combo
+  m_Script: {fileID: 11500000, guid: fcca2c04a0177cc4b84fb6b8d9a67401, type: 3}
+  m_Name: Summon Minions
   m_EditorClassIdentifier: 
-  id: 3
-  cardName: Whirlwind Combo
-  description: 'Deal 8 damage
-
-    x3 hits'
+  id: 21
+  cardName: Summon Minions
+  description: Summon 2 Minions
   desctiptionIds: 
-  classes: 01000000
-  rarity: 3
-  cost: 1
-  range: 3
-  partical: 2
-  damage: 8
-  effects: []
-  attackTimes: 3
+  classes: 00000000
+  rarity: 4
+  cost: 0
+  range: 0
+  partical: 0
+  summonAmount: 2

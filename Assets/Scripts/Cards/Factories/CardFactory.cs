@@ -26,6 +26,9 @@ namespace Cards.Factories {
                 case CardTypes.HEAL:
                     card = new HealCard(cardData as HealCardData);
                     break;
+                case CardTypes.SUMMON:
+                    card = new SummonCard(cardData as SummonCardData);
+                    break;
                 default:
                     break;
             }

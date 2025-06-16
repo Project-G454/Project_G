@@ -21,7 +21,9 @@ namespace Entities.Factories
             { EntityClasses.WARRIOR, new ClassInfo(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, 100) },
             { EntityClasses.RANGER,  new ClassInfo(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, 80)  },
             { EntityClasses.ROGUE,   new ClassInfo(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, 70)  },
-            { EntityClasses.WIZARD,  new ClassInfo(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, 60)  }
+            { EntityClasses.WIZARD,  new ClassInfo(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, 60)  },
+            { EntityClasses.Boss,  new ClassInfo(new List<int> { 21 }, 300)  },
+            { EntityClasses.Minion,  new ClassInfo(new List<int> { 1 }, 20)  }
         };
 
 

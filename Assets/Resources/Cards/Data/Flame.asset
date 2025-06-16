@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Flame
   description: "Deal 20 damage \nthen apply Burn"
   desctiptionIds: 02000000
-  classes: 00000000
+  classes: 02000000
   rarity: 1
   cost: 1
   range: 3

@@ -10,7 +10,9 @@ namespace Entities {
         WARRIOR,
         RANGER,
         ROGUE,
-        WIZARD
+        WIZARD,
+        Boss,
+        Minion
     }
 
     public enum MoveState {
