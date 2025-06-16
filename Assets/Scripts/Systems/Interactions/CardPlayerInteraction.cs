@@ -34,6 +34,7 @@ namespace Systems.Interactions
             for (int i = 0; i < summonAmount; i++) {
                 entityDatas.Add(new EntityData(
                     20,
+                    20,
                     "Minion",
                     EntityTypes.ENEMY,
                     EntityClasses.Minion

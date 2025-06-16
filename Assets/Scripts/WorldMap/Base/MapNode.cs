@@ -114,6 +114,7 @@ namespace WorldMap {
             List<EntityData> entityDatas = new();
             entityDatas.Add(new EntityData(
                 100,
+                100,
                 "Enemy1",
                 EntityTypes.ENEMY,
                 EntityClasses.WIZARD
@@ -124,6 +125,7 @@ namespace WorldMap {
         private List<EntityData> SetBossEntities() {
             List<EntityData> entityDatas = new();
             entityDatas.Add(new EntityData(
+                100,
                 100,
                 "Enemy1",
                 EntityTypes.ENEMY,

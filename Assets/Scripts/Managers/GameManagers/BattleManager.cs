@@ -136,7 +136,8 @@ namespace Core.Managers {
             foreach (GamePlayerState player in players) {
                 _entityDatas.Add(new PlayerData(
                     player.playerId,
-                    player.hp,
+                    player.maxHp,
+                    player.currentHp,
                     player.playerName,
                     EntityTypes.PLAYER,
                     player.entityClass
@@ -195,7 +196,12 @@ namespace Core.Managers {
 
             ResetAll();
             if (_allEnemiesDead) {
-                LoadSceneManager.Instance.LoadBattleRewardsScene();
+                if (EntityManager.Instance.GetEntitiesByType(EntityTypes.ENEMY).Any(e => e.entityClass == EntityClasses.Boss)) {
+                    LoadSceneManager.Instance.LoadVictoryScene();
+                }
+                else {
+                    LoadSceneManager.Instance.LoadBattleRewardsScene();
+                }
             }
             else {
                 LoadSceneManager.Instance.LoadGameOverScene();
@@ -287,8 +293,14 @@ namespace Core.Managers {
         }
         
         private void CheckWinOrLose() {
-            _allEnemiesDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.ENEMY).All(p => p.IsDead());
-            _allPlayersDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER).All(p => p.IsDead());
+            _allEnemiesDead = EntityManager.Instance
+                .GetEntitiesByType(EntityTypes.ENEMY)
+                .Where(p => p.entityClass != EntityClasses.Minion)
+                .All(p => p.IsDead());
+
+            _allPlayersDead = EntityManager.Instance
+                .GetEntitiesByType(EntityTypes.PLAYER)
+                .All(p => p.IsDead());
 
             if (_allEnemiesDead) {
                 Debug.Log("🎉 Victory!");

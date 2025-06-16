@@ -7,11 +7,12 @@ namespace Entities {
         public int playerId = -1;
         public PlayerData(
             int playerId,
-            int maxHealth,
+            int maxHp,
+            int currentHp,
             string entityName,
             EntityTypes type,
             EntityClasses entityClass
-        ) : base(maxHealth, entityName, type, entityClass) {
+        ) : base(maxHp, currentHp, entityName, type, entityClass) {
             this.playerId = playerId;
         }
     }

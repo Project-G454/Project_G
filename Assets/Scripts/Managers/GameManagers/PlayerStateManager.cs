@@ -38,7 +38,7 @@ public class PlayerStateManager : MonoBehaviour, IManager {
 
     public void ModifyHP(int id, int delta) {
         if (players.ContainsKey(id)) {
-            players[id].hp += delta;
+            players[id].currentHp += delta;
         }
     }
 

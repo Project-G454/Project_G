@@ -48,8 +48,8 @@ namespace Entities {
             this.entityId = id;
             this.entityName = entityData.entityName;
             this.type = entityData.type;
-            this.maxHp = entityData.maxHealth;
-            this.currentHp = entityData.maxHealth;
+            this.maxHp = entityData.maxHp;
+            this.currentHp = entityData.currentHp;
             this.entityClass = entityData.entityClass;
             this.entityData = entityData;
         }
