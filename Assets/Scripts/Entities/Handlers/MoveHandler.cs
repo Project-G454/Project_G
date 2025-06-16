@@ -20,6 +20,7 @@ namespace Entities.Handlers {
         private Vector2 _nextPosition;
         private Vector2 _currentGridPosition;
         private PlayerObj _SPUMScript;
+        private Action onMoveEnd;
 
         void Init() {
             _gridManager = GridManager.Instance;
@@ -79,16 +80,19 @@ namespace Entities.Handlers {
                 // tile.SetHighlight(false, false);
                 _SPUMScript.SetState(PlayerState.IDLE);
                 endMoving = true;
+                onMoveEnd?.Invoke();
+                onMoveEnd = null;
             }
         }
 
         // 移動到指定格子（使用改進的曼哈頓算法）
-        public void MoveToPosition(Vector2 targetPosition) {
+        public void MoveToPosition(Vector2 targetPosition, Action onComplete = null) {
             // 檢查目標位置是否可行走
             if (!_gridManager.GetTileWalkable(targetPosition))
                 return;
 
             Vector2 currentPosition = transform.position; //目前座標
+            this.onMoveEnd += onComplete;
 
             Vector2 _dirVec = targetPosition - (Vector2)transform.position;
             Vector2 _dirMVec = _dirVec.normalized;

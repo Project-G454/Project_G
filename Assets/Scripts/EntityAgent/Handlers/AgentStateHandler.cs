@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Agents.Data;
 using Core.Managers.Cards;
@@ -12,6 +14,7 @@ namespace Agents.Handlers {
         [SerializeField] private EntityAgent _agent;
         [SerializeField] private bool _active = false;
         [SerializeField] private bool _acting = false;
+
         private static readonly AgentAction[] _actionsWithCardAnimation = {
             AgentAction.Attack,
             AgentAction.Heal
@@ -62,9 +65,7 @@ namespace Agents.Handlers {
         private void _HandlePlanning() {
             _agentAction = _agent.DecisionStrategy();
 
-            Debug.Log($"Executing strategy: {_agentAction}");
             if (!_agent.CanUseStrategy(_agentAction)) {
-                Debug.Log("Agent can not use strategy...");
                 _agentAction = AgentAction.End;
             }
             _ChangeState(AgentState.Acting);
@@ -72,9 +73,8 @@ namespace Agents.Handlers {
 
         private void _HandleActing() {
             if (!_acting) {
-                _acting = _agent.ExecuteStrategy(_agentAction);
-                if (!_acting) _ChangeState(AgentState.Waiting);
-                Debug.Log("Done.");
+                _agent.ExecuteStrategy(_agentAction);
+                _acting = true;
             }
 
             if (_IsMovingEnd() && _IsCardAnimationEnd()) {
@@ -84,9 +84,8 @@ namespace Agents.Handlers {
         }
 
         private bool _IsMovingEnd() {
-            MoveHandler moveHandler = GetComponent<MoveHandler>();
             if (!Enumerable.Contains(_actionsWithMove, _agentAction)) return true;
-            return moveHandler == null || !moveHandler.isMoving;
+            return _agent.endMoving;
         }
 
         private bool _IsCardAnimationEnd() {

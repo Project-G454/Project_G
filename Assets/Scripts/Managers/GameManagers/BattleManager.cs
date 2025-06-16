@@ -250,10 +250,9 @@ namespace Core.Managers {
 
             _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
-            Debug.Log(currentEntity.entityId);
 
             _turn++;
-            Debug.Log($"Turn: Entity_{currentEntity.entityId}");
+            Debug.Log($"--------- Turn: Entity_{currentEntity.entityId} ---------");
         }
 
         public void AddTurnOreder(int entityId) {
