@@ -3173,10 +3173,10 @@ TextureImporter:
       name: Floor_Flash
       rect:
         serializedVersion: 2
-        x: 174
-        y: 238
-        width: 20
-        height: 20
+        x: 176
+        y: 240
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
