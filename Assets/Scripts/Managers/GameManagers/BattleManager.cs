@@ -40,6 +40,8 @@ namespace Core.Managers {
         private bool _initLock = false;
         private bool _bindingAgentLock = false;
         private bool _isBattleEnd = false;
+        private bool _allEnemiesDead = false;
+        private bool _allPlayersDead = false;
         private List<EntityData> _entityDatas;
 
         private void Awake() {
@@ -192,7 +194,12 @@ namespace Core.Managers {
             }
 
             ResetAll();
-            LoadSceneManager.Instance.LoadBattleRewardsScene();
+            if (_allEnemiesDead) {
+                LoadSceneManager.Instance.LoadBattleRewardsScene();
+            }
+            else {
+                LoadSceneManager.Instance.LoadGameOverScene();
+            }
             yield break;
         }
 
@@ -280,16 +287,18 @@ namespace Core.Managers {
         }
         
         private void CheckWinOrLose() {
-            bool allEnemiesDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.ENEMY).All(p => p.IsDead());
-            bool allPlayersDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER).All(p => p.IsDead());
+            _allEnemiesDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.ENEMY).All(p => p.IsDead());
+            _allPlayersDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER).All(p => p.IsDead());
 
-            if (allEnemiesDead) {
+            if (_allEnemiesDead) {
                 Debug.Log("🎉 Victory!");
                 _cardManager.EndTurn();
                 _isBattleEnd = true;
             }
-            else if (allPlayersDead) {
+            else if (_allPlayersDead) {
                 Debug.Log("💀 Defeat...");
+                _cardManager.EndTurn();
+                _isBattleEnd = true;
             }
         }
     }
