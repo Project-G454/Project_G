@@ -25,6 +25,10 @@ ShaderVariantCollection:
         passType: 0
       - keywords: DETAIL_MULTIPLY
         passType: 0
+      - keywords: EDGE_PLAIN
+        passType: 0
+      - keywords: EDGE_SHINY
+        passType: 0
       - keywords: GRADATION_COLOR2
         passType: 0
       - keywords: GRADATION_COLOR4
@@ -50,6 +54,8 @@ ShaderVariantCollection:
       - keywords: TONE_RETRO
         passType: 0
       - keywords: TRANSITION_FADE
+        passType: 0
+      - keywords: TRANSITION_SHINY
         passType: 0
 --- !u!114 &11400000
 MonoBehaviour:

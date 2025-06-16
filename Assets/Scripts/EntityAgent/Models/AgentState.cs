@@ -10,6 +10,7 @@ namespace Agents.Data {
         Move,
         Escape,
         Attack,
-        Heal
+        Heal,
+        Summon
     }
 }

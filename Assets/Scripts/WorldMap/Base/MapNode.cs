@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Core.Helpers;
 using Core.Managers;
 using Core.Managers.WorldMap;
+using Entities;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using WorldMap.Animations;
 using WorldMap.Models;
 using Entities;
@@ -69,6 +73,9 @@ namespace WorldMap {
         }
 
         public void OnMouseUp() {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+                
             if (this.isLocked || this.isVisited) {
                 if (this.animator) {
                     animator.Shake();
@@ -82,14 +89,14 @@ namespace WorldMap {
 
             WorldMapManager.Instance.currentNodeId = this.id;
             WorldMapManager.Instance.currentStage = this.stage;
-            Debug.Log($"Current node set to {this.id} at {this.stage}");
-
             WorldMapManager.Instance.SaveCameraState();
 
             switch (this.data.nodeType) {
                 case NodeType.Boss:
+                    LoadSceneManager.Instance.LoadBattleScene(this, SetBossEntities());
+                    break;
                 case NodeType.Battle:
-                    LoadSceneManager.Instance.LoadBattleScene(this);
+                    LoadSceneManager.Instance.LoadBattleScene(this, SetEntities());
                     break;
                 case NodeType.Shop:
                     LoadSceneManager.Instance.LoadShopScene(this);
@@ -101,6 +108,28 @@ namespace WorldMap {
                     this.Resolve();
                     break;
             }
+        }
+
+        private List<EntityData> SetEntities() {
+            List<EntityData> entityDatas = new();
+            entityDatas.Add(new EntityData(
+                100,
+                "Enemy1",
+                EntityTypes.ENEMY,
+                EntityClasses.WIZARD
+            ));
+            return entityDatas;
+        }
+
+        private List<EntityData> SetBossEntities() {
+            List<EntityData> entityDatas = new();
+            entityDatas.Add(new EntityData(
+                100,
+                "Enemy1",
+                EntityTypes.ENEMY,
+                EntityClasses.WIZARD
+            ));
+            return entityDatas;
         }
 
         public void Unlock() {

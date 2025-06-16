@@ -1,3 +1,4 @@
+using Core.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,9 +6,14 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject optionsMenu;
     public GameObject mainMenu;
-    
+    private LoadSceneManager _loadSceneManager;
 
-    public void OpenOptionsPanel(){
+
+    void Start() {
+        _loadSceneManager = LoadSceneManager.Instance;
+    }
+
+    public void OpenOptionsPanel() {
         mainMenu.SetActive(false);
         optionsMenu.SetActive(true);
     }
@@ -23,6 +29,8 @@ public class MainMenu : MonoBehaviour
     }
 
     public void PlayGame(){
-        SceneManager.LoadScene("WorldMap");
+        if (_loadSceneManager == null) return;
+        else _loadSceneManager.LoadWorldMapScene(false);
+        // SceneManager.LoadScene("WorldMap");
     }
 }

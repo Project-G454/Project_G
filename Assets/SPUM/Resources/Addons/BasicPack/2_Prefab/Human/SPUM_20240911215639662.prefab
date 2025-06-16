@@ -4951,6 +4951,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 4c70df3312bb83346a1bf065b30d3467, type: 2}
   - {fileID: 7400000, guid: 1ef525d53ae254f7d82ef364ced85490, type: 2}
   - {fileID: 7400000, guid: fabe4f140fdb9cb448bc941c7c93e8b6, type: 2}
+  shadow: {fileID: 4458577772577384965}
 --- !u!1 &4875843769333064199
 GameObject:
   m_ObjectHideFlags: 0

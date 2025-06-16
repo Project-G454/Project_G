@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 6775514141356924318}
   - component: {fileID: 7735833708147883296}
   - component: {fileID: 4466602285397742859}
+  - component: {fileID: 8068911558888039839}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -370,7 +371,35 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7735833708147883296}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8068911558888039839}
+        m_TargetAssemblyTypeName: Core.Handlers.SoundHandler, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8068911558888039839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375572537351664393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverFX:
+  - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
 --- !u!1 &3611966203272183210
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +412,7 @@ GameObject:
   - component: {fileID: 1490202651372567522}
   - component: {fileID: 6187650604398419037}
   - component: {fileID: 2648094251596011573}
+  - component: {fileID: 5769246014794362104}
   m_Layer: 5
   m_Name: Cancel
   m_TagString: Untagged
@@ -491,7 +521,35 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6187650604398419037}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5769246014794362104}
+        m_TargetAssemblyTypeName: Core.Handlers.SoundHandler, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5769246014794362104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3611966203272183210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverFX:
+  - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
 --- !u!1 &5026767082814270057
 GameObject:
   m_ObjectHideFlags: 0

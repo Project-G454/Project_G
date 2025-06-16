@@ -14,6 +14,7 @@ namespace Entities {
     public class Entity {
         public event Action OnHpChanged;
         public event Action OnEffectsChanged;
+        public event Action OnDeath;
 
         public int entityId;
         private int _currentHp;
@@ -33,6 +34,10 @@ namespace Entities {
             set {
                 _currentHp = Mathf.Clamp(value, 0, maxHp);
                 OnHpChanged?.Invoke(); // 通知 UI
+
+                if (_currentHp <= 0) {
+                    OnDeath?.Invoke();
+                }
             }
         }
 

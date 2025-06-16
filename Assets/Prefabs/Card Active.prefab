@@ -768,6 +768,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6221049099476790579, guid: 2b16d6bee8e09714c8548826ca2131d6,
+        type: 3}
+      propertyPath: hoverFX.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986765812384920014, guid: 2b16d6bee8e09714c8548826ca2131d6,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7986765812384920014, guid: 2b16d6bee8e09714c8548826ca2131d6,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9046832178689065813, guid: 2b16d6bee8e09714c8548826ca2131d6,
         type: 3}
       propertyPath: m_PresetInfoIsWorld

@@ -1,12 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards.Data;
+using Entities;
 using UnityEngine;
 
 namespace Core.Loaders.Cards {
     public class CardDataLoader {
         public static List<CardData> LoadAll() {
             return Resources.LoadAll<CardData>("Cards/Data").ToList();
+        }
+
+        public static List<CardData> LoadByClass(EntityClasses targetClass) {
+            return Resources.LoadAll<CardData>("Cards/Data")
+            .Where(card => card.classes.Contains(targetClass))
+            .ToList();
         }
 
         public static List<Sprite> LoadAssets() {

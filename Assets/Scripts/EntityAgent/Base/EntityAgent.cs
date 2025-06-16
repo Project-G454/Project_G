@@ -52,6 +52,9 @@ namespace Agents {
                 Debug.Log("No Resource");
                 return AgentAction.End;
             }
+            else if (LowHP(0.5f) && !IsHealCardUsable() && IsAttackCardUsable()) {
+                return AgentAction.Attack;
+            }
             else if (LowHP(0.5f)) {
                 if (HasReachablePlayer(ESCAPE_RANGE) && canMove) return AgentAction.Escape;
                 else if (IsHealCardUsable()) return AgentAction.Heal;
@@ -62,6 +65,7 @@ namespace Agents {
             }
             else {
                 if (IsAttackCardUsable()) return AgentAction.Attack;
+                else if (IsSummonCardUsable()) return AgentAction.Summon;
                 else if (HasResource() && !HasReachablePlayer(1)) return AgentAction.Move;
                 else {
                     Debug.Log("Can not use Attack Card");
@@ -83,6 +87,9 @@ namespace Agents {
                     break;
                 case AgentAction.Heal:
                     strategy = new StrategyHeal();
+                    break;
+                case AgentAction.Summon:
+                    strategy = new StrategySummon();
                     break;
                 case AgentAction.End:
                 default:
@@ -159,6 +166,15 @@ namespace Agents {
                 CardBehaviour cardBehaviour = cardObj.GetComponent<CardBehaviour>();
                 Card card = cardBehaviour.card;
                 if (AgentCardHelper.IsHealCard(card) && CanUseCard(card)) return true;
+            }
+            return false;
+        }
+
+        public bool IsSummonCardUsable() {
+            foreach (GameObject cardObj in CardManager.cardList) {
+                CardBehaviour cardBehaviour = cardObj.GetComponent<CardBehaviour>();
+                Card card = cardBehaviour.card;
+                if (AgentCardHelper.IsSummonCard(card) &&CanUseCard(card)) return true;
             }
             return false;
         }

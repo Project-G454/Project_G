@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Core.Handlers;
 using Core.Interfaces;
 using Core.Managers.WorldMap;
+using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorldMap;
@@ -14,6 +17,8 @@ namespace Core.Managers {
         private AsyncOperation _asyncOperation;
         private GlobalUIManager _globalUIManager;
         private string _loadingSceneName;
+        public TransitionHandler transHandler;
+        private List<EntityData> _entityDatas;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -37,16 +42,36 @@ namespace Core.Managers {
 
         private void _LoadScene(string sceneName) {
             _loadingSceneName = sceneName;
+            if (transHandler != null) {
+                StartCoroutine(_LoadWithTransition(sceneName));
+            }
+            else _NormalLoad(sceneName);
+        }
+
+        private IEnumerator _LoadWithTransition(string sceneName) {
+            yield return StartCoroutine(transHandler.StartTransition());
             _asyncOperation = SceneManager.LoadSceneAsync(sceneName);
             _asyncOperation.allowSceneActivation = true;
+            _RunEntry(sceneName);
+            yield return new WaitUntil(() => _asyncOperation.isDone);
+            yield return StartCoroutine(transHandler.EndTransition());
+        }
 
+        private void _NormalLoad(string sceneName) {
+            _asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+            _asyncOperation.allowSceneActivation = true;
+            _RunEntry(sceneName);
+        }
+
+        private void _RunEntry(string sceneName) {
             _asyncOperation.completed += _ => {
                 switch (sceneName) {
                     case "WorldMap":
                         WorldMapManager.Instance.Entry();
                         break;
                     case "SceneCiel":
-                        BattleManager.Instance.Entry();
+                        if (_entityDatas.Count > 0) BattleManager.Instance.EntryWithEntityData(_entityDatas);
+                        else BattleManager.Instance.Entry();
                         break;
                     case "Shop":
                         ShopManager.Instance.Entry();
@@ -57,8 +82,9 @@ namespace Core.Managers {
             };
         }
 
-        public void LoadBattleScene(MapNode node) {
+        public void LoadBattleScene(MapNode node, List<EntityData> entityDatas = null) {
             if (_globalUIManager == null) Init();
+            if (entityDatas.Count > 0) this._entityDatas = entityDatas;
             _globalUIManager.stageAlertUI.Show(
                 node,
                 () => _LoadScene("SceneCiel")
@@ -73,12 +99,28 @@ namespace Core.Managers {
             );
         }
 
-        public void LoadWorldMapScene() {
+        public void LoadWorldMapScene(bool showAlert = true) {
+            if (!showAlert) {
+                _LoadScene("WorldMap");
+                return;
+            }
             if (_globalUIManager == null) Init();
             _globalUIManager.confirmAlertUI.Show(
                 "Exit",
                 "Return to world map?",
                 () => _LoadScene("WorldMap")
+            );
+        }
+
+        public void LoadWorldMapScene_BattleReward(Action OnConfirm) {
+            if (_globalUIManager == null) Init();
+            _globalUIManager.confirmAlertUI.Show(
+                "Exit",
+                "Return to world map?",
+                () => {
+                    OnConfirm?.Invoke();
+                    _LoadScene("WorldMap");
+                }
             );
         }
 
