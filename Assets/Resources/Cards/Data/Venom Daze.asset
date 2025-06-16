@@ -18,9 +18,9 @@ MonoBehaviour:
   desctiptionIds: 0100000003000000
   classes: 00000000
   rarity: 2
-  cost: 0
-  range: 0
-  partical: 0
+  cost: 2
+  range: 2
+  partical: 3
   effects:
   - effectData: {fileID: 11400000, guid: bd1a9a60f219ada40bebab1a38476cf9, type: 2}
     rounds: 5

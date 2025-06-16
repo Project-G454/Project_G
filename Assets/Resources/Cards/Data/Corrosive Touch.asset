@@ -20,7 +20,7 @@ MonoBehaviour:
   rarity: 2
   cost: 1
   range: 3
-  partical: 0
+  partical: 1
   effects:
   - effectData: {fileID: 11400000, guid: bd1a9a60f219ada40bebab1a38476cf9, type: 2}
     rounds: 5
