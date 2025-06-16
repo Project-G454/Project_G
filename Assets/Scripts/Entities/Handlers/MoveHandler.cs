@@ -204,5 +204,18 @@ namespace Entities.Handlers {
 
             return path;
         }
+
+        public bool CanReachPosition(Vector2 targetPosition) {
+            if (!_gridManager.GetTileWalkable(targetPosition)) {
+                return false;
+            }
+
+            Vector2 currentPosition = _gridManager.WorldToGridPosition(transform.position);
+            Vector2 targetGridPosition = _gridManager.WorldToGridPosition(targetPosition);
+
+            List<Vector2> path = FindPathBFS(currentPosition, targetGridPosition);
+
+            return path.Count > 0;
+        }
     }
 }
