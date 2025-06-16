@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorldMap;
 using WorldMap.Models;
-using Entities;
+using Entities.Factories;
 
 namespace Core.Managers {
     public class LoadSceneManager: MonoBehaviour, IManager {
@@ -95,6 +95,7 @@ namespace Core.Managers {
             );
         }
 
+
         private void HandleRecoverNode(MapNode node) {
             int healAmount = 30;
 
@@ -103,22 +104,21 @@ namespace Core.Managers {
             foreach (var player in players) {
                 int currentHp = player.hp;
 
-                int maxHp = player.entityClass switch {
-                    EntityClasses.WARRIOR => 120,
-                    EntityClasses.RANGER => 100,
-                    EntityClasses.ROGUE => 80,
-                    _ => 100
-                };
+                // 直接從 EntityFactory 取得最大血量
+                int maxHp = EntityFactory.GetHp(player.entityClass);
 
                 int actualHealAmount = Mathf.Min(healAmount, maxHp - currentHp);
 
                 if (actualHealAmount > 0) {
                     PlayerStateManager.Instance.ModifyHP(player.playerId, actualHealAmount);
-                    Debug.Log($"{player.playerName} 回復了 {actualHealAmount} 點血量");
+                    Debug.Log($"{player.playerName} 回復了 {actualHealAmount} 點血量 ({currentHp} -> {currentHp + actualHealAmount})");
+                }
+                else {
+                    Debug.Log($"{player.playerName} 血量已滿 ({currentHp}/{maxHp})");
                 }
             }
 
-            // node.Resolve();
+            node.Resolve();
         }
     }
 }
