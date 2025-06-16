@@ -4,6 +4,7 @@ using System.Data.Common;
 using Core.Helpers;
 using Core.Managers;
 using Core.Managers.WorldMap;
+using Entities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -91,8 +92,10 @@ namespace WorldMap {
 
             switch (this.data.nodeType) {
                 case NodeType.Boss:
+                    LoadSceneManager.Instance.LoadBattleScene(this, SetBossEntities());
+                    break;
                 case NodeType.Battle:
-                    LoadSceneManager.Instance.LoadBattleScene(this);
+                    LoadSceneManager.Instance.LoadBattleScene(this, SetEntities());
                     break;
                 case NodeType.Shop:
                     LoadSceneManager.Instance.LoadShopScene(this);
@@ -101,6 +104,28 @@ namespace WorldMap {
                     this.Resolve();
                     break;
             }
+        }
+
+        private List<EntityData> SetEntities() {
+            List<EntityData> entityDatas = new();
+            entityDatas.Add(new EntityData(
+                100,
+                "Enemy1",
+                EntityTypes.ENEMY,
+                EntityClasses.WIZARD
+            ));
+            return entityDatas;
+        }
+
+        private List<EntityData> SetBossEntities() {
+            List<EntityData> entityDatas = new();
+            entityDatas.Add(new EntityData(
+                100,
+                "Enemy1",
+                EntityTypes.ENEMY,
+                EntityClasses.WIZARD
+            ));
+            return entityDatas;
         }
 
         public void Unlock() {

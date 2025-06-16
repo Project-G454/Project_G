@@ -40,6 +40,7 @@ namespace Core.Managers {
         private bool _initLock = false;
         private bool _bindingAgentLock = false;
         private bool _isBattleEnd = false;
+        private List<EntityData> _entityDatas;
 
         private void Awake() {
             Instance = this;
@@ -57,6 +58,10 @@ namespace Core.Managers {
 
         public void Entry() {
             // StartBattle();
+        }
+
+        public void EntryWithEntityData(List<EntityData> e) {
+            _entityDatas = e;
         }
 
         private void _InitCamera() {
@@ -127,9 +132,9 @@ namespace Core.Managers {
 
         private void _InitEntities() {
             var players = PlayerStateManager.Instance.GetAllPlayer();
-            List<EntityData> entityDatas = new();
+            // List<EntityData> _entityDatas = new();
             foreach (GamePlayerState player in players) {
-                entityDatas.Add(new PlayerData(
+                _entityDatas.Add(new PlayerData(
                     player.playerId,
                     player.hp,
                     player.playerName,
@@ -138,17 +143,17 @@ namespace Core.Managers {
                 ));
             }
 
-            entityDatas.Add(new EntityData(
-                100,
-                "Enemy1",
-                EntityTypes.ENEMY,
-                EntityClasses.WIZARD
-            ));
+            // entityDatas.Add(new EntityData(
+            //     100,
+            //     "Enemy1",
+            //     EntityTypes.ENEMY,
+            //     EntityClasses.WIZARD
+            // ));
 
-            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(entityDatas.Count);
+            List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(_entityDatas.Count);
 
-            for (int i = 0; i < entityDatas.Count; i++) {
-                _entityManager.CreateEntity(entityDatas[i], spawnPositions[i]);
+            for (int i = 0; i < _entityDatas.Count; i++) {
+                _entityManager.CreateEntity(_entityDatas[i], spawnPositions[i]);
             }
         }
 
@@ -193,7 +198,7 @@ namespace Core.Managers {
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
 
-                break;
+                // break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();

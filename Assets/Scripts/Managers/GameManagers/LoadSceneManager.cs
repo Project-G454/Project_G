@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Core.Handlers;
 using Core.Interfaces;
 using Core.Managers.WorldMap;
+using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorldMap;
@@ -15,6 +17,7 @@ namespace Core.Managers {
         private GlobalUIManager _globalUIManager;
         private string _loadingSceneName;
         public TransitionHandler transHandler;
+        private List<EntityData> _entityDatas;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -66,7 +69,8 @@ namespace Core.Managers {
                         WorldMapManager.Instance.Entry();
                         break;
                     case "SceneCiel":
-                        BattleManager.Instance.Entry();
+                        if (_entityDatas.Count > 0) BattleManager.Instance.EntryWithEntityData(_entityDatas);
+                        else BattleManager.Instance.Entry();
                         break;
                     case "Shop":
                         ShopManager.Instance.Entry();
@@ -77,8 +81,9 @@ namespace Core.Managers {
             };
         }
 
-        public void LoadBattleScene(MapNode node) {
+        public void LoadBattleScene(MapNode node, List<EntityData> entityDatas = null) {
             if (_globalUIManager == null) Init();
+            if (entityDatas.Count > 0) this._entityDatas = entityDatas;
             _globalUIManager.stageAlertUI.Show(
                 node,
                 () => _LoadScene("SceneCiel")

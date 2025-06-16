@@ -52,6 +52,9 @@ namespace Agents {
                 Debug.Log("No Resource");
                 return AgentAction.End;
             }
+            else if (LowHP(0.5f) && !IsHealCardUsable() && IsAttackCardUsable()) {
+                return AgentAction.Attack;
+            }
             else if (LowHP(0.5f)) {
                 if (HasReachablePlayer(ESCAPE_RANGE) && canMove) return AgentAction.Escape;
                 else if (IsHealCardUsable()) return AgentAction.Heal;
