@@ -12,7 +12,7 @@ namespace Agents.Helpers {
         }
 
         public static bool IsSummonCard(Card card) {
-            return card.type == CardTypes.SUMMON || card.type == CardTypes.MAGIC;
+            return card.type == CardTypes.SUMMON;
         }
     }
 }

@@ -17,6 +17,7 @@ using Entities;
 using Entities.Animations;
 using Entities.Categories;
 using UnityEngine;
+using Core.Managers.Sound;
 
 namespace Core.Managers.Cards {
     public class CardManager: MonoBehaviour, IManager {
@@ -29,6 +30,7 @@ namespace Core.Managers.Cards {
         public static readonly List<GameObject> cardList = new();
         public static List<Sprite> cardAssets = new();
         public bool isTurnFinished = true;
+        public List<AudioClip> effectAudios;
 
         private void Awake() {
             Instance = this;
@@ -142,6 +144,8 @@ namespace Core.Managers.Cards {
                     Debug.Log("Card animation end");
                 }
             );
+            int rng = UnityEngine.Random.Range(0, effectAudios.Count);
+            SoundFXManager.Instance.PlaySound(effectAudios[rng], SoundType.FX, targetObj.transform.position);
             EntityAnimation.PlayAnimationOnce(currObj, PlayerState.ATTACK);
             EntityAnimation.PlayAnimationOnce(targetObj, PlayerState.DAMAGED);
             if (targetEntity.IsDead()) EntityAnimation.PlayAnimation(targetObj, PlayerState.DEATH);

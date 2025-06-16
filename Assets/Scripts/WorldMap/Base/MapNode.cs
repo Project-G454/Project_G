@@ -11,6 +11,7 @@ using UnityEngine.EventSystems;
 using WorldMap.Animations;
 using WorldMap.Models;
 using Entities;
+using Entities.Factories;
 
 namespace WorldMap {
     public class MapNode: MonoBehaviour {
@@ -112,24 +113,29 @@ namespace WorldMap {
 
         private List<EntityData> SetEntities() {
             List<EntityData> entityDatas = new();
-            entityDatas.Add(new EntityData(
-                100,
-                100,
-                "Enemy1",
-                EntityTypes.ENEMY,
-                EntityClasses.WIZARD
-            ));
+            int count = 1;
+            for (int i = 0; i < Math.Max(2, stage % 3); i++) {
+                EntityClasses eclass = (EntityClasses) UnityEngine.Random.Range(1, 5);
+                var hp = (int) (EntityFactory.GetHp(eclass) * 0.5);
+                entityDatas.Add(new EntityData(
+                    hp,
+                    hp,
+                    $"Enemy{count++}",
+                    EntityTypes.ENEMY,
+                    eclass
+                ));
+            }
             return entityDatas;
         }
 
         private List<EntityData> SetBossEntities() {
             List<EntityData> entityDatas = new();
             entityDatas.Add(new EntityData(
-                100,
-                100,
-                "Enemy1",
+                600,
+                600,
+                "Boss",
                 EntityTypes.ENEMY,
-                EntityClasses.WIZARD
+                EntityClasses.Boss
             ));
             return entityDatas;
         }

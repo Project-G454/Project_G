@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Interfaces;
+using Core.Managers.Sound;
 using Dices;
 using Dices.Animations;
 using Dices.Data;
@@ -19,6 +20,7 @@ namespace Core.Managers.Dices {
         public Transform generatePoint;
         private List<GameObject> dices = new();
         public int animationEndCount = 0;
+        public AudioClip diceAudio;
 
         void IManager.Init() {}
         
@@ -59,6 +61,7 @@ namespace Core.Managers.Dices {
             }
 
             // Roll dices
+            SoundFXManager.Instance.PlaySound(diceAudio, SoundType.FX);
             StartCoroutine(_SimulateRoll(this.dices, points));
             return points;
         }
