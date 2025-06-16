@@ -29,10 +29,17 @@ namespace Core.Managers {
 
         public void Entry() {
             List<GamePlayerState> Players = PlayerStateManager.Instance.GetAllPlayer();
+            ReviveDeadPlayers(Players);
             ShowRewards(Players);
         }
 
         public void Init() {
+        }
+
+        private void ReviveDeadPlayers(List<GamePlayerState> players) {
+            foreach (var player in players) {
+                if (player.currentHp <= 0) player.currentHp = 1;
+            }
         }
 
         public void ShowRewards(List<GamePlayerState> players) {
