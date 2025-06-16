@@ -146,7 +146,6 @@ namespace Core.Managers {
             foreach (var player in players) {
                 int currentHp = player.hp;
 
-                // 直接從 EntityFactory 取得最大血量
                 int maxHp = EntityFactory.GetHp(player.entityClass);
 
                 int actualHealAmount = Mathf.Min(healAmount, maxHp - currentHp);
