@@ -221,6 +221,7 @@ namespace Core.Managers {
 
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraController.target = entityObject.transform;
+            _cameraController.isFollowing = true;
 
             HoverUIManager.Instance.Show(currentEntity);
 

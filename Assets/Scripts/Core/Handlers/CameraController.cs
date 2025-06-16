@@ -29,16 +29,19 @@ namespace Core.Handlers {
 
         private Camera cam;
         private Vector3 dragOrigin;
+        public bool isFollowing = true;
 
         void Start() {
             cam = Camera.main;
         }
 
         void Update() {
-            if (target != null) {
+            if (target != null && isFollowing) {
                 Vector3 targetPos = new Vector3(target.position.x, target.position.y, transform.position.z);
                 transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
             }
+
+            if (Input.GetKeyDown(KeyCode.Space)) isFollowing = true;
 
             HandleDrag();
             HandleZoom();
@@ -49,6 +52,7 @@ namespace Core.Handlers {
             if (!enableDrag) return;
 
             if (Input.GetMouseButtonDown(1)) {
+                isFollowing = false;
                 dragOrigin = cam.ScreenToWorldPoint(Input.mousePosition);
             }
 
