@@ -55,6 +55,7 @@ namespace Core.Entities {
             }
 
             RegisterEntity(entity, newEntity);
+            InitDeckAndEnergy(entity);
             return entity;
         }
 
@@ -109,10 +110,30 @@ namespace Core.Entities {
             return entityDict.Values.Where(e => e.type == type).ToList();
         }
 
+        public List<GameObject> GetEntitiesObjectByType(EntityTypes type) {
+            List<GameObject> result = new();
+
+            foreach (var pair in entityDict) {
+                int entityId = pair.Key;
+                Entity entity = pair.Value;
+
+                if (entity.type == type && entityObjectDict.TryGetValue(entityId, out var obj)) {
+                    result.Add(obj);
+                }
+            }
+
+            return result;
+        }
+
         public void ClearAllEntities() {
             foreach (var entityId in entityDict.Keys.ToList()) {
                 UnregisterEntity(entityId);
             }
+        }
+
+        private void InitDeckAndEnergy(Entity entity) {
+            entity.deckManager.InitializeDeck();
+            entity.energyManager.InitializeEnergy();
         }
 
         public Sprite CaptureHeadSetFromEntity(GameObject entityObject, int resolution = 128) {

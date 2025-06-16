@@ -16,11 +16,11 @@ MonoBehaviour:
   cardName: Thunder Lunge
   description: Deal 15 damage
   desctiptionIds: 
-  classes: 00000000
+  classes: 04000000
   rarity: 2
   cost: 1
   range: 3
   partical: 1
   damage: 15
-  effectId: 0
+  effects: []
   attackTimes: 1

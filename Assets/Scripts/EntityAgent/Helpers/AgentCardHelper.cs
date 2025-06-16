@@ -10,5 +10,9 @@ namespace Agents.Helpers {
         public static bool IsHealCard(Card card) {
             return card.type == CardTypes.HEAL;
         }
+
+        public static bool IsSummonCard(Card card) {
+            return card.type == CardTypes.SUMMON || card.type == CardTypes.MAGIC;
+        }
     }
 }

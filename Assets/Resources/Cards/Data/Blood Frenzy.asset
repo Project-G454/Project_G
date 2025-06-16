@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Blood Frenzy
   description: Deal 30 damage
   desctiptionIds: 
-  classes: 00000000
+  classes: 01000000
   rarity: 2
   cost: 2
   range: 3

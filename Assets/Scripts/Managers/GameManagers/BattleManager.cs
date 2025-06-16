@@ -72,7 +72,6 @@ namespace Core.Managers {
             _InitMap();
             _InitEntities();
             _InitCamera();
-            InitDeckAndEnergy();
 
             this._entityCount = _entityManager.GetEntityList().Count;
             _turn = 0;
@@ -85,14 +84,13 @@ namespace Core.Managers {
         }
 
         public void BindAgents() {
-            GameObject enemy1 = _entityManager.GetEntityObject(100);
-            enemy1.AddComponent<EntityAgent>();
-            // GameObject enemy2 = _entityManager.GetEntityObject(2);
-            // enemy2.AddComponent<EntityAgent>();
-            // GameObject enemy3 = _entityManager.GetEntityObject(4);
-            // enemy3.AddComponent<EntityAgent>();
-            // GameObject enemy4 = _entityManager.GetEntityObject(4);
-            // enemy4.AddComponent<EntityAgent>();
+            List<GameObject> enemies = _entityManager.GetEntitiesObjectByType(EntityTypes.ENEMY);
+            foreach (GameObject enemy in enemies) {
+                if (enemy.GetComponent<EntityAgent>() == null) {
+                    enemy.AddComponent<EntityAgent>();
+                }
+            }
+
             _bindingAgentLock = true;
         }
 
@@ -142,20 +140,14 @@ namespace Core.Managers {
                 100,
                 "Enemy1",
                 EntityTypes.ENEMY,
-                EntityClasses.WIZARD
+                EntityClasses.Boss
             ));
 
             List<Vector3> spawnPositions = _gridManager.GetSpawnPositions(entityDatas.Count);
 
             for (int i = 0; i < entityDatas.Count; i++) {
-                _entityManager.CreateEntity(entityDatas[i], spawnPositions[i]);
-            }
-        }
-
-        private void InitDeckAndEnergy() {
-            foreach (Entity entity in EntityManager.Instance.GetEntityList()) {
-                entity.deckManager.InitializeDeck();
-                entity.energyManager.InitializeEnergy();
+                var entity = _entityManager.CreateEntity(entityDatas[i], spawnPositions[i]);
+                entity.OnDeath += CheckWinOrLose;
             }
         }
 
@@ -170,6 +162,7 @@ namespace Core.Managers {
             while (!_isBattleEnd) {
                 if (_IsRoundEnd()) {
                     Debug.Log("Dice Phase");
+                    _turn = 0;
                     _round++;
                     currentEntity = null;
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
@@ -192,8 +185,6 @@ namespace Core.Managers {
                     _cardManager.StartTurn();
                     yield return new WaitUntil(() => _cardManager.isTurnFinished);
                 }
-
-                break;
 
                 Debug.Log("Effect Phase (After)");
                 _effectManager.AfterTurn();
@@ -225,14 +216,14 @@ namespace Core.Managers {
 
         public void NextPlayer() {
             DistanceManager.Instance.ClearHighlights();
-            
+
             int idx = _turn % _entityCount;
             currentEntity = _entityManager.GetEntity(_orderedIds[idx]);
             _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
-            
+
             GameObject entityObject = _entityManager.GetEntityObject(_orderedIds[idx]);
             _cameraController.target = entityObject.transform;
-            
+
             HoverUIManager.Instance.Show(currentEntity);
 
             MoveHandler moveHandler = entityObject.GetComponent<MoveHandler>();
@@ -243,9 +234,16 @@ namespace Core.Managers {
             _globalUIManager.energyUI.Bind(currentEntity.energyManager);
             currentEntity.energyManager.RecoverEnergy();
             Debug.Log(currentEntity.entityId);
-            
+
             _turn++;
             Debug.Log($"Turn: Entity_{currentEntity.entityId}");
+        }
+
+        public void AddTurnOreder(int entityId) {
+            _orderedIds.Add(entityId);
+            this._entityCount = _entityManager.GetEntityList().Count;
+            int idx = _turn % _entityCount;
+            _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, idx);
         }
 
         public IEnumerator InitTurnOrder() {
@@ -266,7 +264,7 @@ namespace Core.Managers {
 
                 string displayPoints = string.Join("+", dicePoints);
                 Debug.Log($"Entity {id}: {displayPoints}={point}");
-                
+
                 yield return new WaitUntil(() => _diceManager.IsAllAnimationStopped());
             }
             _orderedIds = points.OrderByDescending(e => e.Value)
@@ -280,6 +278,20 @@ namespace Core.Managers {
 
         private bool _IsRoundEnd() {
             return (_turn % _entityCount) == 0;
+        }
+        
+        private void CheckWinOrLose() {
+            bool allEnemiesDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.ENEMY).All(p => p.IsDead());
+            bool allPlayersDead = EntityManager.Instance.GetEntitiesByType(EntityTypes.PLAYER).All(p => p.IsDead());
+
+            if (allEnemiesDead) {
+                Debug.Log("🎉 Victory!");
+                _cardManager.EndTurn();
+                _isBattleEnd = true;
+            }
+            else if (allPlayersDead) {
+                Debug.Log("💀 Defeat...");
+            }
         }
     }
 }
