@@ -48,7 +48,7 @@ namespace Core.Managers.WorldMap {
         public void Entry() {
             if (!isInit) {
                 Debug.Log("Init worldmap");
-                nodes = MapGenerator.Generate(7, 15, 6);
+                nodes = MapGenerator.Generate(7, 5, 6);
 
                 PlayerStateManager.Instance.AddPlayer(0, "Player1", EntityClasses.WARRIOR, 100);
                 PlayerStateManager.Instance.AddPlayer(1, "Player2", EntityClasses.RANGER, 100);
@@ -108,6 +108,10 @@ namespace Core.Managers.WorldMap {
                 }
             }
 
+            foreach (var node in endNodes) {
+                node.Connect(bossNode);
+            }
+
             foreach (var node in startNodes) {
                 node.Resolve();
             }
@@ -121,9 +125,6 @@ namespace Core.Managers.WorldMap {
                 node.Lock();
             }
 
-            foreach (var node in endNodes) {
-                node.Connect(bossNode);
-            }
 
             return map;
         }

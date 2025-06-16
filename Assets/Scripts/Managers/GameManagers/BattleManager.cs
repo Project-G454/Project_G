@@ -168,7 +168,7 @@ namespace Core.Managers {
                     currentEntity = null;
                     _SetEntitiesShadow();
                     // _globalUIManager.turnPanelUI.UpdateTurnOrder(_orderedIds, 100000);
-                    // yield return InitTurnOrder();
+                    yield return InitTurnOrder();
                 }
 
                 NextPlayer();

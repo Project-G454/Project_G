@@ -19,6 +19,7 @@ namespace Agents.Strategies {
             Vector2 bestPos = base._FindBestPosition(targetPos, 5);
             if (!CanMoveTo(bestPos)) {
                 _agent.canMove = false;
+                agent.endMoving = true;
                 return false;
             }
             MapManager.Instance.MoveTo(bestPos, () => {

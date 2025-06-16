@@ -13,6 +13,7 @@ namespace Agents.Strategies {
             Vector2 bestPos = base._FindBestPosition(target.position, 5);
             if (!CanMoveTo(bestPos)) {
                 _agent.canMove = false;
+                agent.endMoving = true;
                 return false;
             }
             Debug.Log($"Agent trying move to Player_{target.entityId}, Pos: {bestPos}");
