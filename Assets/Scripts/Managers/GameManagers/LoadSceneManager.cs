@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorldMap;
 using WorldMap.Models;
+using Entities;
 
 namespace Core.Managers {
     public class LoadSceneManager: MonoBehaviour, IManager {
@@ -126,6 +127,40 @@ namespace Core.Managers {
         public void LoadBattleRewardsScene() {
             if (_globalUIManager == null) Init();
             _LoadScene("BattleRewards");
+        }
+
+        public void LoadRecoverScene(MapNode node) {
+            if (_globalUIManager == null) Init();
+            _globalUIManager.stageAlertUI.Show(
+                node,
+                () => HandleRecoverNode(node)
+            );
+        }
+
+        private void HandleRecoverNode(MapNode node) {
+            int healAmount = 30;
+
+            var players = PlayerStateManager.Instance.GetAllPlayer();
+
+            foreach (var player in players) {
+                int currentHp = player.hp;
+
+                int maxHp = player.entityClass switch {
+                    EntityClasses.WARRIOR => 120,
+                    EntityClasses.RANGER => 100,
+                    EntityClasses.ROGUE => 80,
+                    _ => 100
+                };
+
+                int actualHealAmount = Mathf.Min(healAmount, maxHp - currentHp);
+
+                if (actualHealAmount > 0) {
+                    PlayerStateManager.Instance.ModifyHP(player.playerId, actualHealAmount);
+                    Debug.Log($"{player.playerName} 回復了 {actualHealAmount} 點血量");
+                }
+            }
+
+            // node.Resolve();
         }
     }
 }

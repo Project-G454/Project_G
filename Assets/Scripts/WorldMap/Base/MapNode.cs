@@ -10,6 +10,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using WorldMap.Animations;
 using WorldMap.Models;
+using Entities;
 
 namespace WorldMap {
     public class MapNode: MonoBehaviour {
@@ -100,6 +101,9 @@ namespace WorldMap {
                 case NodeType.Shop:
                     LoadSceneManager.Instance.LoadShopScene(this);
                     break;
+                case NodeType.Recover:
+                    LoadSceneManager.Instance.LoadRecoverScene(this);
+                    break;
                 default:
                     this.Resolve();
                     break;
@@ -151,7 +155,7 @@ namespace WorldMap {
                 node.Unlock();
             }
         }
-        
+
         public void LockChildren() {
             foreach (var node in connectedNodes) {
                 node.Lock();
