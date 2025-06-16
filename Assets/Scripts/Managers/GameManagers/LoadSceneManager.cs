@@ -129,6 +129,11 @@ namespace Core.Managers {
             _LoadScene("BattleRewards");
         }
 
+        public void LoadGameOverScene() {
+            if (_globalUIManager == null) Init();
+            _LoadScene("GameOver");
+        }
+
         public void LoadRecoverScene(MapNode node) {
             if (_globalUIManager == null) Init();
             _globalUIManager.stageAlertUI.Show(

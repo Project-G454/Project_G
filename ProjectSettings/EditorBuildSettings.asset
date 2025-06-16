@@ -20,5 +20,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BattleRewards.unity
     guid: b90cea0d5c7831546a03ff09416ca16c
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 6e0d76b3cd76f874189d1cf6c0fe3a39
+  - enabled: 1
+    path: Assets/Scenes/Victory.unity
+    guid: f37748910cd8ad748a4e3d912b4f7e3b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
