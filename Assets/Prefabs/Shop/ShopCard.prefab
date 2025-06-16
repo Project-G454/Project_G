@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 179.83336, y: -33}
-  m_SizeDelta: {x: 79.5, y: 50}
+  m_AnchoredPosition: {x: 179.83334, y: -33}
+  m_SizeDelta: {x: 79.5, y: 48.3615}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &649015801384512293
 CanvasRenderer:
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 3459945143450648850}
   - component: {fileID: 7846232495311382922}
   - component: {fileID: 3833379982784798509}
+  - component: {fileID: 1028606687622638701}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -405,7 +406,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -453,6 +454,24 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1028606687622638701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996369306419287516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa50880b5b780a4f95205c7202455f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverFX:
+  - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
+  clickFX:
+  - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
+  dragFX: []
+  releaseFX: []
 --- !u!1 &5452315502793897646
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,8 +539,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sold Out!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 45081f5474f1b9640bd0275b285d4908, type: 2}
+  m_sharedMaterial: {fileID: -6152995415149091905, guid: 45081f5474f1b9640bd0275b285d4908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -962,6 +982,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -63.03334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221049099476790579, guid: 2b16d6bee8e09714c8548826ca2131d6,
+        type: 3}
+      propertyPath: hoverFX.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6543308284761739438, guid: 2b16d6bee8e09714c8548826ca2131d6,
         type: 3}

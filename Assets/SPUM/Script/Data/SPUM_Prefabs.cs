@@ -14,8 +14,7 @@ public enum PlayerState
     DEATH,
     OTHER,
 }
-public class SPUM_Prefabs : MonoBehaviour
-{
+public class SPUM_Prefabs: MonoBehaviour {
     public float _version;
     public bool EditChk;
     public string _code;
@@ -34,28 +33,26 @@ public class SPUM_Prefabs : MonoBehaviour
     public List<AnimationClip> DEBUFF_List = new();
     public List<AnimationClip> DEATH_List = new();
     public List<AnimationClip> OTHER_List = new();
-    public void OverrideControllerInit()
-    {
+    public SpriteRenderer shadow;
+
+    public void OverrideControllerInit() {
         Animator animator = _anim;
         OverrideController = new AnimatorOverrideController();
-        OverrideController.runtimeAnimatorController= animator.runtimeAnimatorController;
+        OverrideController.runtimeAnimatorController = animator.runtimeAnimatorController;
 
         // 모든 애니메이션 클립을 가져옵니다
         AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
 
-        foreach (AnimationClip clip in clips)
-        {
+        foreach (AnimationClip clip in clips) {
             // 복제된 클립으로 오버라이드합니다
             OverrideController[clip.name] = clip;
         }
 
-        animator.runtimeAnimatorController= OverrideController;
-        foreach (PlayerState state in Enum.GetValues(typeof(PlayerState)))
-        {
+        animator.runtimeAnimatorController = OverrideController;
+        foreach (PlayerState state in Enum.GetValues(typeof(PlayerState))) {
             var stateText = state.ToString();
             StateAnimationPairs[stateText] = new List<AnimationClip>();
-            switch (stateText)
-            {
+            switch (stateText) {
                 case "IDLE":
                     StateAnimationPairs[stateText] = IDLE_List;
                     break;
@@ -80,7 +77,7 @@ public class SPUM_Prefabs : MonoBehaviour
             }
         }
     }
-    public bool allListsHaveItemsExist(){
+    public bool allListsHaveItemsExist() {
         List<List<AnimationClip>> allLists = new List<List<AnimationClip>>()
         {
             IDLE_List, MOVE_List, ATTACK_List, DAMAGED_List, DEBUFF_List, DEATH_List, OTHER_List
@@ -89,8 +86,7 @@ public class SPUM_Prefabs : MonoBehaviour
         return allLists.All(list => list.Count > 0);
     }
     [ContextMenu("PopulateAnimationLists")]
-    public void PopulateAnimationLists()
-    {
+    public void PopulateAnimationLists() {
         IDLE_List = new();
         MOVE_List = new();
         ATTACK_List = new();
@@ -98,30 +94,28 @@ public class SPUM_Prefabs : MonoBehaviour
         DEBUFF_List = new();
         DEATH_List = new();
         OTHER_List = new();
-        
+
         var groupedClips = spumPackages
         .SelectMany(package => package.SpumAnimationData)
-        .Where(spumClip => spumClip.HasData && 
-                        spumClip.UnitType.Equals(UnitType) && 
-                        spumClip.index > -1 )
+        .Where(spumClip => spumClip.HasData &&
+                        spumClip.UnitType.Equals(UnitType) &&
+                        spumClip.index > -1)
         .GroupBy(spumClip => spumClip.StateType)
         .ToDictionary(
-            group => group.Key, 
+            group => group.Key,
             group => group.OrderBy(clip => clip.index).ToList()
         );
-    // foreach (var item in groupedClips)
-    // {
-    //     foreach (var clip in item.Value)
-    //     {
-    //         Debug.Log(clip.ClipPath);
-    //     }
-    // }
-        foreach (var kvp in groupedClips)
-        {
+        // foreach (var item in groupedClips)
+        // {
+        //     foreach (var clip in item.Value)
+        //     {
+        //         Debug.Log(clip.ClipPath);
+        //     }
+        // }
+        foreach (var kvp in groupedClips) {
             var stateType = kvp.Key;
             var orderedClips = kvp.Value;
-            switch (stateType)
-            {
+            switch (stateType) {
                 case "IDLE":
                     IDLE_List.AddRange(orderedClips.Select(clip => LoadAnimationClip(clip.ClipPath)));
                     //StateAnimationPairs[stateType] = IDLE_List;
@@ -152,53 +146,53 @@ public class SPUM_Prefabs : MonoBehaviour
                     break;
             }
         }
-    
+
     }
-    public void PlayAnimation(PlayerState PlayState, int index){
+    public void PlayAnimation(PlayerState PlayState, int index) {
         Animator animator = _anim;
         //Debug.Log(PlayState.ToString());
-        var animations =  StateAnimationPairs[PlayState.ToString()];
+        var animations = StateAnimationPairs[PlayState.ToString()];
         //Debug.Log(OverrideController[PlayState.ToString()].name);
         OverrideController[PlayState.ToString()] = animations[index];
         //Debug.Log( OverrideController[PlayState.ToString()].name);
         var StateStr = PlayState.ToString();
-   
+
         bool isMove = StateStr.Contains("MOVE");
         bool isDebuff = StateStr.Contains("DEBUFF");
         bool isDeath = StateStr.Contains("DEATH");
         animator.SetBool("1_Move", isMove);
         animator.SetBool("5_Debuff", isDebuff);
         animator.SetBool("isDeath", isDeath);
-        if(!isMove && !isDebuff)
-        {
+        if (!isMove && !isDebuff) {
             AnimatorControllerParameter[] parameters = animator.parameters;
-            foreach (AnimatorControllerParameter parameter in parameters)
-            {
+            foreach (AnimatorControllerParameter parameter in parameters) {
                 // if(parameter.type == AnimatorControllerParameterType.Bool){
                 //     bool isBool = StateStr.ToUpper().Contains(parameter.name.ToUpper());
                 //     animator.SetBool(parameter.name, isBool);
                 // }
-                if(parameter.type == AnimatorControllerParameterType.Trigger)
-                {
+                if (parameter.type == AnimatorControllerParameterType.Trigger) {
                     bool isTrigger = parameter.name.ToUpper().Contains(StateStr.ToUpper());
-                    if(isTrigger){
-                         Debug.Log($"Parameter: {parameter.name}, Type: {parameter.type}");
+                    if (isTrigger) {
+                        Debug.Log($"Parameter: {parameter.name}, Type: {parameter.type}");
                         animator.SetTrigger(parameter.name);
                     }
                 }
             }
         }
     }
-    AnimationClip LoadAnimationClip(string clipPath)
-    {
+    AnimationClip LoadAnimationClip(string clipPath) {
         // "Animations" 폴더에서 애니메이션 클립 로드
         AnimationClip clip = Resources.Load<AnimationClip>(clipPath.Replace(".anim", ""));
-        
-        if (clip == null)
-        {
+
+        if (clip == null) {
             Debug.LogWarning($"Failed to load animation clip '{clipPath}'.");
         }
-        
+
         return clip;
+    }
+
+    public void SetShadowColor(Color color) {
+        if (shadow == null) return;
+        shadow.color = color;
     }
 }
