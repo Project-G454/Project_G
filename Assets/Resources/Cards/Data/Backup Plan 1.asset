@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Draw 2 Cards
   desctiptionIds: 
   classes: 03000000
-  rarity: 1
+  rarity: 2
   cost: 0
   range: 0
   partical: 0

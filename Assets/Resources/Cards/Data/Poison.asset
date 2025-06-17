@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Apply 5 Poision
   desctiptionIds: 01000000
   classes: 03000000
-  rarity: 1
+  rarity: 3
   cost: 1
   range: 3
   partical: 1

@@ -19,7 +19,7 @@ MonoBehaviour:
     Apply 1 Burn'
   desctiptionIds: 02000000
   classes: 01000000
-  rarity: 1
+  rarity: 2
   cost: 1
   range: 1
   partical: 0
