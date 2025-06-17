@@ -44,7 +44,7 @@ namespace Core.Managers.WorldMap {
         public void Reset() { }
 
         void Start() {
-            Entry();
+            // Entry();
         }
 
         void Update() {

@@ -11,6 +11,7 @@ namespace WorldMap {
                 NodeType.Start => WorldMapLoader.LoadStartNode(),
                 NodeType.Road => WorldMapLoader.LoadRoadNode(),
                 NodeType.Boss => WorldMapLoader.LoadBossNode(),
+                NodeType.Random => WorldMapLoader.LoadRandomNode(),
                 _ => WorldMapLoader.LoadRoadNode()
             };
             return data;

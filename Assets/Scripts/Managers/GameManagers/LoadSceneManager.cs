@@ -154,6 +154,14 @@ namespace Core.Managers {
             );
         }
 
+        public void LoadRandomEventScene(MapNode node) {
+            if (_globalUIManager == null) Init();
+            _globalUIManager.stageAlertUI.Show(
+                node,
+                () => HandleRandomEvent(node)
+            );
+        }
+
         private void HandleRecoverNode(MapNode node) {
             int healAmount = 30;
 
@@ -171,8 +179,21 @@ namespace Core.Managers {
                     Debug.Log($"{player.playerName} 回復了 {actualHealAmount} 點血量");
                 }
             }
-            
+
             WorldMapManager.Instance.Entry();
+        }
+
+        private void HandleRandomEvent(MapNode node) {
+            List<Action> events = new() {
+                () => {
+                    this._entityDatas = node.SetEntities();
+                    _LoadScene("SceneCiel");
+                },
+                () => _LoadScene("Shop"),
+                () => HandleRecoverNode(node)
+            };
+            int rng = UnityEngine.Random.Range(0, events.Count);
+            events[rng].Invoke();
         }
     }
 }

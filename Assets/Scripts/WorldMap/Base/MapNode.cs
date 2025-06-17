@@ -104,13 +104,16 @@ namespace WorldMap {
                 case NodeType.Recover:
                     LoadSceneManager.Instance.LoadRecoverScene(this);
                     break;
+                case NodeType.Random:
+                    LoadSceneManager.Instance.LoadRandomEventScene(this);
+                    break;
                 default:
                     this.Resolve();
                     break;
             }
         }
 
-        private List<EntityData> SetEntities() {
+        public List<EntityData> SetEntities() {
             List<EntityData> entityDatas = new();
             int count = 1;
             for (int i = 0; i < Math.Max(2, stage % 3); i++) {

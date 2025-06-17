@@ -6,6 +6,7 @@ namespace WorldMap.Models {
         Start,
         Road,
         Boss,
+        Random,
         Unset
     }
 }

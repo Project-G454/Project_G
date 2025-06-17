@@ -26,5 +26,9 @@ namespace Core.Loaders.WorldMap {
         public static MapNodeData LoadBossNode() {
             return Resources.Load<MapNodeData>("WorldMap/Boss");
         }
+
+        public static MapNodeData LoadRandomNode() {
+            return Resources.Load<MapNodeData>("WorldMap/Random");
+        }
     }
 }

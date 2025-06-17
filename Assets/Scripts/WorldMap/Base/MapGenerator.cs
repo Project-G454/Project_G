@@ -12,7 +12,8 @@ namespace WorldMap {
         private static readonly Dictionary<NodeType, float> nodeSpawnChances = new Dictionary<NodeType, float> {
             {NodeType.Battle, 0.04f},
             {NodeType.Shop, 0.02f},
-            {NodeType.Recover, 0.02f}
+            {NodeType.Recover, 0.01f},
+            {NodeType.Random, 0.02f}
         };
 
         private static readonly Dictionary<int, NodeType> forceFloorsType = new Dictionary<int, NodeType> {
