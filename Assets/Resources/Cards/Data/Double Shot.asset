@@ -9,16 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
-  m_Name: Minor Heal
+  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
+  m_Name: Double Shot
   m_EditorClassIdentifier: 
-  id: 16
-  cardName: Minor Heal
-  description: Restore 10 HP
+  id: 7
+  cardName: Double Shot
+  description: 'Deal 5 Damage
+
+    x2 hits'
   desctiptionIds: 
-  classes: 00000000
+  classes: 02000000
   rarity: 1
   cost: 1
-  range: 0
-  partical: 4
-  healingAmount: 10
+  range: 3
+  partical: 0
+  damage: 5
+  effects: []
+  attackTimes: 2

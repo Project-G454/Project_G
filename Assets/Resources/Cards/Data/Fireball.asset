@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Venom Strike
+  m_Name: Fireball
   m_EditorClassIdentifier: 
-  id: 10
-  cardName: Venom Strike
-  description: 'Deal 3 damage
+  id: 14
+  cardName: Fireball
+  description: 'Deal 8 Damage
 
-    Apply 2 Poison'
-  desctiptionIds: 01000000
-  classes: 03000000
+    Apply 1 Burn'
+  desctiptionIds: 02000000
+  classes: 04000000
   rarity: 1
-  cost: 0
+  cost: 1
   range: 3
-  partical: 3
-  damage: 3
+  partical: 0
+  damage: 8
   effects:
-  - effectData: {fileID: 11400000, guid: bd1a9a60f219ada40bebab1a38476cf9, type: 2}
-    rounds: 2
+  - effectData: {fileID: 11400000, guid: b277e731c6f47c448b7a02ac32741c9b, type: 2}
+    rounds: 1
   attackTimes: 1

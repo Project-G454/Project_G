@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
   m_Name: Whirlwind Combo
   m_EditorClassIdentifier: 
-  id: 3
+  id: 5
   cardName: Whirlwind Combo
   description: 'Deal 8 damage
 
-    x3 hits'
+    x2 hits'
   desctiptionIds: 
   classes: 01000000
   rarity: 3
-  cost: 1
+  cost: 2
   range: 3
   partical: 2
   damage: 8
   effects: []
-  attackTimes: 3
+  attackTimes: 2

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 17
   cardName: Healing Touch
-  description: Restore 20 HP
+  description: Restore 10 HP
   desctiptionIds: 
-  classes: 00000000
+  classes: 04000000
   rarity: 1
   cost: 1
-  range: 0
+  range: 3
   partical: 4
-  healingAmount: 20
+  healingAmount: 10
