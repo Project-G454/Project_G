@@ -39,7 +39,9 @@ namespace Shop.Factories {
                 return _CreateHealItem(rarity);
             }
 
-            item.Init(data);
+            CardData cardData = cards[Random.Range(0, cards.Count)];
+
+            item.Init(data, cardData);
             return newItem;
         }
 
