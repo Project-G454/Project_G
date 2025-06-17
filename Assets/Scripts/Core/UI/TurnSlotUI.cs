@@ -1,3 +1,5 @@
+using Core.Entities;
+using Core.Handlers;
 using Core.Managers;
 using DG.Tweening;
 using Entities;
@@ -5,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TurnSlotUI: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+public class TurnSlotUI: MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
     [SerializeField] private Entity _entity;
     [SerializeField] private LayoutElement _layout;
     [SerializeField] private Image _avatar;
@@ -13,7 +15,15 @@ public class TurnSlotUI: MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] private GameObject _grayOverlay;
     [SerializeField] private Image _outline;
     [SerializeField] private Image _background;
+    private CameraController _cameraController;
 
+    public void OnPointerClick(PointerEventData eventData) {
+        _cameraController.isFollowing = false;
+        var entityObj = EntityManager.Instance.GetEntityObject(_entity.entityId);
+        Vector3 targetPos = new Vector3(entityObj.transform.position.x, entityObj.transform.position.y, _cameraController.transform.position.z);
+        _cameraController.transform.DOMove(targetPos, 0.5f).SetEase(Ease.OutQuart);
+    }
+    
     public void OnPointerEnter(PointerEventData eventData) {
         HoverUIManager.Instance.Show(_entity);
     }
@@ -35,6 +45,8 @@ public class TurnSlotUI: MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         // 註冊血量變化事件
         _entity.OnHpChanged += UpdateRedOverlay;
+
+        _cameraController = Camera.main.GetComponent<CameraController>();
 
         // 初始化顯示
         UpdateRedOverlay();
