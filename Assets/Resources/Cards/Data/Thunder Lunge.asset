@@ -20,7 +20,7 @@ MonoBehaviour:
   rarity: 2
   cost: 1
   range: 3
-  partical: 1
+  partical: 2
   damage: 15
   effects: []
   attackTimes: 1

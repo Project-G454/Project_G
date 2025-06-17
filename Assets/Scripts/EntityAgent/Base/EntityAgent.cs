@@ -21,6 +21,8 @@ namespace Agents {
         public AgentStateHandler stateHandler;
         private bool _isBinded = false;
         public bool canMove = true;
+        public bool endMoving = true;
+        private bool forceEndAction = false;
 
         public void Start() {
             Bind();
@@ -43,12 +45,13 @@ namespace Agents {
 
         public void ResetState() {
             canMove = true;
+            forceEndAction = false;
         }
 
         public AgentAction DecisionStrategy() {
             const int ESCAPE_RANGE = 5;
 
-            if (!HasResource()) {
+            if (!HasResource() || forceEndAction) {
                 Debug.Log("No Resource");
                 return AgentAction.End;
             }
@@ -96,12 +99,11 @@ namespace Agents {
                     strategy = new StrategyEnd();
                     break;
             }
+
             bool success = strategy?.Execute(this) ?? false;
-            if (!success) {
-                strategy = new StrategyEnd();
-                strategy.Execute(this);
-            }
-            return success;
+            if (!success) forceEndAction = true;
+
+            return true;
         }
 
         // --- Helper functions ---

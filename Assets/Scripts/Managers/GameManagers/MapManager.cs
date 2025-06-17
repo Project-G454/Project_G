@@ -1,3 +1,4 @@
+using System;
 using Core.Entities;
 using Core.Interfaces;
 using Entities;
@@ -36,7 +37,7 @@ namespace Core.Managers {
             }
         }
 
-        public void MoveTo(Vector2 targetPos) {
+        public void MoveTo(Vector2 targetPos, Action onComplete = null) {
             Vector2 clickPosition = new Vector2(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
             var selectedTileData = _gridManager.GetTileAtPosition(clickPosition);
 
@@ -59,7 +60,7 @@ namespace Core.Managers {
                 }
 
                 if (DistanceManager.Instance.IsTileInRange(playerPos, clickedPos)) {
-                    moveHandler.MoveToPosition(clickPosition);
+                    moveHandler.MoveToPosition(clickPosition, onComplete);
                     Entity entity = _entityManager.GetEntity(playerId);
 
                     // 簡化版本 - 直接指派

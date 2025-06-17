@@ -47,15 +47,11 @@ public class TurnSlotUI: MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     public void UpdateRedOverlay() {
-
-        Debug.Log("UpdateRedOverlay");
         float hpPercent = (float)_entity.currentHp / _entity.maxHp;
-        Debug.Log($"hpPercent: {hpPercent}");
 
         _redOverlay.anchorMax = new Vector2(1, 1 - hpPercent);
         _redOverlay.offsetMin = Vector2.zero;
         _redOverlay.offsetMax = Vector2.zero;
-        Debug.Log($"RedOverlay anchor after: {_redOverlay.anchorMax.y}");
     }
 
     public void AnimateFocus(bool isCurrent) {

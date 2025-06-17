@@ -8,8 +8,6 @@ using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorldMap;
-using WorldMap.Models;
-using Entities;
 
 namespace Core.Managers {
     public class LoadSceneManager: MonoBehaviour, IManager {
