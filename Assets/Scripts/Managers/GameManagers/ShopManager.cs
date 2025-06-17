@@ -79,8 +79,8 @@ namespace Core.Managers {
         private IEnumerator _PlayerLoop() {
             foreach (var player in _playerStateManager.GetAllPlayer()) {
                 _SetEndAction();
-                _Roll(3, player.entityClass);
                 _LoadPlayerData(player.playerId);
+                _Roll(3, player.entityClass);
                 UpdateShopState();
                 _isInit = true;
 

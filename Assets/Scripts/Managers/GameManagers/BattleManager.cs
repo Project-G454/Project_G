@@ -175,13 +175,15 @@ namespace Core.Managers {
                 if (currentEntity.IsDead()) continue;
                 _SetEntitiesShadow();
 
+                bool isStunned = currentEntity.IsStunned();
+
                 Debug.Log("Effect Phase (Before)");
                 _effectManager.BeforeTurn();
                 yield return new WaitUntil(() => _effectManager.isTurnFinished);
 
                 if (currentEntity.IsDead()) continue;
 
-                if (!currentEntity.IsStunned()) {
+                if (!isStunned) {
                     Debug.Log("Card Phase");
                     UnlockAgent();
                     _cardManager.StartTurn();

@@ -17,7 +17,7 @@ namespace Shop.Items {
             _cardItem = data;
             base.Init();
 
-            if (cardData == null) cardData = data.card;
+            if (cardData != null) data.card = cardData;
             Card card = new Card(cardData);
             CardBehaviour cb = cardObj.GetComponent<CardBehaviour>();
             cb.Init(cardObj, card);
