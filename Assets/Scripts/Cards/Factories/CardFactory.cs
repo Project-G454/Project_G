@@ -29,6 +29,9 @@ namespace Cards.Factories {
                 case CardTypes.SUMMON:
                     card = new SummonCard(cardData as SummonCardData);
                     break;
+                case CardTypes.FUNCTIONAL:
+                    card = new FunctionalCard(cardData as FunctionalCardData);
+                    break;
                 default:
                     break;
             }

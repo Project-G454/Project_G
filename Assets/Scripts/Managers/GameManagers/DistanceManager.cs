@@ -34,22 +34,27 @@ namespace Core.Managers {
             Instance = this;
         }
 
-        public void ShowReachableTiles(Vector2Int origin) {
-            Debug.Log("ShowReachableTiles");
+        public void ShowReachableTiles(Vector2Int origin, int range=-1, bool needWalkable=true) {
+            if (range == -1) range = maxDistance;
             ClearHighlights();
+            if (range == 0) {
+                GridManager.Instance.SetTileHighlight(origin, true, false);
+                currentHighlightPositions.Add(origin);
+                return;
+            }
 
-            for (int dx = -maxDistance; dx <= maxDistance; dx++) {
-                for (int dy = -maxDistance; dy <= maxDistance; dy++) {
+            for (int dx = -range; dx <= range; dx++) {
+                for (int dy = -range; dy <= range; dy++) {
                     int dist = Mathf.Abs(dx) + Mathf.Abs(dy);
-                    if (dist <= maxDistance) {
+                    if (dist <= range) {
                         Vector2Int tilePos = origin + new Vector2Int(dx, dy);
 
                         // 檢查是否可行走
-                        if (!GridManager.Instance.GetTileWalkable((Vector2)tilePos)) continue;
+                        if (needWalkable && !GridManager.Instance.GetTileWalkable((Vector2)tilePos)) continue;
 
                         // 使用 Tilemap 高亮系統
                         Vector2 pos = (Vector2)tilePos;
-                        GridManager.Instance.SetTileHighlight(pos, true, true); // needWalkable = true
+                        GridManager.Instance.SetTileHighlight(pos, true, needWalkable); // needWalkable = true
 
                         // 記錄位置以便後續清除
                         currentHighlightPositions.Add(pos);
@@ -61,7 +66,7 @@ namespace Core.Managers {
         public void ClearHighlights() {
             // 清除所有記錄的高亮位置
             foreach (var pos in currentHighlightPositions) {
-                GridManager.Instance.SetTileHighlight(pos, false);
+                GridManager.Instance.SetTileHighlight(pos, false, false);
             }
             currentHighlightPositions.Clear();
         }

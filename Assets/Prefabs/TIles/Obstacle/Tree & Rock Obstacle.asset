@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: Tree & Rock Obstacle
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300134, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  m_DefaultSprite: {fileID: -907556744, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 21300136, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
-    - {fileID: 21300134, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
-    - {fileID: 21300140, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
-    - {fileID: 21300080, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+    - {fileID: -1531140831, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
+    - {fileID: 1418228880, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
+    - {fileID: 269235476, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

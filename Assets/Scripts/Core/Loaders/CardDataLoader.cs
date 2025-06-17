@@ -30,7 +30,8 @@ namespace Core.Loaders.Cards {
                 CardTypes.MAGIC => "Purple",
                 CardTypes.ENERGY => "Blue",
                 CardTypes.HEAL => "Green",
-                CardTypes.DEFENCE => "Yellow",
+                CardTypes.SUMMON => "Yellow",
+                CardTypes.FUNCTIONAL => "Yellow",
                 _ => "Red" // 預設值
             };
             return Resources.LoadAll<Sprite>("Cards/Card_v2").FirstOrDefault(e => e.name == $"Card_Type_{color}");

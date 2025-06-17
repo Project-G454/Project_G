@@ -9,10 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: Lava Wall
+  m_Script: {fileID: 11500000, guid: d42fb63602ce32e4db7b879987b3013c, type: 3}
+  m_Name: Test Draw
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 963518308, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
-  m_DefaultGameObject: {fileID: 0}
-  m_DefaultColliderType: 1
-  m_TilingRules: []
+  id: 0
+  cardName: Unknown
+  description: 
+  desctiptionIds: 
+  classes: 00000000
+  rarity: 0
+  cost: 0
+  range: 0
+  partical: 0
+  drawCount: 0
