@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 4077533291263753558}
   - component: {fileID: 2328070728321297548}
   - component: {fileID: 8199501866691936732}
+  - component: {fileID: 5446821636866497804}
   m_Layer: 0
   m_Name: Entity
   m_TagString: Card Receiver
@@ -257,3 +258,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers: 00000000
+--- !u!210 &5446821636866497804
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8023814419902361496}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 4
+  m_SortAtRoot: 0

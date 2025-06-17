@@ -171,11 +171,13 @@ namespace Core.Managers {
             currentObstacleTile = style.obstacleTile;
             currentBackgroundTile = style.backgroundTile;
 
-            if (obstacleTilemap != null) {
-                Vector3 pos = obstacleTilemap.transform.localPosition;
-                pos.y = style.obstacleYOffset;  // 直接設定 Y 軸偏移
-                obstacleTilemap.transform.localPosition = pos;
-            }
+            Vector3 wallPos = wallTilemap.transform.localPosition;
+            wallPos.y = style.wallYOffset;
+            wallTilemap.transform.localPosition = wallPos;
+
+            Vector3 obstaclePos = obstacleTilemap.transform.localPosition;
+            obstaclePos.y = style.obstacleYOffset;
+            obstacleTilemap.transform.localPosition = obstaclePos;
 
             decorationProbability = style.decorationProbability;
             obstacleProbability = style.obstacleProbability;

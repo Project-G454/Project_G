@@ -10,7 +10,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using WorldMap.Animations;
 using WorldMap.Models;
-using Entities;
 using Entities.Factories;
 
 namespace WorldMap {
@@ -76,7 +75,7 @@ namespace WorldMap {
         public void OnMouseUp() {
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
-                
+
             if (this.isLocked || this.isVisited) {
                 if (this.animator) {
                     animator.Shake();
@@ -115,8 +114,8 @@ namespace WorldMap {
             List<EntityData> entityDatas = new();
             int count = 1;
             for (int i = 0; i < Math.Max(2, stage % 3); i++) {
-                EntityClasses eclass = (EntityClasses) UnityEngine.Random.Range(1, 5);
-                var hp = (int) (EntityFactory.GetHp(eclass) * 0.5);
+                EntityClasses eclass = (EntityClasses)UnityEngine.Random.Range(1, 5);
+                var hp = (int)(EntityFactory.GetHp(eclass) * 0.5);
                 entityDatas.Add(new EntityData(
                     hp,
                     hp,
