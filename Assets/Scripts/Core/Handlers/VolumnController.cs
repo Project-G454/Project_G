@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace Core.Handlers {
         public void SetFXVol() => _SetVolumn("FX");
 
         private void _SetVolumn(string mixerName) {
-            float vol = slider.value;
+            float vol = Mathf.Log10(slider.value) * 20;
             targetMixer.SetFloat(mixerName, vol);
         }
     }

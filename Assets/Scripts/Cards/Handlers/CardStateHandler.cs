@@ -22,6 +22,8 @@ namespace Cards.Handlers {
         private DescriptionManager _descriptionManager;
         private CardBehaviour _cardBehaviour;
         private UseCardHandler _useCardHandler;
+        private DistanceManager _distanceManager;
+        private BattleManager _battleManager;
 
         // --- arguments ---
         private CardState _currentState = CardState.Idle;
@@ -34,6 +36,8 @@ namespace Cards.Handlers {
             _canvasGroup = GetComponent<CanvasGroup>();
             _useCardHandler = GetComponent<UseCardHandler>();
             _descriptionManager = DescriptionManager.Instance;
+            _distanceManager = DistanceManager.Instance;
+            _battleManager = BattleManager.Instance;
         }
 
         void Start() {
@@ -80,6 +84,9 @@ namespace Cards.Handlers {
             // }
             _prevState = _currentState;
             _currentState = newState;
+            if (_distanceManager != null) {
+                _distanceManager.ClearHighlights();
+            }
         }
 
         public CardState GetState() {
@@ -129,6 +136,15 @@ namespace Cards.Handlers {
             
             Card card = _cardBehaviour.card;
             _descriptionManager.ShowOnly(card.desctiptionIds);
+
+            if (
+                _distanceManager != null &&
+                _battleManager != null &&
+                _battleManager.currentEntity != null
+            ) {
+                Vector2 pos = _battleManager.currentEntity.position;
+                _distanceManager.ShowReachableTiles(new Vector2Int((int)pos.x, (int)pos.y), card.range, false);
+            }
 
             if (_eventHandler.IsPointerExit()) SetState(CardState.Idle);
             else if (_eventHandler.IsDragging()) SetState(CardState.Dragging);
