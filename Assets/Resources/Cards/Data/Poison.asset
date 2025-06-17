@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Corrosive Touch
+  m_Name: Poison
   m_EditorClassIdentifier: 
-  id: 7
-  cardName: Corrosive Touch
-  description: Apply Poison for 5 turns
+  id: 13
+  cardName: Poison
+  description: Apply 5 Poision
   desctiptionIds: 01000000
   classes: 03000000
-  rarity: 2
+  rarity: 3
   cost: 1
   range: 3
   partical: 1

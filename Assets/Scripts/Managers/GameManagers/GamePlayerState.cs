@@ -12,7 +12,13 @@ namespace Core.Game {
         public EntityClasses entityClass;
         public List<int> deck = new List<int>();
         public int maxHp = 100;
-        public int currentHp = 100;
+        private int _currentHp = 100;
+        public int currentHp {
+            get => _currentHp;
+            set {
+                _currentHp = Mathf.Clamp(value, 0, maxHp);
+            }
+        }
         public int gold = 0;
 
         public GamePlayerState(int id, string name, EntityClasses entityClass, int gold, Sprite avatar = null) {

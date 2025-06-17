@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e72c756dec42b848afdb7c5952576e3, type: 3}
-  m_Name: Minor Heal
+  m_Script: {fileID: 11500000, guid: d42fb63602ce32e4db7b879987b3013c, type: 3}
+  m_Name: Spell Recall
   m_EditorClassIdentifier: 
-  id: 16
-  cardName: Minor Heal
-  description: Restore 10 HP
+  id: 19
+  cardName: Spell Recall
+  description: Draw 2 Cards
   desctiptionIds: 
-  classes: 00000000
-  rarity: 1
-  cost: 1
+  classes: 04000000
+  rarity: 3
+  cost: 0
   range: 0
-  partical: 4
-  healingAmount: 10
+  partical: 0
+  drawCount: 2

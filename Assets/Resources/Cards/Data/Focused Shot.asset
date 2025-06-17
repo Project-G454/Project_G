@@ -9,16 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11654c11bd542d4ab4fc410cd05ea7d, type: 3}
-  m_Name: Mana Infusion
+  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
+  m_Name: Focused Shot
   m_EditorClassIdentifier: 
-  id: 13
-  cardName: Mana Infusion
-  description: Restore 3 energy
-  desctiptionIds: 010000000200000003000000
-  classes: 00000000
-  rarity: 2
-  cost: 0
-  range: 0
-  partical: 6
-  step: 3
+  id: 9
+  cardName: Focused Shot
+  description: Deal 20 Damage
+  desctiptionIds: 
+  classes: 02000000
+  rarity: 4
+  cost: 3
+  range: 5
+  partical: 0
+  damage: 20
+  effects: []
+  attackTimes: 1

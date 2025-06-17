@@ -9,20 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e049493342a5d2d4fa2c9f86b387a391, type: 3}
-  m_Name: Hellblight Toxin
+  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
+  m_Name: Flame Slash
   m_EditorClassIdentifier: 
-  id: 8
-  cardName: Hellblight Toxin
-  description: Apply Poison and Burn
-  desctiptionIds: 0100000002000000
-  classes: 00000000
-  rarity: 3
+  id: 2
+  cardName: Flame Slash
+  description: 'Deal 7 Damage
+
+    Apply 1 Burn'
+  desctiptionIds: 02000000
+  classes: 01000000
+  rarity: 2
   cost: 1
-  range: 3
-  partical: 2
+  range: 1
+  partical: 0
+  damage: 7
   effects:
-  - effectData: {fileID: 11400000, guid: bd1a9a60f219ada40bebab1a38476cf9, type: 2}
-    rounds: 1
   - effectData: {fileID: 11400000, guid: b277e731c6f47c448b7a02ac32741c9b, type: 2}
     rounds: 1
+  attackTimes: 1
