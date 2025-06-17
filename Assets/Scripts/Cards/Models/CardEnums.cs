@@ -6,7 +6,8 @@ namespace Cards.Data {
         ENERGY,
         DEFENCE,
         HEAL,
-        SUMMON
+        SUMMON,
+        FUNCTIONAL
     }
 
     public enum CardRarity {

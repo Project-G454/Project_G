@@ -98,9 +98,11 @@ namespace Core.Managers.Cards {
             foreach (CardData card in cards) {
                 Add(card);
             }
+            ResetCardsPosition();
+        }
 
+        public void ResetCardsPosition() {
             CardAnimation.Deal(cardParent, cardList);
-
             foreach (GameObject cardObj in cardList) {
                 CardView view = cardObj.GetComponent<CardView>();
                 view.RecordInitialState();

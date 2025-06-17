@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Cards.Data;
 using Core.Entities;
 using Core.Managers;
+using Core.Managers.Cards;
 using Effects;
 using Entities;
 using UnityEngine;
@@ -49,6 +51,17 @@ namespace Systems.Interactions
             }
 
             BattleManager.Instance.BindAgents();
+        }
+
+        public static void ApplyDraw(int targetId, int amount) {
+            Entity target = EntityManager.Instance.GetEntity(targetId);
+            List<int> ids = target.deckManager.DrawCards(amount);
+            CardManager cardManager = CardManager.Instance;
+            foreach (int id in ids) {
+                CardData cardData = cardManager.GetCardById(id);
+                cardManager.Add(cardData);
+            }
+            cardManager.ResetCardsPosition();
         }
     }
 }

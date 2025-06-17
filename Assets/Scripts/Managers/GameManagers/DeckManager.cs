@@ -1,6 +1,7 @@
 using UnityEngine;
 using Piles;
 using Core.Interfaces;
+using System.Collections.Generic;
 
 namespace Core.Managers.Deck {
     /// <summary>
@@ -25,15 +26,20 @@ namespace Core.Managers.Deck {
             draw.Shuffle();
         }
 
-        public void DrawCards(int amount) {
+        public List<int> DrawCards(int amount) {
+            Debug.Log($"Draw {amount} cards.");
+            List<int> results = new();
             for (int i = 0; i < amount; i++) {
                 if (draw.Count == 0)
                     ReshuffleDiscardIntoDraw();
 
                 var cardId = draw.Draw();
-                if (cardId != null)
+                if (cardId != null) {
                     hand.Add(cardId.Value);
+                    results.Add(cardId.Value);
+                }
             }
+            return results;
         }
 
         public void DiscardHand() {
