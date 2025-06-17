@@ -138,7 +138,7 @@ namespace Core.Managers {
             if (_globalUIManager == null) Init();
             _globalUIManager.confirmAlertUI.Show(
                 "Exit",
-                "Return to world map?",
+                "Return to main menu?",
                 () => _LoadScene("MainMenu")
             );
         }
