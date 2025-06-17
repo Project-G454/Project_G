@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d42fb63602ce32e4db7b879987b3013c, type: 3}
   m_Name: Test Draw
   m_EditorClassIdentifier: 
-  id: 0
-  cardName: Unknown
-  description: 
+  id: 22
+  cardName: Test Draw
+  description: Draw 2 cards
   desctiptionIds: 
-  classes: 00000000
-  rarity: 0
+  classes: 01000000
+  rarity: 5
   cost: 0
   range: 0
-  partical: 0
-  drawCount: 0
+  partical: 5
+  drawCount: 2

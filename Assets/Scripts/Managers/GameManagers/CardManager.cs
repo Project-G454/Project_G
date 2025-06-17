@@ -149,9 +149,8 @@ namespace Core.Managers.Cards {
             int rng = UnityEngine.Random.Range(0, effectAudios.Count);
             SoundFXManager.Instance.PlaySound(effectAudios[rng], SoundType.FX, targetObj.transform.position);
             EntityAnimation.PlayAnimationOnce(currObj, PlayerState.ATTACK);
-            EntityAnimation.PlayAnimationOnce(targetObj, PlayerState.DAMAGED);
-            if (targetEntity.IsDead()) EntityAnimation.PlayAnimation(targetObj, PlayerState.DEATH);
             currentEntity.energyManager.Remove(cb.card.cost);
+            if (currentEntity.IsDead()) EndTurn();
             return true;
         }
 

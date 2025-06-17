@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Managers.Deck;
 using Core.Managers.Energy;
 using Effects;
+using Entities.Animations;
 using UnityEngine;
 
 namespace Entities {
@@ -56,6 +58,9 @@ namespace Entities {
 
         public void TakeDamage(int amount) {
             currentHp -= amount;
+            GameObject gameObject = EntityManager.Instance.GetEntityObject(entityId);
+            EntityAnimation.PlayAnimationOnce(gameObject, PlayerState.DAMAGED);
+            if (IsDead()) EntityAnimation.PlayAnimation(gameObject, PlayerState.DEATH);
             Debug.Log(String.Format("{0}.{1} : {2}/{3}", entityId, entityName, currentHp, maxHp));
         }
 
