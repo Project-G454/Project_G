@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: Lava Wall
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 963518308, guid: b631ed305dfd43c488e0f8edf5c829bc, type: 3}
+  m_DefaultSprite: {fileID: -2954374501198498825, guid: 6c93e7451b52146dba9b71e917b3c7bc,
+    type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
