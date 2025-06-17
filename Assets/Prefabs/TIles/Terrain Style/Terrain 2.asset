@@ -15,10 +15,10 @@ MonoBehaviour:
   styleName: Default Style
   obstacleYOffset: -0.4
   wallYOffset: 0.18
-  floorTile: {fileID: 11400000, guid: 10b9abfa2075e44dfa80bd5c2503bf22, type: 2}
+  floorTile: {fileID: 11400000, guid: 9223e7e7d90db46e2a459387240fd19b, type: 2}
   wallTile: {fileID: 11400000, guid: 8ac2d759c81f44325a5764b5c25ee941, type: 2}
   decorationTile: {fileID: 11400000, guid: 94849178e7f40484d9c9899a91ac6a3f, type: 2}
-  obstacleTile: {fileID: 11400000, guid: cd3512e5ba9a746d5ac9f616130014f0, type: 2}
+  obstacleTile: {fileID: 11400000, guid: 2059f8409d8ca407cb3d9dbd00a715e7, type: 2}
   backgroundTile: {fileID: 11400000, guid: b2681444d7d4a4049b498753f23ac8e1, type: 2}
   decorationProbability: 0.3
   obstacleProbability: 0.15
