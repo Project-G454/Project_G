@@ -93,7 +93,7 @@ namespace WorldMap {
 
             switch (this.data.nodeType) {
                 case NodeType.Boss:
-                    LoadSceneManager.Instance.LoadBattleScene(this, SetBossEntities());
+                    LoadSceneManager.Instance.LoadBattleScene(this, SetBossEntities(), true);
                     break;
                 case NodeType.Battle:
                     LoadSceneManager.Instance.LoadBattleScene(this, SetEntities());

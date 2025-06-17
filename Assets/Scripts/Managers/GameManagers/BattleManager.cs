@@ -43,6 +43,8 @@ namespace Core.Managers {
         private bool _allEnemiesDead = false;
         private bool _allPlayersDead = false;
         private List<EntityData> _entityDatas;
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioSource _bossAudioSource;
 
         private void Awake() {
             Instance = this;
@@ -62,8 +64,10 @@ namespace Core.Managers {
             // StartBattle();
         }
 
-        public void EntryWithEntityData(List<EntityData> e) {
+        public void EntryWithEntityData(List<EntityData> e, bool isBossLevel = false) {
             _entityDatas = e;
+            if (isBossLevel) _bossAudioSource.Play();
+            else _audioSource.Play();
         }
 
         private void _InitCamera() {

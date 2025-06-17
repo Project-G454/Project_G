@@ -17,6 +17,7 @@ namespace Core.Managers {
         private string _loadingSceneName;
         public TransitionHandler transHandler;
         private List<EntityData> _entityDatas;
+        private bool _isBossLevel = false;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -68,7 +69,7 @@ namespace Core.Managers {
                         WorldMapManager.Instance.Entry();
                         break;
                     case "SceneCiel":
-                        if (_entityDatas.Count > 0) BattleManager.Instance.EntryWithEntityData(_entityDatas);
+                        if (_entityDatas.Count > 0) BattleManager.Instance.EntryWithEntityData(_entityDatas, _isBossLevel);
                         else BattleManager.Instance.Entry();
                         break;
                     case "Shop":
@@ -80,9 +81,10 @@ namespace Core.Managers {
             };
         }
 
-        public void LoadBattleScene(MapNode node, List<EntityData> entityDatas = null) {
+        public void LoadBattleScene(MapNode node, List<EntityData> entityDatas = null, bool isBossLevel = false) {
             if (_globalUIManager == null) Init();
             if (entityDatas.Count > 0) this._entityDatas = entityDatas;
+            _isBossLevel = isBossLevel;
             _globalUIManager.stageAlertUI.Show(
                 node,
                 () => _LoadScene("SceneCiel")
