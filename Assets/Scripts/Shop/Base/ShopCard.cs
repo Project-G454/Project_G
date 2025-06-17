@@ -13,11 +13,12 @@ namespace Shop.Items {
         private ShopCardSO _cardItem;
         public GameObject cardObj;
 
-        public void Init(ShopCardSO data) {
+        public void Init(ShopCardSO data, CardData cardData = null) {
             _cardItem = data;
             base.Init();
-            
-            Card card = new Card(data.card);
+
+            if (cardData == null) cardData = data.card;
+            Card card = new Card(cardData);
             CardBehaviour cb = cardObj.GetComponent<CardBehaviour>();
             cb.Init(cardObj, card);
         }
