@@ -16,7 +16,7 @@ MonoBehaviour:
   obstacleYOffset: -0.4
   wallYOffset: 0
   floorTile: {fileID: 11400000, guid: d4a63e982fdbe41d19ebcb7cffd87650, type: 2}
-  wallTile: {fileID: 11400000, guid: 439718605ceb24452b672ba4f527e20e, type: 2}
+  wallTile: {fileID: 11400000, guid: 13be62fe79a042f4d9c7afeb9c77f597, type: 2}
   decorationTile: {fileID: 11400000, guid: 94849178e7f40484d9c9899a91ac6a3f, type: 2}
   obstacleTile: {fileID: 11400000, guid: cd3512e5ba9a746d5ac9f616130014f0, type: 2}
   backgroundTile: {fileID: 11400000, guid: 1dc7248fb982447339f122def4b39c9d, type: 2}
