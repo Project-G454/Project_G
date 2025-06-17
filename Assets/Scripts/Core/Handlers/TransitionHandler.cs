@@ -5,8 +5,15 @@ namespace Core.Handlers {
     public class TransitionHandler: MonoBehaviour {
         public RuntimeAnimatorController anim;
         public Animator _animator;
+        public static TransitionHandler Instance;
 
         void Awake() {
+            if (Instance != null && Instance != this) {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
 

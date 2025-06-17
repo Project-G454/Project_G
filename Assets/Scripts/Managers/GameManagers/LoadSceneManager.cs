@@ -131,6 +131,16 @@ namespace Core.Managers {
             if (_globalUIManager == null) Init();
             _LoadScene("GameOver");
         }
+
+        public void LoadMainMenuScene() {
+            if (_globalUIManager == null) Init();
+            _globalUIManager.confirmAlertUI.Show(
+                "Exit",
+                "Return to world map?",
+                () => _LoadScene("MainMenu")
+            );
+        }
+
         public void LoadVictoryScene() {
             if (_globalUIManager == null) Init();
             _LoadScene("Victory");
