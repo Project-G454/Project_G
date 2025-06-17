@@ -20,8 +20,8 @@ namespace Entities.Factories
             // Class, Card IDs, Initial HP
             { EntityClasses.WARRIOR, new ClassInfo(new List<int> { 1, 1, 1, 2, 2, 3, 4, 4, 4, 5 }, 100) },
             { EntityClasses.RANGER,  new ClassInfo(new List<int> { 4, 6, 6, 6, 6, 7, 7, 8, 8, 9 }, 80)  },
-            { EntityClasses.ROGUE,   new ClassInfo(new List<int> { 1, 10, 10, 10, 10, 11, 11, 12, 13, 13 }, 70)  },
-            { EntityClasses.WIZARD,  new ClassInfo(new List<int> { 14, 14, 15, 15, 16, 17 }, 60)  },
+            { EntityClasses.ROGUE,   new ClassInfo(new List<int> { 10, 10, 10, 10, 11, 11, 12, 13, 13, 18 }, 70)  },
+            { EntityClasses.WIZARD,  new ClassInfo(new List<int> { 14, 14, 14, 15, 15, 16, 17, 19, 19, 20 }, 60)  },
             { EntityClasses.Boss,  new ClassInfo(new List<int> { 21 }, 300)  },
             { EntityClasses.Minion,  new ClassInfo(new List<int> { 1 }, 20)  }
         };

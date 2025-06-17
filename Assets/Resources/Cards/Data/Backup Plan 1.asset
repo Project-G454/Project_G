@@ -9,20 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740b1664e40055d4fbde62b369a045bf, type: 3}
-  m_Name: Arcane Missiles
+  m_Script: {fileID: 11500000, guid: d42fb63602ce32e4db7b879987b3013c, type: 3}
+  m_Name: Backup Plan 1
   m_EditorClassIdentifier: 
-  id: 15
-  cardName: Arcane Missiles
-  description: 'Deal 2 Damage
-
-    x6 hits'
+  id: 18
+  cardName: Backup Plan
+  description: Draw 2 Cards
   desctiptionIds: 
-  classes: 04000000
+  classes: 03000000
   rarity: 1
-  cost: 1
-  range: 3
+  cost: 0
+  range: 0
   partical: 0
-  damage: 2
-  effects: []
-  attackTimes: 6
+  drawCount: 2

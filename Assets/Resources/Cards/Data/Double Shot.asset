@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Double Shot
   description: 'Deal 5 Damage
 
-    x2 hits'
+    x2 Hits'
   desctiptionIds: 
   classes: 02000000
   rarity: 1

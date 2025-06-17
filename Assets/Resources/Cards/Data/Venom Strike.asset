@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   cardName: Venom Strike
-  description: 'Deal 3 damage
+  description: 'Deal 3 Damage
 
     Apply 2 Poison'
   desctiptionIds: 01000000

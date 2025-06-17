@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Focused Shot
   description: Deal 20 Damage
   desctiptionIds: 
-  classes: 00000000
+  classes: 02000000
   rarity: 2
   cost: 3
   range: 5

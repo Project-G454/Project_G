@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 16
   cardName: Spark
-  description: Restore 1 energy
+  description: Restore 1 Energy
   desctiptionIds: 01000000
-  classes: 00000000
+  classes: 01000000020000000300000004000000
   rarity: 1
   cost: 0
   range: 0
