@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Interfaces;
 using Core.Loaders.WorldMap;
+using Core.UI;
 using Entities;
 using Mono.Cecil;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace Core.Managers.WorldMap {
         private List<int> _disabledNodeIds = new();
         private Vector3 _cameraPosition;
         private float _cameraZoom = -1;
+        public PlayerStatusOverlay playerStatusOverlay;
 
         void Awake() {
             if (Instance != null && Instance != this) {
@@ -45,6 +47,15 @@ namespace Core.Managers.WorldMap {
             Entry();
         }
 
+        void Update() {
+            if (Input.GetKeyDown(KeyCode.Tab)) {
+                playerStatusOverlay.Show();
+            }
+            if (Input.GetKeyUp(KeyCode.Tab)) {
+                playerStatusOverlay.Hide();
+            }
+        }
+
         public void Entry() {
             if (!isInit) {
                 Debug.Log("Init worldmap");
@@ -53,8 +64,11 @@ namespace Core.Managers.WorldMap {
                 PlayerStateManager.Instance.AddPlayer(0, "Player1", EntityClasses.WARRIOR, 100);
                 PlayerStateManager.Instance.AddPlayer(1, "Player2", EntityClasses.RANGER, 100);
                 PlayerStateManager.Instance.AddPlayer(2, "Player3", EntityClasses.ROGUE, 100);
+                PlayerStateManager.Instance.AddPlayer(3, "Player4", EntityClasses.WIZARD, 100);
             }
-            
+
+            playerStatusOverlay.Hide();
+            playerStatusOverlay.Set();
             if (currentNodeId > 0) resovedNodeIds.Add(currentNodeId);
             LoadCameraState();
             map = GenerateMap(nodes);

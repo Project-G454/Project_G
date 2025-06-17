@@ -50,7 +50,7 @@ namespace Core.Entities {
 
             entity.avatar = CaptureHeadSetFromEntity(newEntity);
             var playerState = PlayerStateManager.Instance.GetPlayer(id);
-            if (playerState != null) {
+            if (playerState != null && entity.avatar != null) {
                 playerState.avatar = entity.avatar;
             }
 

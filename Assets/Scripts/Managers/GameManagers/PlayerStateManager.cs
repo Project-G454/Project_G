@@ -3,12 +3,15 @@ using UnityEngine;
 using Core.Game;
 using Entities;
 using Core.Interfaces;
+using Entities.Handlers;
+using Entities.Models;
 
 public class PlayerStateManager : MonoBehaviour, IManager {
     public static PlayerStateManager Instance { get; private set; }
-
     [SerializeField] private List<GamePlayerState> allPlayers = new List<GamePlayerState>();
     private Dictionary<int, GamePlayerState> players = new Dictionary<int, GamePlayerState>();
+    public Camera renderCam;
+    
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -21,8 +24,13 @@ public class PlayerStateManager : MonoBehaviour, IManager {
     }
 
     public void AddPlayer(int id, string name, EntityClasses entityClass, int gold = 0) {
+        CharacterVisualHandler visualHandler = GetComponent<CharacterVisualHandler>();
         if (!players.ContainsKey(id)) {
-            var state = new GamePlayerState(id, name, entityClass, gold);
+            CharacterVisualSO visualSO = visualHandler.GetVisual(entityClass);
+            GameObject character = visualSO.characterPrefab;
+            SPUM_Prefabs characterScript = character.GetComponent<SPUM_Prefabs>();
+            Sprite headSprite = PrefabRenderer.RenderHeadToSprite(characterScript.head, renderCam, 1024, 1024);
+            var state = new GamePlayerState(id, name, entityClass, gold, headSprite);
             players[id] = state;
             allPlayers.Add(state);
         }

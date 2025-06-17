@@ -63,7 +63,9 @@ namespace Shop.Items {
         }
 
         private void _Lock() {
+            if (this.state != ShopItemState.Available) return;
             this.state = ShopItemState.SoldOut;
+            Flip(0.3f);
         }
 
         public void Flip(float duration = 0.5f){

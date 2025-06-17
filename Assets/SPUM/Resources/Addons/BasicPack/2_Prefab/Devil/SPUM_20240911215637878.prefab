@@ -5680,6 +5680,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 1ef525d53ae254f7d82ef364ced85490, type: 2}
   - {fileID: 7400000, guid: fabe4f140fdb9cb448bc941c7c93e8b6, type: 2}
   shadow: {fileID: 3990691402411093834}
+  head: {fileID: 2571207390791828487}
 --- !u!1 &4269039688201717113
 GameObject:
   m_ObjectHideFlags: 0

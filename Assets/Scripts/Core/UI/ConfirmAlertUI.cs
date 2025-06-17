@@ -26,6 +26,9 @@ namespace Core.UI {
             titleText.text = title;
             descriptionText.text = msg;
 
+            confirmButton.onClick.RemoveAllListeners();
+            cancelButton.onClick.RemoveAllListeners();
+
             confirmButton.onClick.AddListener(() => {
                 Hide(OnComfirm);
             });

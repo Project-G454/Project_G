@@ -15,7 +15,7 @@ namespace Core.Game {
         public int currentHp = 100;
         public int gold = 0;
 
-        public GamePlayerState(int id, string name, EntityClasses entityClass, int gold) {
+        public GamePlayerState(int id, string name, EntityClasses entityClass, int gold, Sprite avatar = null) {
             this.playerId = id;
             this.playerName = name;
             this.entityClass = entityClass;
@@ -23,6 +23,7 @@ namespace Core.Game {
             this.maxHp = EntityFactory.GetHp(entityClass);
             this.currentHp = this.maxHp;
             this.gold = gold;
+            this.avatar = avatar;
         }
     }
 }

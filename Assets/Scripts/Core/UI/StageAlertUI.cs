@@ -33,6 +33,9 @@ namespace Core.UI {
             nodeTypeText.text = node.data.nodeName;
             descriptionText.text = node.data.description;
 
+            confirmButton.onClick.RemoveAllListeners();
+            cancelButton.onClick.RemoveAllListeners();
+
             confirmButton.onClick.AddListener(() => {
                 Hide(OnComfirm);
             });
