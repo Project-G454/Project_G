@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 296458
   packageName: Dungeon Tale - Fantasy RPG Sprites FX Tileset
   packageVersion: 1.0
-  assetPath: Assets/Tileset/Dungeon Tale/Assets/Animations/Fx.ase
+  assetPath: Assets/Resources/Maps/Dungeon Tale/Assets/Animations/Fx.ase
   uploadId: 693043
 ScriptedImporter:
   internalIDToNameTable: []

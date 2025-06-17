@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Core.Managers;
 using Core.Managers.Energy;
+using Core.Utilities;
 using UnityEngine;
 
 namespace Entities.Handlers {
@@ -90,6 +91,8 @@ namespace Entities.Handlers {
             // 檢查目標位置是否可行走
             if (!_gridManager.GetTileWalkable(targetPosition))
                 return;
+
+            SmartCharacterSorting.SetCharacterSortingByEnvironment(gameObject, targetPosition);
 
             Vector2 currentPosition = transform.position; //目前座標
             this.onMoveEnd += onComplete;

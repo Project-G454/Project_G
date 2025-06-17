@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Terrain 3
   m_EditorClassIdentifier: 
   styleName: Default Style
-  obstacleYOffset: 0
-  floorTile: {fileID: 11400000, guid: 012ef3f12ca574c2ca8e65b2373a3d03, type: 2}
-  wallTile: {fileID: 11400000, guid: 439718605ceb24452b672ba4f527e20e, type: 2}
+  obstacleYOffset: -0.4
+  wallYOffset: 0.18
+  floorTile: {fileID: 11400000, guid: c865ebce179004a7dba2e9a6b55500c7, type: 2}
+  wallTile: {fileID: 11400000, guid: 8ac2d759c81f44325a5764b5c25ee941, type: 2}
   decorationTile: {fileID: 11400000, guid: 94849178e7f40484d9c9899a91ac6a3f, type: 2}
   obstacleTile: {fileID: 11400000, guid: 06d28b74977ca423dae6f22bd88e087b, type: 2}
   backgroundTile: {fileID: 11400000, guid: 1dc7248fb982447339f122def4b39c9d, type: 2}

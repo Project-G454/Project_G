@@ -6,6 +6,7 @@ using Entities.Factories;
 using Core.Interfaces;
 using Entities.Handlers;
 using Entities.Models;
+using Core.Utilities;
 
 namespace Core.Entities {
     /// <summary>
@@ -25,7 +26,11 @@ namespace Core.Entities {
             Instance = this;
         }
 
-        public void Reset() {}
+        public void Reset() { }
+
+        private void SetupCharacterSorting(Entity entity, GameObject entityObject) {
+            SmartCharacterSorting.SetCharacterSortingByEnvironment(entityObject, entity.position);
+        }
 
         public Entity CreateEntity(EntityData entityData, Vector3 position) {
             GameObject newEntity = Instantiate(dummy, entities);
@@ -38,7 +43,8 @@ namespace Core.Entities {
             int id;
             if (entityData is PlayerData playerData) {
                 id = playerData.playerId;
-            } else {
+            }
+            else {
                 id = nextEntityId++;
             }
             Entity entity = EntityFactory.MakeEntity(id, entityData);
@@ -56,6 +62,7 @@ namespace Core.Entities {
 
             RegisterEntity(entity, newEntity);
             InitDeckAndEnergy(entity);
+            SetupCharacterSorting(entity, newEntity);
             return entity;
         }
 
@@ -194,8 +201,7 @@ namespace Core.Entities {
             return Sprite.Create(trimmed, new Rect(0, 0, trimmed.width, trimmed.height), new Vector2(0.5f, 0.5f));
         }
 
-        public static Texture2D TrimTransparent(Texture2D sourceTex)
-        {
+        public static Texture2D TrimTransparent(Texture2D sourceTex) {
             int width = sourceTex.width;
             int height = sourceTex.height;
             Color32[] pixels = sourceTex.GetPixels32();

@@ -7,8 +7,9 @@ namespace Core.Managers {
         [Header("Terrain Information")]
         public string styleName = "Default Style";
 
-        [Header("Obstacle Y Offset")]
+        [Header("Y Offset")]
         public float obstacleYOffset = 0f;
+        public float wallYOffset = 0f;
 
         [Header("Tile Setting")]
         public RuleTile floorTile;

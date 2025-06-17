@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: 265cd2d7341f6ce448009ab6bf9f4aad
-NativeFormatImporter:
+guid: 2c47b77006e1bb842ba2c05f54fd55a7
+ShaderIncludeImporter:
   externalObjects: {}
-  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,5 +10,5 @@ AssetOrigin:
   productId: 296458
   packageName: Dungeon Tale - Fantasy RPG Sprites FX Tileset
   packageVersion: 1.0
-  assetPath: Assets/Resources/Maps/Dungeon Tale/Assets/Tiles/Floor Flash.asset
+  assetPath: Assets/Resources/Maps/Dungeon Tale/Assets/Materials/Shaders/LutLight.hlsl
   uploadId: 693043
