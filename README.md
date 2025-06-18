@@ -24,6 +24,9 @@ Created @ 20250314 - 20250618
 * **Version Control**: Git + Git LFS
 * **Platform**: Windows PC
 
+## 🎮 Try it
+- [Windows](Assets/Build/Windows_Project_G.zip)
+
 ## 📷 Screenshots
 ![image](https://github.com/user-attachments/assets/9bc1303f-d28b-4622-bbff-77e15daf2a17)
 ![image](https://github.com/user-attachments/assets/7ca9f537-7dc5-4b61-97bc-81fce45e01a6)
