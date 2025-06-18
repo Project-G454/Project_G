@@ -601,6 +601,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetMixer: {fileID: 24100000, guid: 9a20bdabd42e47d43a0d10cdeb9432b2, type: 2}
   slider: {fileID: 204832602}
+  mixerGroup: {fileID: -3844986651608196120, guid: 9a20bdabd42e47d43a0d10cdeb9432b2,
+    type: 2}
 --- !u!114 &204832602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,6 +1173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetMixer: {fileID: 24100000, guid: 9a20bdabd42e47d43a0d10cdeb9432b2, type: 2}
   slider: {fileID: 339694230}
+  mixerGroup: {fileID: 24300002, guid: 9a20bdabd42e47d43a0d10cdeb9432b2, type: 2}
 --- !u!1 &406457625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4473,6 +4476,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetMixer: {fileID: 24100000, guid: 9a20bdabd42e47d43a0d10cdeb9432b2, type: 2}
   slider: {fileID: 1840307401}
+  mixerGroup: {fileID: -8149585153284105092, guid: 9a20bdabd42e47d43a0d10cdeb9432b2,
+    type: 2}
 --- !u!114 &1840307401
 MonoBehaviour:
   m_ObjectHideFlags: 0

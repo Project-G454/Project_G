@@ -74,7 +74,7 @@ AudioMixerController:
   - guid: 30df79d636b90da42bb7e5c0ebd9d2e0
     name: Music
   - guid: cdd8faeac26f7084c81545d95bc485e2
-    name: FX
+    name: Sound FX
   m_AudioMixerGroupViews:
   - guids:
     - 999cf2a9ee9220f40817859ede5c28af
