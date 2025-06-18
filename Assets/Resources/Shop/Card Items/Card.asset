@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Card
   m_EditorClassIdentifier: 
   itemRarity: 1
-  price: 0
+  price: 10
   card: {fileID: 11400000, guid: 6d528a4625a0be944b9334740f1e4103, type: 2}

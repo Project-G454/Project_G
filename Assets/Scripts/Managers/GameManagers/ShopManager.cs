@@ -13,6 +13,7 @@ using System.Collections;
 using System;
 using Shop.Helpers;
 using Shop.Factories;
+using Entities;
 
 namespace Core.Managers {
     public class ShopManager: MonoBehaviour, IManager, IEntryManager {
@@ -78,8 +79,8 @@ namespace Core.Managers {
         private IEnumerator _PlayerLoop() {
             foreach (var player in _playerStateManager.GetAllPlayer()) {
                 _SetEndAction();
-                _Roll(3);
                 _LoadPlayerData(player.playerId);
+                _Roll(3, player.entityClass);
                 UpdateShopState();
                 _isInit = true;
 
@@ -95,12 +96,12 @@ namespace Core.Managers {
             this.playerId = playerId;
         }
 
-        private void _Roll(int times = 3) {
+        private void _Roll(int times = 3, EntityClasses classes = EntityClasses.UNSET) {
             _ClearShopItems();
             for (int i = 0; i < times; i++) {
                 ShopItemType type = ShopItemRoller.RollRandomTypes();
                 ShopItemRarity rarity = ShopItemRoller.RollRandomRarity();
-                items.Add(ShopItemCreater.CreateItem(type, rarity));
+                items.Add(ShopItemCreater.CreateItem(type, rarity, classes));
             }
         }
 

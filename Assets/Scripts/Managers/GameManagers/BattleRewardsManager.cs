@@ -29,11 +29,18 @@ namespace Core.Managers {
 
         public void Entry() {
             List<GamePlayerState> Players = PlayerStateManager.Instance.GetAllPlayer();
+            GiveGold(Players);
             ReviveDeadPlayers(Players);
             ShowRewards(Players);
         }
 
         public void Init() {
+        }
+
+        private void GiveGold(List<GamePlayerState> players) {
+            foreach (var player in players) {
+                player.gold += 10;
+            }
         }
 
         private void ReviveDeadPlayers(List<GamePlayerState> players) {
@@ -70,6 +77,9 @@ namespace Core.Managers {
                 var selectedCard = _panels[i].GetSelectedCard();
                 if (selectedCard != null) {
                     _players[i].deck.Add(selectedCard.cardData.id);
+                }
+                else {
+                    _players[i].gold += 10;
                 }
             }
 

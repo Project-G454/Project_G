@@ -469,7 +469,7 @@ MonoBehaviour:
   hoverFX:
   - {fileID: 8300000, guid: 27cf2044f756cf749ac37d7b441752ba, type: 3}
   clickFX:
-  - {fileID: 8300000, guid: 03bf059d7c70eee49988e212e574aee7, type: 3}
+  - {fileID: 8300000, guid: 7145549d93d54884486f5b590025ab8c, type: 3}
   dragFX: []
   releaseFX: []
 --- !u!1 &5452315502793897646
