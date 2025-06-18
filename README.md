@@ -26,6 +26,7 @@ Created @ 20250314 - 20250618
 
 ## 🎮 Try it
 - [Windows](Assets/Build/Windows_Project_G.zip)
+- [MacOS](Assets/Build/MacOS_Project_G.zip)
 
 ## 📷 Screenshots
 ![image](https://github.com/user-attachments/assets/9bc1303f-d28b-4622-bbff-77e15daf2a17)
