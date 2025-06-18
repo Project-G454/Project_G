@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Loaders.WorldMap;
-using NUnit.Framework;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using WorldMap.Models;
 
