@@ -25,8 +25,7 @@ Created @ 20250314 - 20250618
 * **Platform**: Windows PC
 
 ## 🎮 Try it
-- [Windows](Assets/Build/Windows_Project_G.zip)
-- [MacOS](Assets/Build/MacOS_Project_G.zip)
+- [Download](https://uiskskkekekk.itch.io/project-g)
 
 ## 📷 Screenshots
 ![image](https://github.com/user-attachments/assets/9bc1303f-d28b-4622-bbff-77e15daf2a17)
@@ -44,3 +43,4 @@ Created @ 20250314 - 20250618
 ![image](https://github.com/user-attachments/assets/5f97294a-72e5-4e22-a52f-dfb3847120d2)
 ![image](https://github.com/user-attachments/assets/5bea664b-262e-47d9-a833-0b198c7f36dd)
 ![image](https://github.com/user-attachments/assets/b946532d-3822-4cd5-a565-50745177a487)
+© 2025 Project_G. All rights reserved.
