@@ -25,7 +25,7 @@ Created @ 20250314 - 20250618
 * **Platform**: Windows PC
 
 ## 🎮 Try it
-- [Download](https://uiskskkekekk.itch.io/project-g)
+- [Download on itch.io](https://uiskskkekekk.itch.io/project-g)
 
 ## 📷 Screenshots
 ![image](https://github.com/user-attachments/assets/9bc1303f-d28b-4622-bbff-77e15daf2a17)
